@@ -5,10 +5,11 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 project(Francois VERSION 1.0 DESCRIPTION "Library for linear algebra" LANGUAGES CXX)
 
-set(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/Entity.cpp)
+set(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/Dummy.cpp)
 
-add_library(libEntity STATIC ${SOURCES})
-target_include_directories(libEntity PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(Francois STATIC ${SOURCES})
+target_include_directories(Francois PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_compile_features(Francois PUBLIC cxx_std_11)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest)
 

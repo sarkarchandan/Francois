@@ -19,12 +19,12 @@ target_compile_features(gmock_main PUBLIC cxx_std_11)
 macro(PACKAGE_ADD_TEST TEST_NAME)
   add_executable(${TEST_NAME} ${ARGN})
   target_include_directories(${TEST_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
-  target_link_libraries(${TEST_NAME} libEntity)
+  target_link_libraries(${TEST_NAME} Francois)
   target_link_libraries(${TEST_NAME} gtest gmock gtest_main)
   add_test(${TEST_NAME} ${TEST_NAME})
   set_target_properties(${TEST_NAME} PROPERTIES FOLDER tests)
 endmacro()
 
-PACKAGE_ADD_TEST(SimpleTest SimpleTest.cpp)
+PACKAGE_ADD_TEST(algebra_Matrix_SanityTests algebra_Matrix_SanityTests.cpp)
 
 
