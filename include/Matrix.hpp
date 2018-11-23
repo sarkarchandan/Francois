@@ -47,16 +47,16 @@ namespace algebra
       }
       else 
       {
-        throw std::invalid_argument("All rows of the container must have equal number of elements.");
+        throw std::invalid_argument("Unequal number of elements in rows");
       }
     }
     ~Matrix(){}
     
     #pragma mark Public accessors
     public:
-    const std::pair<int,int> Order() const
+    const std::pair<size_t,size_t> Order() const
     {
-      const std::pair<int,int> _pair = std::make_pair<int,int>(m_Container.size(),m_Container[0].size());
+      const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container.size(),m_Container[0].size());
       return _pair;
     }
   };

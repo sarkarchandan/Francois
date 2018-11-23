@@ -10,7 +10,8 @@
     "type_traits": "cpp",
     "typeinfo": "cpp",
     "algorithm": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "ostream": "cpp"
   },
   "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
 }
