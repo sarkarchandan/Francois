@@ -6,45 +6,45 @@
 namespace algebra
 {
   template<typename RealNumericValuedType>
-  struct Elements
+  struct ElementSequence
   {
     static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
     
     #pragma mark Protected member properties to be accessed only by child classes 
     protected:
-    std::vector<RealNumericValuedType> m_Elements; 
+    std::vector<RealNumericValuedType> m_ElementSequence; 
 
     #pragma mark Protected member functions to be accessed only by child classes
     protected:
-    Elements();
-    Elements(const std::vector<RealNumericValuedType>& _m_Elements)
+    ElementSequence(); //Implementation not provided
+    ElementSequence(const std::vector<RealNumericValuedType>& _m_ElementSequence)
     {
-      m_Elements.reserve(_m_Elements.size());
-      std::for_each(_m_Elements.begin(),_m_Elements.end(),[&](const RealNumericValuedType& _element){
-          m_Elements.emplace_back(_element);
+      m_ElementSequence.reserve(_m_ElementSequence.size());
+      std::for_each(_m_ElementSequence.begin(),_m_ElementSequence.end(),[&](const RealNumericValuedType& _element){
+          m_ElementSequence.emplace_back(_element);
         });
       }
-      ~Elements(){}
+      ~ElementSequence(){}
 
       #pragma mark Public accessors and member functions
       public:
-      const size_t Size() const { return m_Elements.size(); }
+      const size_t Size() const { return m_ElementSequence.size(); }
       const RealNumericValuedType& operator[](const unsigned long& _index) const
       {
-        return m_Elements[_index];
+        return m_ElementSequence[_index];
       }
     };
     
     template<typename RealNumericValuedType>
-    struct Row: public Elements<RealNumericValuedType>
+    struct Row: public ElementSequence<RealNumericValuedType>
     { 
       static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
 
       #pragma mark Public constructors
       public:
-      Row():Elements<RealNumericValuedType>(){}
-      Row(const std::vector<RealNumericValuedType>& _row_Elements)
-      :Elements<RealNumericValuedType>(_row_Elements){}
+      Row():ElementSequence<RealNumericValuedType>(){}
+      Row(const std::vector<RealNumericValuedType>& _row_ElementSequence)
+      :ElementSequence<RealNumericValuedType>(_row_ElementSequence){}
       ~Row(){}
 
       #pragma mark Public accessors and member functions 
@@ -56,7 +56,7 @@ namespace algebra
       //     return false;
       //   for(size_t index = 0; index < this -> Size(); index += 1)
       //   {
-      //     if(this -> m_Elements[index] != other[index])
+      //     if(this -> m_ElementSequence[index] != other[index])
       //       return false;
       //   }
       //   return true;
@@ -64,15 +64,15 @@ namespace algebra
     };
     
     template<typename RealNumericValuedType>
-    class Column: public Elements<RealNumericValuedType>
+    class Column: public ElementSequence<RealNumericValuedType>
     {
       static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
 
       #pragma mark Public constructors
       public:
-      Column():Elements<RealNumericValuedType>(){}
-      Column(const std::vector<RealNumericValuedType>& _column_Elements)
-      :Elements<RealNumericValuedType>(_column_Elements){}
+      Column():ElementSequence<RealNumericValuedType>(){}
+      Column(const std::vector<RealNumericValuedType>& _column_ElementSequence)
+      :ElementSequence<RealNumericValuedType>(_column_ElementSequence){}
       ~Column(){}
       
     };
