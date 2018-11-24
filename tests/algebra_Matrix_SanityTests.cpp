@@ -82,6 +82,8 @@ TEST(MatrixElementsSubscripting, canAccessElementsBySubscripting)
   ASSERT_EQ(matrix(0,0),1);
   ASSERT_EQ(matrix(1,1),6);
   ASSERT_EQ(matrix(2,2),11);
+  ASSERT_EQ(matrix(0,3),4);
+  ASSERT_EQ(matrix(1,3),8);
   ASSERT_EQ(matrix(2,3),12);
 }
 
