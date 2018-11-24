@@ -4,11 +4,11 @@
 #include <type_traits>
 #include <vector>
 #include <exception>
-#include <iostream>
 #include <algorithm>
 #include <numeric>
-#include <initializer_list>
 #include <typeinfo>
+#include "MatrixComponents.hpp"
+#include <initializer_list>
 
 namespace algebra
 {
@@ -21,7 +21,7 @@ namespace algebra
     private:
     std::vector<std::vector<RealNumericValuedType>> m_Container;
 
-    #pragma mark Private member fucntions
+    #pragma mark Private member functions
     private:
     bool IsValid(const std::initializer_list<std::vector<RealNumericValuedType>>& _init_list)
     {
@@ -52,12 +52,48 @@ namespace algebra
     }
     ~Matrix(){}
     
-    #pragma mark Public accessors
+    #pragma mark Public member functions and accessors
     public:
     const std::pair<size_t,size_t> Order() const
     {
       const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container.size(),m_Container[0].size());
       return _pair;
+    }
+
+    inline const RealNumericValuedType& operator ()(const unsigned long& _row,const unsigned long& _column) const
+    {
+      if(_row < Order().first && _column < Order().second)
+        return m_Container[_row][_column];
+      else
+        throw std::out_of_range("Out of range subscripting attempted");
+    }
+
+    std::vector<algebra::Row<RealNumericValuedType>> Rows() const
+    {
+      std::vector<algebra::Row<RealNumericValuedType>> _rows;
+      _rows.reserve(Order().first);
+      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValuedType>& _row){
+        _rows.emplace_back(_row);
+      });
+      return _rows;
+    }
+
+    std::vector<algebra::Column<RealNumericValuedType>> Columns() const
+    {
+      std::vector<algebra::Column<RealNumericValuedType>> _columns;
+      _columns.reserve(Order().second);
+      std::vector<RealNumericValuedType> _columnBuffer(Order().first);
+
+      for(size_t column_index = 0; column_index < Order().second; column_index += 1)
+      {
+        _columnBuffer.clear();
+        for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+        {
+          _columnBuffer.emplace_back(m_Container[row_index][column_index]);
+        }
+        _columns.emplace_back(_columnBuffer);
+      }
+      return _columns;
     }
   };
 } // algebra
