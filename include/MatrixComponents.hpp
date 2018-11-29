@@ -1,7 +1,7 @@
 #ifndef MATRIXCOMPONENTS_H
 #define MATRIXCOMPONENTS_H
 
-#include <iostream>
+#include <type_traits>
 
 namespace algebra
 {
@@ -48,11 +48,11 @@ namespace algebra
       ~Row(){}
 
       #pragma mark Public accessors and member functions 
-      // public:
-      //TODO: Troubleshoot why the overload is not working
+      public:
+      //TODO: Try to understand why this overload does not work.
       // bool operator ==(const Row<RealNumericValuedType>& other)
       // {
-      //   if(this -> Size() != other.size())
+      //   if(this -> Size() != other.Size())
       //     return false;
       //   for(size_t index = 0; index < this -> Size(); index += 1)
       //   {
@@ -64,7 +64,7 @@ namespace algebra
     };
     
     template<typename RealNumericValuedType>
-    class Column: public ElementSequence<RealNumericValuedType>
+    struct Column: public ElementSequence<RealNumericValuedType>
     {
       static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
 

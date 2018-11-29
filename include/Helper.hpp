@@ -15,22 +15,15 @@ std::ostream& operator <<(std::ostream& stream, const std::vector<PrintableType>
 }
 
 template<typename ComparableType>
-bool operator ==(const typename algebra::Matrix<ComparableType>::Row& _lhs, const std::vector<ComparableType>& _rhs)
+bool operator ==(const typename algebra::ElementSequence<ComparableType>& lhs, const typename algebra::ElementSequence<ComparableType>& rhs)
 {
-  if(_lhs.Size() != _rhs.size())
+  if(lhs.Size() != rhs.Size())
     return false;
-  for(size_t index = 0; index < _lhs.size(); index += 1)
+  for(size_t index = 0; index < lhs.Size(); index += 1)
   {
-    if(_lhs[index] != _rhs[index])
+    if(lhs[index] != rhs[index])
       return false;
   }
-  return true;
-}
-
-template<typename ComparableType>
-bool operator ==(const typename algebra::Row<ComparableType>& lhs, const typename algebra::Row<ComparableType>& rhs)
-{
-  //TODO
   return true;
 }
 

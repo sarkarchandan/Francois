@@ -54,7 +54,7 @@ namespace algebra
     
     #pragma mark Public member functions and accessors
     public:
-    const std::pair<size_t,size_t> Order() const
+    inline const std::pair<size_t,size_t> Order() const
     {
       const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container.size(),m_Container[0].size());
       return _pair;
@@ -95,6 +95,14 @@ namespace algebra
       }
       return _columns;
     }
+
+    inline bool IsRowMatrix() { return Order().first == 1; }
+
+    inline bool IsColumnMatrix() { return Order().second == 1; }
+
+    inline bool IsRectangularMatrix() { return Order().first != Order().second; }
+    
+    inline bool IsSquareMatrix() { return Order().first == Order().second; }
   };
 } // algebra
 
