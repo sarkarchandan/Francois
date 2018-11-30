@@ -2,7 +2,7 @@
 #include "Matrix.hpp"
 #include "Helper.hpp"
 
-TEST(MatrixValidity, canDetermineIfValid)
+TEST(MatrixSanityTests, canDetermineMatrixValidity)
 {
   try
   {
@@ -30,11 +30,11 @@ TEST(MatrixValidity, canDetermineIfValid)
   }
 }
 
-TEST(MatrixInValidity, canDetermineIfInavalid)
+TEST(MatrixSanityTests, canDetermineIfMatrixIsInvalid)
 {
   try
   {
-    algebra::Matrix<int> intMatrix {
+    algebra::Matrix<int> intInvalidMatrix {
       {1,2,3},
       {4,6,7,4},
       {9,10,11,12}
@@ -42,11 +42,11 @@ TEST(MatrixInValidity, canDetermineIfInavalid)
   }
   catch(const std::exception& e)
   {
-    ASSERT_FALSE(e.what() == nullptr);
+    ASSERT_TRUE(e.what() != nullptr);
   }
   try
   {
-    algebra::Matrix<double> doubleMatrix {
+    algebra::Matrix<double> doubleInvalidMatrix {
       {3.5,1.9,8.1},
       {1.2,6.2},
       {1.56,3.7,2.9}
@@ -54,11 +54,11 @@ TEST(MatrixInValidity, canDetermineIfInavalid)
   }
   catch(const std::exception& e)
   {
-    ASSERT_FALSE(e.what() == nullptr);
+    ASSERT_TRUE(e.what() != nullptr);
   }
 }
 
-TEST(MatrixOrder, canDetermineOrder)
+TEST(MatrixSanityTests, canDetermineMatrixOrder)
 {
   algebra::Matrix<int> intMatrix {
     {1,2,3,4},
@@ -80,7 +80,7 @@ TEST(MatrixOrder, canDetermineOrder)
   ASSERT_EQ(doubleOrder.second,2);
 }
 
-TEST(MatrixElementsSubscripting, canAccessElementsBySubscripting)
+TEST(MatrixSanityTests, canAccessElementsBySubscripting)
 {
   algebra::Matrix<int> matrix {
     {1,2,3,4},
@@ -95,7 +95,7 @@ TEST(MatrixElementsSubscripting, canAccessElementsBySubscripting)
   ASSERT_EQ(matrix(2,3),12);
 }
 
-TEST(MatrixElementsOutOfRangeSubscripting, canDetermineOutOfRangeSubscripting)
+TEST(MatrixSanityTests, canDetermineOutOfRangeSubscriptingAttempts)
 {
   try
   {
@@ -108,11 +108,11 @@ TEST(MatrixElementsOutOfRangeSubscripting, canDetermineOutOfRangeSubscripting)
   }
   catch(const std::exception& e)
   {
-    ASSERT_FALSE(e.what() == nullptr);
+    ASSERT_TRUE(e.what() != nullptr);
   }
 }
 
-TEST(RowsAndColumnsAreDistinctlyAccessible,canSubscriptForRowsAndColumns)
+TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
 {
   algebra::Matrix<int> matrix {
     {1,2,3,4},
