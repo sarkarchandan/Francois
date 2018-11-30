@@ -95,7 +95,7 @@ TEST(MatrixElementsSubscripting, canAccessElementsBySubscripting)
   ASSERT_EQ(matrix(2,3),12);
 }
 
-TEST(MatrixElementsInvalidSubscripting, canDetermineInvalidSubscripting)
+TEST(MatrixElementsOutOfRangeSubscripting, canDetermineOutOfRangeSubscripting)
 {
   try
   {
@@ -112,7 +112,7 @@ TEST(MatrixElementsInvalidSubscripting, canDetermineInvalidSubscripting)
   }
 }
 
-TEST(MatrixRowsAndColumnsAreAccessible,canSubscriptForRowsAndColumns)
+TEST(RowsAndColumnsAreDistinctlyAccessible,canSubscriptForRowsAndColumns)
 {
   algebra::Matrix<int> matrix {
     {1,2,3,4},

@@ -96,13 +96,33 @@ namespace algebra
       return _columns;
     }
 
-    inline bool IsRowMatrix() { return Order().first == 1; }
+    inline bool IsRowMatrix() const { return Order().first == 1; }
 
-    inline bool IsColumnMatrix() { return Order().second == 1; }
+    inline bool IsColumnMatrix() const { return Order().second == 1; }
 
-    inline bool IsRectangularMatrix() { return Order().first != Order().second; }
+    inline bool IsRectangularMatrix() const { return Order().first != Order().second; }
     
-    inline bool IsSquareMatrix() { return Order().first == Order().second; }
+    inline bool IsSquareMatrix() const { return Order().first == Order().second; }
+
+    bool IsDiagonalMatrix() const
+    {
+      if(IsRectangularMatrix())
+        return false;
+      for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+      {
+        if(operator()(row_index,row_index) == 0)
+          return false;
+        
+        for(size_t column_index = row_index + 1; column_index < Order().second; column_index += 1)
+        {
+          if(operator()(row_index,column_index) != 0)
+            return false;
+          if(operator()(column_index,row_index) != 0) 
+            return false;
+        }
+      }
+      return true;
+    }
   };
 } // algebra
 
