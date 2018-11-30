@@ -11,10 +11,10 @@ mark_as_advanced(
   gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols 
 )
 
-target_compile_features(gtest PUBLIC cxx_std_14)
-target_compile_features(gtest_main PUBLIC cxx_std_14)
-target_compile_features(gmock PUBLIC cxx_std_14)
-target_compile_features(gmock_main PUBLIC cxx_std_14)
+target_compile_features(gtest PUBLIC cxx_std_11)
+target_compile_features(gtest_main PUBLIC cxx_std_11)
+target_compile_features(gmock PUBLIC cxx_std_11)
+target_compile_features(gmock_main PUBLIC cxx_std_11)
 
 macro(PACKAGE_ADD_TEST TEST_NAME)
   add_executable(${TEST_NAME} ${ARGN})
