@@ -104,6 +104,22 @@ namespace algebra
     
     inline bool IsSquareMatrix() const { return Order().first == Order().second; }
 
+    const std::vector<RealNumericValuedType> MainDiagonalElements() const
+    {
+      if(!IsSquareMatrix())
+        throw std::invalid_argument("Only square matrices are having main diagonal elements");
+
+      std::vector<size_t> _buffer(Order().first);
+      std::generate(_buffer.begin(),_buffer.end(),[_index = -1]() mutable {
+        return _index += 1;
+      });
+      std::vector<RealNumericValuedType> _diagonalElements(Order().first);
+      std::transform(_buffer.begin(),_buffer.end(),_diagonalElements.begin(),[&](const size_t& _index){
+        return operator()(_index,_index);
+      });
+      return _diagonalElements;
+    }
+
     bool IsDiagonalMatrix() const
     {
       if(IsRectangularMatrix())
