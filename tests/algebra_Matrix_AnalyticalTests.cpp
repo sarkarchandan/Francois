@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "Matrix.hpp"
 
-TEST(DefineRowMatrix, canDefineRowMatrix)
+TEST(MatrixAnalyticalTests, canDefineRowMatrix)
 {
   algebra::Matrix<int> testableIntRowMatrix {
     {5,1,4,7,8}
@@ -16,7 +16,7 @@ TEST(DefineRowMatrix, canDefineRowMatrix)
   ASSERT_FALSE(testableIntMatrix.IsRowMatrix());
 }
 
-TEST(DefineColumnMatrix, canDefineColumnMatrix)
+TEST(MatrixAnalyticalTests, canDefineColumnMatrix)
 {
   algebra::Matrix<int>  testableIntColumnMatrix {
     {5},
@@ -35,7 +35,7 @@ TEST(DefineColumnMatrix, canDefineColumnMatrix)
   ASSERT_FALSE(testableIntMatrix.IsColumnMatrix());
 }
 
-TEST(DefineRectangularMatrix, canDefineRectangularMatrix)
+TEST(MatrixAnalyticalTests, canDefineRectangularMatrix)
 {
   algebra::Matrix<int> testableIntRectangularMatrix {
     {1,2,3,4,5},
@@ -52,7 +52,7 @@ TEST(DefineRectangularMatrix, canDefineRectangularMatrix)
   ASSERT_FALSE(testableIntMatrix.IsRectangularMatrix());
 }
 
-TEST(DefineSquareMatrix, canDefineSquareMatrix)
+TEST(MatrixAnalyticalTests, canDefineSquareMatrix)
 {
   algebra::Matrix<int> testableIntSquareMatrix {
     {5,2,1},
@@ -69,13 +69,13 @@ TEST(DefineSquareMatrix, canDefineSquareMatrix)
   ASSERT_FALSE(testableIntMatrix.IsSquareMatrix());
 }
 
-TEST(DefineDiagonalMatrix,canDefineDiagonalMatrix)
+TEST(MatrixAnalyticalTests,canDefineDiagonalMatrix)
 {
   algebra::Matrix<int> testableIntDiagonalMatrix {
     {5,0,0,0},
     {0,1,0,0},
     {0,0,2,0},
-    {0,0,0,4}
+    {0,0,0,2}
   };
   ASSERT_TRUE(testableIntDiagonalMatrix.IsDiagonalMatrix());
 
