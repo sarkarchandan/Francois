@@ -93,6 +93,21 @@ TEST(MatrixSanityTests, canAccessElementsBySubscripting)
   ASSERT_EQ(givenMatrix1(0,3),4);
   ASSERT_EQ(givenMatrix1(1,3),8);
   ASSERT_EQ(givenMatrix1(2,3),12);
+
+  algebra::Matrix<double> givenMatrix2 {
+    {65.4,936.12},
+    {47.1,93.15},
+    {78.21,45.21},
+    {90.23,81.23}
+  };
+  ASSERT_EQ(givenMatrix2(0,0),65.4);
+  ASSERT_EQ(givenMatrix2(0,1),936.12);
+  ASSERT_EQ(givenMatrix2(1,0),47.1);
+  ASSERT_EQ(givenMatrix2(1,1),93.15);
+  ASSERT_EQ(givenMatrix2(2,0),78.21);
+  ASSERT_EQ(givenMatrix2(2,1),45.21);
+  ASSERT_EQ(givenMatrix2(3,0),90.23);
+  ASSERT_EQ(givenMatrix2(3,1),81.23);
 }
 
 TEST(MatrixSanityTests, canDetermineOutOfRangeSubscriptingAttempts)
