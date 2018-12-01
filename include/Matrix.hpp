@@ -106,7 +106,7 @@ namespace algebra
 
     const std::vector<RealNumericValuedType> MainDiagonalElements() const
     {
-      if(!IsSquareMatrix())
+      if(IsRectangularMatrix())
         throw std::invalid_argument("Only square matrices are having main diagonal elements");
 
       std::vector<size_t> _buffer(Order().first);
@@ -138,6 +138,14 @@ namespace algebra
         }
       }
       return true;
+    }
+
+    bool IsScalarMatrix() const
+    {
+      if(IsRectangularMatrix())
+        return false;
+      std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
+      return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValuedType>()) == _mainDiagonalElements.end();
     }
   };
 } // algebra
