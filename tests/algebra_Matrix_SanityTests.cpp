@@ -6,7 +6,7 @@ TEST(MatrixSanityTests, canDetermineMatrixValidity)
 {
   try
   {
-    algebra::Matrix<int> intMatrix {
+    algebra::Matrix<int> givenMatrix1 {
       {1,2,3},
       {4,6,7},
       {9,10,11}
@@ -18,7 +18,7 @@ TEST(MatrixSanityTests, canDetermineMatrixValidity)
   }
   try
   {
-    algebra::Matrix<double> doubleMatrix {
+    algebra::Matrix<double> givenMatrix2 {
       {3.5,1.9},
       {1.2,6.2},
       {1.56,3.7}
@@ -34,7 +34,7 @@ TEST(MatrixSanityTests, canDetermineIfMatrixIsInvalid)
 {
   try
   {
-    algebra::Matrix<int> intInvalidMatrix {
+    algebra::Matrix<int> givenStructure1 {
       {1,2,3},
       {4,6,7,4},
       {9,10,11,12}
@@ -46,7 +46,7 @@ TEST(MatrixSanityTests, canDetermineIfMatrixIsInvalid)
   }
   try
   {
-    algebra::Matrix<double> doubleInvalidMatrix {
+    algebra::Matrix<double> givenStructure2 {
       {3.5,1.9,8.1},
       {1.2,6.2},
       {1.56,3.7,2.9}
@@ -60,51 +60,51 @@ TEST(MatrixSanityTests, canDetermineIfMatrixIsInvalid)
 
 TEST(MatrixSanityTests, canDetermineMatrixOrder)
 {
-  algebra::Matrix<int> intMatrix {
+  algebra::Matrix<int> givenMatrix1 {
     {1,2,3,4},
     {4,6,7,8},
     {9,10,11,12}
   };
-  const std::pair<size_t,size_t> intOrder = intMatrix.Order();
+  const std::pair<size_t,size_t> intOrder = givenMatrix1.Order();
   ASSERT_EQ(intOrder.first,3);
   ASSERT_EQ(intOrder.second,4);
 
-  algebra::Matrix<double> doubleMatrix {
+  algebra::Matrix<double> givenMatrix2 {
     {3.5,1.9},
     {1.2,6.2},
     {1.56,3.7},
     {4.7,1.8}
   };
-  const std::pair<size_t,size_t> doubleOrder = doubleMatrix.Order();
+  const std::pair<size_t,size_t> doubleOrder = givenMatrix2.Order();
   ASSERT_EQ(doubleOrder.first,4);
   ASSERT_EQ(doubleOrder.second,2);
 }
 
 TEST(MatrixSanityTests, canAccessElementsBySubscripting)
 {
-  algebra::Matrix<int> matrix {
+  algebra::Matrix<int> givenMatrix1 {
     {1,2,3,4},
     {4,6,7,8},
     {9,10,11,12}
   };
-  ASSERT_EQ(matrix(0,0),1);
-  ASSERT_EQ(matrix(1,1),6);
-  ASSERT_EQ(matrix(2,2),11);
-  ASSERT_EQ(matrix(0,3),4);
-  ASSERT_EQ(matrix(1,3),8);
-  ASSERT_EQ(matrix(2,3),12);
+  ASSERT_EQ(givenMatrix1(0,0),1);
+  ASSERT_EQ(givenMatrix1(1,1),6);
+  ASSERT_EQ(givenMatrix1(2,2),11);
+  ASSERT_EQ(givenMatrix1(0,3),4);
+  ASSERT_EQ(givenMatrix1(1,3),8);
+  ASSERT_EQ(givenMatrix1(2,3),12);
 }
 
 TEST(MatrixSanityTests, canDetermineOutOfRangeSubscriptingAttempts)
 {
   try
   {
-    algebra::Matrix<int> matrix {
+    algebra::Matrix<int> givenMatrix1 {
       {1,2,3,4},
       {4,6,7,8},
       {9,10,11,12}
     };
-    const int element = matrix(3,3);
+    const int element = givenMatrix1(3,3);
   }
   catch(const std::exception& e)
   {
@@ -114,13 +114,13 @@ TEST(MatrixSanityTests, canDetermineOutOfRangeSubscriptingAttempts)
 
 TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
 {
-  algebra::Matrix<int> matrix {
+  algebra::Matrix<int> givenMatrix1 {
     {1,2,3,4},
     {4,6,7,8},
     {9,10,11,12}
   };
   
-  const std::vector<algebra::Row<int>> rows = matrix.Rows();
+  const std::vector<algebra::Row<int>> rows = givenMatrix1.Rows();
   ASSERT_EQ(rows.size(),3);
   algebra::Row<int> testableRow0({1,2,3,4});
   algebra::Row<int> testableRow1({4,6,7,8});
@@ -129,7 +129,7 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
   ASSERT_TRUE(rows[1] == testableRow1);
   ASSERT_TRUE(rows[2] == testableRow2);
 
-  const std::vector<algebra::Column<int>> columns = matrix.Columns();
+  const std::vector<algebra::Column<int>> columns = givenMatrix1.Columns();
   ASSERT_EQ(columns.size(),4);
   algebra::Column<int> testableColumn0({1,4,9});
   algebra::Column<int> testableColumn1({2,6,10});
