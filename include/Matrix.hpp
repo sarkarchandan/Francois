@@ -107,7 +107,7 @@ namespace algebra
     const std::vector<RealNumericValuedType> MainDiagonalElements() const
     {
       if(IsRectangularMatrix())
-        throw std::invalid_argument("Only square matrices are having main diagonal elements");
+        throw std::logic_error("Only square matrices are having main diagonal elements");
 
       std::vector<size_t> _buffer(Order().first);
       std::generate(_buffer.begin(),_buffer.end(),[_index = -1]() mutable {
@@ -213,6 +213,16 @@ namespace algebra
     bool IsTriangularMatrix() const
     {
       return IsUpperTriangularMatrix() || IsLowerTriangularMatrix();
+    }
+
+    RealNumericValuedType Trace() const
+    {
+      if(!IsSquareMatrix())
+        throw std::logic_error("Only square matrices can have trace value");
+
+      const std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
+      const RealNumericValuedType _sumOfDiagonalElements = std::accumulate(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),0.0);
+      return _sumOfDiagonalElements;
     }
   };
 } // algebra

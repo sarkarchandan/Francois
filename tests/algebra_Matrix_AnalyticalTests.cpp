@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "Matrix.hpp"
+#include <cmath>
+#include <limits>
 
 TEST(MatrixAnalyticalTests, canDefineRowMatrix)
 {
@@ -316,4 +318,41 @@ TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
     {0,0,3,4}
   };
   ASSERT_FALSE(givenMatrix5.IsTriangularMatrix());
+}
+
+TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {4,6,8,10},
+    {3,5,7,9},
+    {8,5,3,6},
+    {2,0,5,1}
+  };
+  const int matrix1_Trace = givenMatrix1.Trace();
+  const int expected_Matrix1_Trace = (4+5+3+1);
+  ASSERT_EQ(matrix1_Trace,expected_Matrix1_Trace);
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {56.12,0,78.92,19.23},
+    {97.12,42.18,29.4,18.98},
+    {89.43,12.98,76.12,78.19},
+    {0,74.89,86.12,19.56}
+  };
+  const double matrix2_Trace = givenMatrix2.Trace();
+  const double expected_Matrix2_Trace = (56.12+42.18+76.12+19.56);
+  ASSERT_DOUBLE_EQ(matrix2_Trace,expected_Matrix2_Trace);
+
+  const algebra::Matrix<int> givenMatrix3 {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,8,5,1}
+  };
+  try
+  {
+    const int matrix3_Trace = givenMatrix3.Trace();
+  }
+  catch(const std::exception& e)
+  {
+    ASSERT_TRUE(e.what() != nullptr);
+  }
 }
