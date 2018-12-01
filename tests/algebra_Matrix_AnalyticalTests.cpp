@@ -204,3 +204,116 @@ TEST(MatrixAnalyticalTests,canDefineNullMatrix)
   };
   ASSERT_FALSE(givenMatrix3.IsNullMatrix());
 }
+
+TEST(MatrixAnalyticalTests,canDefineUppertriangularMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {4,5,8,1},
+    {0,6,7,1},
+    {0,0,2,9},
+    {0,0,0,8}
+  };
+  ASSERT_TRUE(givenMatrix1.IsUpperTriangularMatrix());
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {98.1,50.32,98.1,16.43},
+    {0,61.09,7,23.54},
+    {0,0,98.1,12.09},
+    {0,0,0,90.1}
+  };
+  ASSERT_TRUE(givenMatrix2.IsUpperTriangularMatrix());
+
+  const algebra::Matrix<int> givenMatrix3 {
+    {4,5,8,1},
+    {0,6,7,1},
+    {0,0,2,9},
+    {1,0,0,8}
+  };
+  ASSERT_FALSE(givenMatrix3.IsUpperTriangularMatrix());
+
+  const algebra::Matrix<int> givenMatrix4 {
+    {4,5,8,1,5},
+    {0,6,7,1,8},
+    {0,0,2,9,9},
+    {0,0,0,8,1}
+  };
+  ASSERT_FALSE(givenMatrix4.IsUpperTriangularMatrix());
+}
+
+TEST(MatrixAnalyticalTests,canDefineLowerTriangularMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {4,0,0,0},
+    {1,6,0,0},
+    {9,6,2,0},
+    {3,5,8,8}
+  };
+  ASSERT_TRUE(givenMatrix1.IsLowerTriangularMatrix());
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {98.1,0,0,0},
+    {54.12,61.09,0,0},
+    {87.13,54.89,98.1,0},
+    {123.5,89.67,87.12,90.1}
+  };
+  ASSERT_TRUE(givenMatrix2.IsLowerTriangularMatrix());
+
+  const algebra::Matrix<int> givenMatrix3 {
+    {4,0,0,1},
+    {6,6,0,0},
+    {1,9,2,0},
+    {8,4,2,8}
+  };
+  ASSERT_FALSE(givenMatrix3.IsLowerTriangularMatrix());
+
+  const algebra::Matrix<int> givenMatrix4 {
+    {4,5,8,1,5},
+    {0,6,7,1,8},
+    {0,0,2,9,9},
+    {0,0,0,8,1}
+  };
+  ASSERT_FALSE(givenMatrix4.IsLowerTriangularMatrix());
+}
+
+TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {4,5,8,1},
+    {0,6,7,1},
+    {0,0,2,9},
+    {0,0,0,8}
+  };
+  ASSERT_TRUE(givenMatrix1.IsTriangularMatrix());
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {98.1,50.32,98.1,16.43},
+    {0,61.09,7,23.54},
+    {0,0,98.1,12.09},
+    {0,0,0,90.1}
+  };
+  ASSERT_TRUE(givenMatrix2.IsTriangularMatrix());
+
+  const algebra::Matrix<int> givenMatrix3 {
+    {4,0,0,0},
+    {1,6,0,0},
+    {9,6,2,0},
+    {3,5,8,8}
+  };
+  ASSERT_TRUE(givenMatrix3.IsTriangularMatrix());
+
+  const algebra::Matrix<double> givenMatrix4 {
+    {98.1,0,0,0},
+    {54.12,61.09,0,0},
+    {87.13,54.89,98.1,0},
+    {123.5,89.67,87.12,90.1}
+  };
+  ASSERT_TRUE(givenMatrix4.IsTriangularMatrix());
+  
+  const algebra::Matrix<int> givenMatrix5 {
+    {1,2,0,0},
+    {9,6,4,1},
+    {4,1,6,1},
+    {0,0,3,4}
+  };
+  ASSERT_FALSE(givenMatrix5.IsTriangularMatrix());
+}

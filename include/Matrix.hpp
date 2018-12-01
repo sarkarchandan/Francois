@@ -169,6 +169,51 @@ namespace algebra
       });
       return _isNull;
     }
+
+    bool IsUpperTriangularMatrix() const
+    {
+      if(!IsSquareMatrix())
+        return false;
+      for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+      {
+        if(operator()(row_index,row_index) == 0)
+          return false;
+        
+        for(size_t column_index = row_index + 1; column_index < Order().second; column_index += 1)
+        {
+          if(operator()(row_index,column_index) == 0)
+            return false;
+          if(operator()(column_index,row_index) != 0) 
+            return false;
+        }
+      }
+      return true;
+    }
+
+    bool IsLowerTriangularMatrix() const
+    {
+      if(!IsSquareMatrix())
+        return false;
+      for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+      {
+        if(operator()(row_index,row_index) == 0)
+          return false;
+        
+        for(size_t column_index = row_index + 1; column_index < Order().second; column_index += 1)
+        {
+          if(operator()(row_index,column_index) != 0)
+            return false;
+          if(operator()(column_index,row_index) == 0) 
+            return false;
+        }
+      }
+      return true;
+    }
+
+    bool IsTriangularMatrix() const
+    {
+      return IsUpperTriangularMatrix() || IsLowerTriangularMatrix();
+    }
   };
 } // algebra
 
