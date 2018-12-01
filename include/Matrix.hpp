@@ -12,21 +12,22 @@
 
 namespace algebra
 {
-  template<typename RealNumericValuedType>
+  template<typename RealNumericValueType>
   class Matrix
   {
-    static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
+    static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
 
     #pragma mark Private member properties
     private:
-    std::vector<std::vector<RealNumericValuedType>> m_Container;
+    //TODO: Consider using unique pointer for dealing with larger input
+    std::vector<std::vector<RealNumericValueType>> m_Container;
 
     #pragma mark Private member functions
     private:
-    bool IsValid(const std::initializer_list<std::vector<RealNumericValuedType>>& _init_list)
+    bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
       std::vector<size_t> _buffer(_init_list.size());
-      std::transform(_init_list.begin(),_init_list.end(),_buffer.begin(),[](const std::vector<RealNumericValuedType>& _collection) {
+      std::transform(_init_list.begin(),_init_list.end(),_buffer.begin(),[](const std::vector<RealNumericValueType>& _collection) {
         return _collection.size();
         });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
@@ -34,16 +35,17 @@ namespace algebra
 
     #pragma mark Public constructors
     public:
+    //TODO: Think about how to deal with copy behaviour.
     Matrix() = delete;
-    Matrix(const std::initializer_list<std::vector<RealNumericValuedType>>& _init_list)
+    Matrix(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
       if(IsValid(_init_list))
       {
         m_Container.reserve(_init_list.size());
-        std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValuedType>& _element_vector) {
+        std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
           m_Container.emplace_back(_element_vector);
         });
-        std::cout << "Container initialized with element type: " << typeid(RealNumericValuedType).name() << std::endl;
+        std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << std::endl;
       }
       else 
       {
@@ -60,7 +62,7 @@ namespace algebra
       return _pair;
     }
 
-    inline const RealNumericValuedType& operator ()(const unsigned long& _row,const unsigned long& _column) const
+    inline const RealNumericValueType& operator ()(const unsigned long& _row,const unsigned long& _column) const
     {
       if(_row < Order().first && _column < Order().second)
         return m_Container[_row][_column];
@@ -68,21 +70,21 @@ namespace algebra
         throw std::out_of_range("Out of range subscripting attempted");
     }
 
-    const std::vector<algebra::Row<RealNumericValuedType>> Rows() const
+    const std::vector<algebra::Row<RealNumericValueType>> Rows() const
     {
-      std::vector<algebra::Row<RealNumericValuedType>> _rows;
+      std::vector<algebra::Row<RealNumericValueType>> _rows;
       _rows.reserve(Order().first);
-      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValuedType>& _row){
+      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValueType>& _row){
         _rows.emplace_back(_row);
       });
       return _rows;
     }
 
-    const std::vector<algebra::Column<RealNumericValuedType>> Columns() const
+    const std::vector<algebra::Column<RealNumericValueType>> Columns() const
     {
-      std::vector<algebra::Column<RealNumericValuedType>> _columns;
+      std::vector<algebra::Column<RealNumericValueType>> _columns;
       _columns.reserve(Order().second);
-      std::vector<RealNumericValuedType> _columnBuffer(Order().first);
+      std::vector<RealNumericValueType> _columnBuffer(Order().first);
 
       for(size_t column_index = 0; column_index < Order().second; column_index += 1)
       {
@@ -104,7 +106,7 @@ namespace algebra
     
     inline bool IsSquareMatrix() const { return Order().first == Order().second; }
 
-    const std::vector<RealNumericValuedType> MainDiagonalElements() const
+    const std::vector<RealNumericValueType> MainDiagonalElements() const
     {
       if(IsRectangularMatrix())
         throw std::logic_error("Only square matrices are having main diagonal elements");
@@ -113,7 +115,7 @@ namespace algebra
       std::generate(_buffer.begin(),_buffer.end(),[_index = -1]() mutable {
         return _index += 1;
       });
-      std::vector<RealNumericValuedType> _diagonalElements(Order().first);
+      std::vector<RealNumericValueType> _diagonalElements(Order().first);
       std::transform(_buffer.begin(),_buffer.end(),_diagonalElements.begin(),[&](const size_t& _index){
         return operator()(_index,_index);
       });
@@ -144,27 +146,27 @@ namespace algebra
     {
       if(!IsDiagonalMatrix())
         return false;
-      std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
-      return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValuedType>()) == _mainDiagonalElements.end();
+      std::vector<RealNumericValueType> _mainDiagonalElements = MainDiagonalElements();
+      return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValueType>()) == _mainDiagonalElements.end();
     }
 
     bool IsIdentityMatrix() const
     {
       if(!IsScalarMatrix())
         return false;
-      std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
+      std::vector<RealNumericValueType> _mainDiagonalElements = MainDiagonalElements();
       if(_mainDiagonalElements[0] != 1)
         return false;
-      return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValuedType>()) == _mainDiagonalElements.end();
+      return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValueType>()) == _mainDiagonalElements.end();
     }
 
     bool IsNullMatrix() const
     {
       bool _isNull = true;
-      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValuedType>& _vector){
+      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValueType>& _vector){
         if(_vector[0] != 0)
           _isNull = false;
-        if(!(std::adjacent_find(_vector.begin(),_vector.end(),std::not_equal_to<RealNumericValuedType>()) == _vector.end()))
+        if(!(std::adjacent_find(_vector.begin(),_vector.end(),std::not_equal_to<RealNumericValueType>()) == _vector.end()))
           _isNull = false;
       });
       return _isNull;
@@ -215,13 +217,13 @@ namespace algebra
       return IsUpperTriangularMatrix() || IsLowerTriangularMatrix();
     }
 
-    RealNumericValuedType Trace() const
+    RealNumericValueType Trace() const
     {
       if(!IsSquareMatrix())
         throw std::logic_error("Only square matrices can have trace value");
 
-      const std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
-      const RealNumericValuedType _sumOfDiagonalElements = std::accumulate(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),0.0);
+      const std::vector<RealNumericValueType> _mainDiagonalElements = MainDiagonalElements();
+      const RealNumericValueType _sumOfDiagonalElements = std::accumulate(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),0.0);
       return _sumOfDiagonalElements;
     }
   };

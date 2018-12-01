@@ -5,22 +5,23 @@
 
 namespace algebra
 {
-  template<typename RealNumericValuedType>
+  template<typename RealNumericValueType>
   struct ElementSequence
   {
-    static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
+    static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
     
     #pragma mark Protected member properties to be accessed only by child classes 
     protected:
-    std::vector<RealNumericValuedType> m_ElementSequence; 
+    std::vector<RealNumericValueType> m_ElementSequence; 
 
     #pragma mark Protected member functions to be accessed only by child classes
     protected:
+    //Think about how to deal with copy behaviour
     ElementSequence() = delete;
-    ElementSequence(const std::vector<RealNumericValuedType>& _m_ElementSequence)
+    ElementSequence(const std::vector<RealNumericValueType>& _m_ElementSequence)
     {
       m_ElementSequence.reserve(_m_ElementSequence.size());
-      std::for_each(_m_ElementSequence.begin(),_m_ElementSequence.end(),[&](const RealNumericValuedType& _element){
+      std::for_each(_m_ElementSequence.begin(),_m_ElementSequence.end(),[&](const RealNumericValueType& _element){
           m_ElementSequence.emplace_back(_element);
         });
       }
@@ -29,28 +30,28 @@ namespace algebra
       #pragma mark Public accessors and member functions
       public:
       const size_t Size() const { return m_ElementSequence.size(); }
-      const RealNumericValuedType& operator[](const unsigned long& _index) const
+      const RealNumericValueType& operator[](const unsigned long& _index) const
       {
         return m_ElementSequence[_index];
       }
     };
     
-    template<typename RealNumericValuedType>
-    struct Row: public ElementSequence<RealNumericValuedType>
+    template<typename RealNumericValueType>
+    struct Row: public ElementSequence<RealNumericValueType>
     { 
-      static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
+      static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
 
       #pragma mark Public constructors
       public:
       Row() = delete;
-      Row(const std::vector<RealNumericValuedType>& _row_ElementSequence)
-      :ElementSequence<RealNumericValuedType>(_row_ElementSequence){}
+      Row(const std::vector<RealNumericValueType>& _row_ElementSequence)
+      :ElementSequence<RealNumericValueType>(_row_ElementSequence){}
       ~Row(){}
 
       #pragma mark Public accessors and member functions 
       public:
       //TODO: Try to understand why this overload does not work.
-      // bool operator ==(const Row<RealNumericValuedType>& other)
+      // bool operator ==(const Row<RealNumericValueType>& other)
       // {
       //   if(this -> Size() != other.Size())
       //     return false;
@@ -63,16 +64,16 @@ namespace algebra
       // }
     };
     
-    template<typename RealNumericValuedType>
-    struct Column: public ElementSequence<RealNumericValuedType>
+    template<typename RealNumericValueType>
+    struct Column: public ElementSequence<RealNumericValueType>
     {
-      static_assert(std::is_same<RealNumericValuedType,int>::value || std::is_same<RealNumericValuedType,double>::value,"Container can accept only integers or double data type for now.");
+      static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
 
       #pragma mark Public constructors
       public:
       Column() = delete;
-      Column(const std::vector<RealNumericValuedType>& _column_ElementSequence)
-      :ElementSequence<RealNumericValuedType>(_column_ElementSequence){}
+      Column(const std::vector<RealNumericValueType>& _column_ElementSequence)
+      :ElementSequence<RealNumericValueType>(_column_ElementSequence){}
       ~Column(){}
       
     };
