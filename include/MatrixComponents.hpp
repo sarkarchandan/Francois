@@ -16,7 +16,7 @@ namespace algebra
 
     #pragma mark Protected member functions to be accessed only by child classes
     protected:
-    ElementSequence(); //Implementation not provided
+    ElementSequence() = delete;
     ElementSequence(const std::vector<RealNumericValuedType>& _m_ElementSequence)
     {
       m_ElementSequence.reserve(_m_ElementSequence.size());
@@ -42,7 +42,7 @@ namespace algebra
 
       #pragma mark Public constructors
       public:
-      Row():ElementSequence<RealNumericValuedType>(){}
+      Row() = delete;
       Row(const std::vector<RealNumericValuedType>& _row_ElementSequence)
       :ElementSequence<RealNumericValuedType>(_row_ElementSequence){}
       ~Row(){}
@@ -70,7 +70,7 @@ namespace algebra
 
       #pragma mark Public constructors
       public:
-      Column():ElementSequence<RealNumericValuedType>(){}
+      Column() = delete;
       Column(const std::vector<RealNumericValuedType>& _column_ElementSequence)
       :ElementSequence<RealNumericValuedType>(_column_ElementSequence){}
       ~Column(){}

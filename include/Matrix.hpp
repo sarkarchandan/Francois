@@ -31,17 +31,17 @@ namespace algebra
         });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
-    Matrix(); //Implementation not provided
 
     #pragma mark Public constructors
     public:
+    Matrix() = delete;
     Matrix(const std::initializer_list<std::vector<RealNumericValuedType>>& _init_list)
     {
       if(IsValid(_init_list))
       {
         m_Container.reserve(_init_list.size());
         std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValuedType>& _element_vector) {
-          this -> m_Container.emplace_back(_element_vector);
+          m_Container.emplace_back(_element_vector);
         });
         std::cout << "Container initialized with element type: " << typeid(RealNumericValuedType).name() << std::endl;
       }
@@ -54,7 +54,7 @@ namespace algebra
     
     #pragma mark Public member functions and accessors
     public:
-    inline const std::pair<size_t,size_t> Order() const
+    inline std::pair<size_t,size_t> Order() const
     {
       const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container.size(),m_Container[0].size());
       return _pair;
@@ -68,7 +68,7 @@ namespace algebra
         throw std::out_of_range("Out of range subscripting attempted");
     }
 
-    std::vector<algebra::Row<RealNumericValuedType>> Rows() const
+    const std::vector<algebra::Row<RealNumericValuedType>> Rows() const
     {
       std::vector<algebra::Row<RealNumericValuedType>> _rows;
       _rows.reserve(Order().first);
@@ -78,7 +78,7 @@ namespace algebra
       return _rows;
     }
 
-    std::vector<algebra::Column<RealNumericValuedType>> Columns() const
+    const std::vector<algebra::Column<RealNumericValuedType>> Columns() const
     {
       std::vector<algebra::Column<RealNumericValuedType>> _columns;
       _columns.reserve(Order().second);
