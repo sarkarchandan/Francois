@@ -156,3 +156,51 @@ TEST(MatrixAnalyticalTests,canDefineScalarMatrix)
   };
   ASSERT_FALSE(givenMatrix3.IsScalarMatrix());
 }
+
+TEST(MatrixAnalyticalTests,canDefineIdentityMatrix)
+{
+  algebra::Matrix<int> givenMatrix1 {
+    {1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}
+  };
+  ASSERT_TRUE(givenMatrix1.IsIdentityMatrix());
+  algebra::Matrix<int> givenMatrix2 {
+    {1,0,0,1},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}
+  };
+  ASSERT_FALSE(givenMatrix2.IsIdentityMatrix());
+  algebra::Matrix<int> givenMatrix3 {
+    {1,0,0,0},
+    {0,1,0,0},
+    {0,0,0,0},
+    {0,0,0,1}
+  };
+  ASSERT_FALSE(givenMatrix3.IsIdentityMatrix());
+}
+
+TEST(MatrixAnalyticalTests,canDefineNullMatrix)
+{
+  algebra::Matrix<int> givenMatrix1 {
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0}
+  };
+  ASSERT_TRUE(givenMatrix1.IsNullMatrix());
+  algebra::Matrix<int> givenMatrix2 {
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0}
+  };
+  ASSERT_TRUE(givenMatrix2.IsNullMatrix());
+  algebra::Matrix<int> givenMatrix3 {
+    {0,0,0,0},
+    {0,0,0,2},
+    {0,0,0,0}
+  };
+  ASSERT_FALSE(givenMatrix3.IsNullMatrix());
+}

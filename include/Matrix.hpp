@@ -122,7 +122,7 @@ namespace algebra
 
     bool IsDiagonalMatrix() const
     {
-      if(IsRectangularMatrix())
+      if(!IsSquareMatrix())
         return false;
       for(size_t row_index = 0; row_index < Order().first; row_index += 1)
       {
@@ -142,10 +142,32 @@ namespace algebra
 
     bool IsScalarMatrix() const
     {
-      if(IsRectangularMatrix())
+      if(!IsDiagonalMatrix())
         return false;
       std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
       return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValuedType>()) == _mainDiagonalElements.end();
+    }
+
+    bool IsIdentityMatrix() const
+    {
+      if(!IsScalarMatrix())
+        return false;
+      std::vector<RealNumericValuedType> _mainDiagonalElements = MainDiagonalElements();
+      if(_mainDiagonalElements[0] != 1)
+        return false;
+      return std::adjacent_find(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),std::not_equal_to<RealNumericValuedType>()) == _mainDiagonalElements.end();
+    }
+
+    bool IsNullMatrix() const
+    {
+      bool _isNull = true;
+      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValuedType>& _vector){
+        if(_vector[0] != 0)
+          _isNull = false;
+        if(!(std::adjacent_find(_vector.begin(),_vector.end(),std::not_equal_to<RealNumericValuedType>()) == _vector.end()))
+          _isNull = false;
+      });
+      return _isNull;
     }
   };
 } // algebra
