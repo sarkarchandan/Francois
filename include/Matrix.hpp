@@ -7,8 +7,8 @@
 #include <algorithm>
 #include <numeric>
 #include <typeinfo>
-#include "MatrixComponents.hpp"
 #include <initializer_list>
+#include "MatrixComponents.hpp"
 
 namespace algebra
 {

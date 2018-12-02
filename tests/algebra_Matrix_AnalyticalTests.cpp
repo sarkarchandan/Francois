@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 #include "Matrix.hpp"
-#include <cmath>
-#include <limits>
+#include "Helper.hpp"
 
 TEST(MatrixAnalyticalTests, canDefineRowMatrix)
 {
@@ -355,4 +354,49 @@ TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
   {
     ASSERT_TRUE(e.what() != nullptr);
   }
+}
+
+TEST(MatrixAnalyticalTests,canDefineEqualityOfMatrices)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12},
+    {13,14,15,16}
+  };
+  const algebra::Matrix<int> givenMatrix2 {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12},
+    {13,14,15,16}
+  };
+  const algebra::Matrix<int> givenMatrix3 {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,13,12},
+    {13,14,15,16}
+  };
+  ASSERT_TRUE(givenMatrix1 == givenMatrix2);
+  ASSERT_TRUE(givenMatrix1 != givenMatrix3);
+
+  const algebra::Matrix<double> givenMatrix4 {
+    {23.65,12.54,19.64,17.23},
+    {98.12,186.32,12.87,145.32},
+    {98.123,76.12,984.12,12.98},
+    {198.43,12.87,165.76,983.1}
+  };
+  const algebra::Matrix<double> givenMatrix5 {
+    {23.65,12.54,19.64,17.23},
+    {98.12,186.32,12.87,145.32},
+    {98.123,76.12,984.12,12.98},
+    {198.43,12.87,165.76,983.1}
+  };
+  const algebra::Matrix<double> givenMatrix6 {
+    {23.65,12.54,19.64,17.23},
+    {98.12,186.32,12.87,145.32},
+    {98.123,76.12,984.12,12.98},
+    {198.43,12.87,164.76,983.1}
+  };
+  ASSERT_TRUE(givenMatrix4 == givenMatrix5);
+  ASSERT_TRUE(givenMatrix4 != givenMatrix6);
 }
