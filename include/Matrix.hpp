@@ -15,7 +15,9 @@ namespace algebra
   template<typename RealNumericValueType>
   class Matrix
   {
-    static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
 
     #pragma mark Private member properties
     private:

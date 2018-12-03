@@ -8,7 +8,9 @@ namespace algebra
   template<typename RealNumericValueType>
   struct ElementSequence
   {
-    static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
     
     #pragma mark Protected member properties to be accessed only by child classes 
     protected:
@@ -39,7 +41,9 @@ namespace algebra
     template<typename RealNumericValueType>
     struct Row: public ElementSequence<RealNumericValueType>
     { 
-      static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+      static_assert(std::is_same<RealNumericValueType,int>::value || 
+      std::is_same<RealNumericValueType,float>::value || 
+      std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
 
       #pragma mark Public constructors
       public:
@@ -67,7 +71,9 @@ namespace algebra
     template<typename RealNumericValueType>
     struct Column: public ElementSequence<RealNumericValueType>
     {
-      static_assert(std::is_same<RealNumericValueType,int>::value || std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+      static_assert(std::is_same<RealNumericValueType,int>::value || 
+      std::is_same<RealNumericValueType,float>::value || 
+      std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
 
       #pragma mark Public constructors
       public:
