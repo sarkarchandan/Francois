@@ -3,6 +3,7 @@
 
 #include <type_traits>
 #include <initializer_list>
+#include "MatrixElementProtocol.hpp"
 
 namespace algebra
 {
@@ -11,7 +12,8 @@ namespace algebra
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
     std::is_same<RealNumericValueType,float>::value || 
-    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+    std::is_same<RealNumericValueType,double>::value ||
+    std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
     
     #pragma mark Protected member properties to be accessed only by child classes 
     protected:
@@ -51,7 +53,8 @@ namespace algebra
   { 
     static_assert(std::is_same<RealNumericValueType,int>::value || 
     std::is_same<RealNumericValueType,float>::value || 
-    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+    std::is_same<RealNumericValueType,double>::value ||
+    std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
 
     #pragma mark Public constructors
     public:
@@ -68,7 +71,8 @@ namespace algebra
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
     std::is_same<RealNumericValueType,float>::value || 
-    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+    std::is_same<RealNumericValueType,double>::value ||
+    std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
 
     #pragma mark Public constructors
     public:

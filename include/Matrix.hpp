@@ -9,6 +9,7 @@
 #include <typeinfo>
 #include <initializer_list>
 #include "MatrixComponents.hpp"
+#include "MatrixElementProtocol.hpp"
 
 namespace algebra
 {
@@ -17,7 +18,8 @@ namespace algebra
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
     std::is_same<RealNumericValueType,float>::value || 
-    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+    std::is_same<RealNumericValueType,double>::value ||
+    std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
 
     #pragma mark Private member properties
     private:
