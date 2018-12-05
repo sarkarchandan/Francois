@@ -21,7 +21,7 @@ namespace algebra
 
     #pragma mark Private member properties
     private:
-    //TODO: Consider using unique pointer for dealing with larger input
+    //TODO: Think about using std::unique_ptr considering a large input scale and performance bottle neck of processing in stack.
     std::vector<std::vector<RealNumericValueType>> m_Container;
 
     #pragma mark Private member functions

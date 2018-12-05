@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "Matrix.hpp"
 #include "Helper.hpp"
+#include <memory>
 
 TEST(MatrixSanityTests, canDetermineMatrixValidity)
 {
@@ -32,6 +33,7 @@ TEST(MatrixSanityTests, canDetermineMatrixValidity)
 
 TEST(MatrixSanityTests, canDetermineIfMatrixIsInvalid)
 {
+  //TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
   try
   {
     const algebra::Matrix<int> givenStructure1 {
@@ -112,6 +114,7 @@ TEST(MatrixSanityTests, canAccessElementsBySubscripting)
 
 TEST(MatrixSanityTests, canDetermineOutOfRangeSubscriptingAttempts)
 {
+  //TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
   try
   {
     const algebra::Matrix<int> givenMatrix1 {

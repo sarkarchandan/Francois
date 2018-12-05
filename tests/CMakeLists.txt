@@ -27,4 +27,6 @@ endmacro()
 
 PACKAGE_ADD_TEST(algebra_Matrix_SanityTests algebra_Matrix_SanityTests.cpp)
 PACKAGE_ADD_TEST(algebra_Matrix_AnalyticalTests algebra_Matrix_AnalyticalTests.cpp)
+PACKAGE_ADD_TEST(algebra_Matrix_OperationsTests algebra_Matrix_OperationsTests.cpp)
+PACKAGE_ADD_TEST(algebra_Matrix_UtilityTests algebra_Matrix_UtilityTests.cpp)
 

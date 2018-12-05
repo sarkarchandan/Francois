@@ -89,7 +89,8 @@ TEST(MatrixAnalyticalTests, canDetermineMainDiagonalElements)
   };
   const std::vector<double> doubleDiagonalElements {23.65,186.32,984.12,983.1};
   ASSERT_EQ(givenMatrix2.MainDiagonalElements(),doubleDiagonalElements);
-
+  
+  //TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
   try
   {
     const algebra::Matrix<int> givenMatrix3 {
@@ -341,6 +342,7 @@ TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
   const double expected_Matrix2_Trace = (56.12+42.18+76.12+19.56);
   ASSERT_DOUBLE_EQ(matrix2_Trace,expected_Matrix2_Trace);
 
+  //TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
   const algebra::Matrix<int> givenMatrix3 {
     {1,2,3,4},
     {5,6,7,8},
