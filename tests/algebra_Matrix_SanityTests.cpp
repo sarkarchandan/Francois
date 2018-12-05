@@ -140,19 +140,21 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
   
   const std::vector<algebra::Row<int>> rows = givenMatrix1.Rows();
   ASSERT_EQ(rows.size(),3);
-  const algebra::Row<int> testableRow0({1,2,3,4});
-  const algebra::Row<int> testableRow1({4,6,7,8});
-  const algebra::Row<int> testableRow2({9,10,11,12});
+  const algebra::Row<int> testableRow0 {1,2,3,4};
+  const algebra::Row<int> testableRow1 {4,6,7,8};
+  const algebra::Row<int> testableRow2 {9,10,11,12};
+
   ASSERT_TRUE(rows[0] == testableRow0);
   ASSERT_TRUE(rows[1] == testableRow1);
   ASSERT_TRUE(rows[2] == testableRow2);
 
   const std::vector<algebra::Column<int>> columns = givenMatrix1.Columns();
   ASSERT_EQ(columns.size(),4);
-  const algebra::Column<int> testableColumn0({1,4,9});
-  const algebra::Column<int> testableColumn1({2,6,10});
-  const algebra::Column<int> testableColumn2({3,7,11});
-  const algebra::Column<int> testableColumn3({4,8,12});
+  const algebra::Column<int> testableColumn0 {1,4,9};
+  const algebra::Column<int> testableColumn1 {2,6,10};
+  const algebra::Column<int> testableColumn2 {3,7,11};
+  const algebra::Column<int> testableColumn3 {4,8,12};
+  
   ASSERT_TRUE(columns[0] == testableColumn0);
   ASSERT_TRUE(columns[1] == testableColumn1);
   ASSERT_TRUE(columns[2] == testableColumn2);

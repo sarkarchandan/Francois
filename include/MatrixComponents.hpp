@@ -2,6 +2,7 @@
 #define MATRIXCOMPONENTS_H
 
 #include <type_traits>
+#include <initializer_list>
 
 namespace algebra
 {
@@ -26,63 +27,58 @@ namespace algebra
       std::for_each(_m_ElementSequence.begin(),_m_ElementSequence.end(),[&](const RealNumericValueType& _element){
           m_ElementSequence.emplace_back(_element);
         });
-      }
-      ~ElementSequence(){}
-
-      #pragma mark Public accessors and member functions
-      public:
-      const size_t Size() const { return m_ElementSequence.size(); }
-      const RealNumericValueType& operator[](const unsigned long& _index) const
-      {
-        return m_ElementSequence[_index];
-      }
-    };
-    
-    template<typename RealNumericValueType>
-    struct Row: public ElementSequence<RealNumericValueType>
-    { 
-      static_assert(std::is_same<RealNumericValueType,int>::value || 
-      std::is_same<RealNumericValueType,float>::value || 
-      std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
-
-      #pragma mark Public constructors
-      public:
-      Row() = delete;
-      Row(const std::vector<RealNumericValueType>& _row_ElementSequence)
-      :ElementSequence<RealNumericValueType>(_row_ElementSequence){}
-      ~Row(){}
-
-      #pragma mark Public accessors and member functions 
-      public:
-      //TODO: Try to understand why this overload does not work.
-      // bool operator ==(const Row<RealNumericValueType>& other)
-      // {
-      //   if(this -> Size() != other.Size())
-      //     return false;
-      //   for(size_t index = 0; index < this -> Size(); index += 1)
-      //   {
-      //     if(this -> m_ElementSequence[index] != other[index])
-      //       return false;
-      //   }
-      //   return true;
-      // }
-    };
-    
-    template<typename RealNumericValueType>
-    struct Column: public ElementSequence<RealNumericValueType>
+    }
+    ElementSequence(const std::initializer_list<RealNumericValueType>& _m_ElementSequence)
     {
-      static_assert(std::is_same<RealNumericValueType,int>::value || 
-      std::is_same<RealNumericValueType,float>::value || 
-      std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+      m_ElementSequence.reserve(_m_ElementSequence.size());
+      std::for_each(_m_ElementSequence.begin(),_m_ElementSequence.end(),[&](const RealNumericValueType& _element){
+        m_ElementSequence.emplace_back(_element);
+      });
+    }
+    ~ElementSequence(){}
 
-      #pragma mark Public constructors
-      public:
-      Column() = delete;
-      Column(const std::vector<RealNumericValueType>& _column_ElementSequence)
-      :ElementSequence<RealNumericValueType>(_column_ElementSequence){}
-      ~Column(){}
-      
+    #pragma mark Public accessors and member functions
+    public:
+    const size_t Size() const { return m_ElementSequence.size(); }
+    const RealNumericValueType& operator[](const unsigned long& _index) const
+    {
+      return m_ElementSequence[_index];
+    }
+  };
+    
+  template<typename RealNumericValueType>
+  struct Row: public ElementSequence<RealNumericValueType>
+  { 
+    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+
+    #pragma mark Public constructors
+    public:
+    Row() = delete;
+    Row(const std::vector<RealNumericValueType>& _row_ElementSequence)
+    :ElementSequence<RealNumericValueType>(_row_ElementSequence){}
+    Row(const std::initializer_list<RealNumericValueType>& _m_RowList)
+    :ElementSequence<RealNumericValueType>(_m_RowList){}
+    ~Row(){}
     };
+    
+  template<typename RealNumericValueType>
+  struct Column: public ElementSequence<RealNumericValueType>
+  {
+    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,double>::value,"Container can accept only integers or double data type for now.");
+
+    #pragma mark Public constructors
+    public:
+    Column() = delete;
+    Column(const std::vector<RealNumericValueType>& _column_ElementSequence)
+    :ElementSequence<RealNumericValueType>(_column_ElementSequence){}
+    Column(const std::initializer_list<RealNumericValueType>& _mColumnList)
+    :ElementSequence<RealNumericValueType>(_mColumnList){}
+    ~Column(){} 
+  };
 } // algebra
 
 
