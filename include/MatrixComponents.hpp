@@ -38,17 +38,14 @@ namespace algebra
         m_ElementSequence -> emplace_back(_element);
       });
     }
-    
     typename std::vector<RealNumericValueType>::iterator begin() const
     {
       return m_ElementSequence -> begin();
     }
-
     typename std::vector<RealNumericValueType>::iterator end() const
     {
       return m_ElementSequence -> end();
     }
-
     ElementSequence(const ElementSequence& _elementSequence)
     {
       m_ElementSequence = std::make_unique<std::vector<RealNumericValueType>>(_elementSequence.Size());
