@@ -6,11 +6,9 @@ endif()
 project(Francois VERSION 1.0 DESCRIPTION "Library for linear algebra" LANGUAGES CXX)
 include(CTest)
 
-set(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/Dummy.cpp)
-
-add_library(Francois STATIC ${SOURCES})
-target_include_directories(Francois PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_compile_features(Francois PUBLIC cxx_std_14)
+add_library(Francois INTERFACE)
+target_include_directories(Francois INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_compile_features(Francois INTERFACE cxx_std_14)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest)
 
