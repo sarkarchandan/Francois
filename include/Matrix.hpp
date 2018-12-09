@@ -8,6 +8,7 @@
 #include <numeric>
 #include <typeinfo>
 #include <initializer_list>
+#include <memory>
 #include "MatrixComponents.hpp"
 #include "MatrixElementProtocol.hpp"
 
@@ -23,8 +24,7 @@ namespace algebra
 
     #pragma mark Private member properties
     private:
-    //TODO: Think about using std::unique_ptr considering a large input scale and performance bottle neck of processing in stack.
-    std::vector<std::vector<RealNumericValueType>> m_Container;
+    std::unique_ptr<std::vector<std::vector<RealNumericValueType>>> m_Container;
 
     #pragma mark Private member functions
     private:
@@ -43,18 +43,14 @@ namespace algebra
     Matrix() = delete;
     Matrix(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
-      if(IsValid(_init_list))
-      {
-        m_Container.reserve(_init_list.size());
-        std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
-          m_Container.emplace_back(_element_vector);
-        });
-        std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << std::endl;
-      }
-      else 
-      {
+      if (!(IsValid(_init_list)))
         throw std::invalid_argument("Unequal number of elements in rows");
-      }
+      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      m_Container -> reserve(_init_list.size());
+      std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
+          m_Container -> emplace_back(_element_vector);
+        });
+      std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << std::endl;
     }
     ~Matrix(){}
     
@@ -62,14 +58,14 @@ namespace algebra
     public:
     inline std::pair<size_t,size_t> Order() const
     {
-      const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container.size(),m_Container[0].size());
+      const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container -> size(),m_Container -> operator[](0).size());
       return _pair;
     }
 
-    inline const RealNumericValueType& operator ()(const unsigned long& _row,const unsigned long& _column) const
+    inline const RealNumericValueType& operator ()(const size_t& _row,const size_t& _column) const
     {
       if(_row < Order().first && _column < Order().second)
-        return m_Container[_row][_column];
+        return m_Container -> operator[](_row)[_column];
       else
         throw std::out_of_range("Out of range subscripting attempted");
     }
@@ -78,7 +74,7 @@ namespace algebra
     {
       std::vector<algebra::Row<RealNumericValueType>> _rows;
       _rows.reserve(Order().first);
-      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValueType>& _row){
+      std::for_each(m_Container -> begin(),m_Container -> end(),[&](const std::vector<RealNumericValueType>& _row){
         _rows.emplace_back(_row);
       });
       return _rows;
@@ -95,7 +91,7 @@ namespace algebra
         _columnBuffer.clear();
         for(size_t row_index = 0; row_index < Order().first; row_index += 1)
         {
-          _columnBuffer.emplace_back(m_Container[row_index][column_index]);
+          _columnBuffer.emplace_back(this -> operator()(row_index,column_index));
         }
         _columns.emplace_back(_columnBuffer);
       }
@@ -167,7 +163,7 @@ namespace algebra
     bool IsNullMatrix() const
     {
       bool _isNull = true;
-      std::for_each(m_Container.begin(),m_Container.end(),[&](const std::vector<RealNumericValueType>& _vector){
+      std::for_each(m_Container -> begin(),m_Container -> end(),[&](const std::vector<RealNumericValueType>& _vector){
         if(_vector[0] != 0)
           _isNull = false;
         if(!(std::adjacent_find(_vector.begin(),_vector.end(),std::not_equal_to<RealNumericValueType>()) == _vector.end()))
