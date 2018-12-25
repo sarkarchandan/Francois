@@ -1,0 +1,1 @@
+# This repository features the Francois project which is current in work-in-progress state. Francois is a C++ library which is planned to encapsulate all the fundamental constructs and operations of linear algebra, starting with Matrix.
