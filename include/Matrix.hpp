@@ -227,6 +227,27 @@ namespace algebra
       return _sumOfDiagonalElements;
     }
   };
+
+  #pragma mark Operator overloaded functions
+  template<typename ComparableType>
+  bool operator ==(const algebra::Matrix<ComparableType>& _lhs, const algebra::Matrix<ComparableType>& _rhs)
+  {
+    if(_lhs.Order() != _rhs.Order())
+      return false;
+
+    const std::vector<algebra::Row<ComparableType>> _lhs_Rows = _lhs.Rows();
+    const std::vector<algebra::Row<ComparableType>> _rhs_Rows = _rhs.Rows();
+
+    return std::equal(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<ComparableType>& _lhs_Row, const algebra::Row<ComparableType>& _rhs_Row) {
+      return _lhs_Row == _rhs_Row;
+    });
+  }
+
+  template<typename ComparableType>
+  bool operator !=(const algebra::Matrix<ComparableType>& _lhs, const algebra::Matrix<ComparableType>& _rhs)
+  {
+    return !(_lhs == _rhs);
+  }
 } // algebra
 
 #endif //MATRIX_H

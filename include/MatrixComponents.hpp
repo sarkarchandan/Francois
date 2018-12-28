@@ -82,7 +82,7 @@ namespace algebra
     Row(const Row<RealNumericValueType>& _row)
     :ElementSequence<RealNumericValueType>(_row){}
     ~Row(){}
-    };
+  };
     
   template<typename RealNumericValueType>
   struct Column: public ElementSequence<RealNumericValueType>
@@ -103,6 +103,27 @@ namespace algebra
     :ElementSequence<RealNumericValueType>(_column){}
     ~Column(){} 
   };
+
+  #pragma mark Operator overloaded functions
+  template<typename ComparableType>
+  bool operator ==(const algebra::ElementSequence<ComparableType>& _lhs, const typename algebra::ElementSequence<ComparableType>& _rhs)
+  {
+    if(_lhs.Size() != _rhs.Size())
+      return false;
+
+    for(size_t index = 0; index < _lhs.Size(); index += 1)
+    {
+      if(_lhs[index] != _rhs[index])
+        return false;
+    }
+    return true;
+  }
+
+  template<typename ComparableType>
+  bool operator !=(const algebra::ElementSequence<ComparableType>& _lhs, const algebra::ElementSequence<ComparableType>& _rhs)
+  {
+    return !(_lhs == _rhs);
+  }
 } // algebra
 
 

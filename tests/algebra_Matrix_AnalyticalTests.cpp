@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "Matrix.hpp"
-#include "MatrixAdjunct.hpp"
 
 TEST(MatrixAnalyticalTests, canDefineRowMatrix)
 {
