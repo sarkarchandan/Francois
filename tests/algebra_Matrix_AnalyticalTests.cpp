@@ -405,3 +405,30 @@ TEST(MatrixAnalyticalTests,canDefineEqualityOfMatrices)
   ASSERT_TRUE(givenMatrix4 == givenMatrix5);
   ASSERT_TRUE(givenMatrix4 != givenMatrix6);
 }
+
+TEST(MatrixAnalyticalTests, canCopyMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {1,2,3},
+    {4,6,7},
+    {9,10,11}
+  };
+  const algebra::Matrix<int> copiedMatrix1 = givenMatrix1;
+  ASSERT_TRUE(givenMatrix1 == copiedMatrix1);
+
+  const algebra::Matrix<float> givenMatrix2 {
+    {1.2f,3.4f,4.5f},
+    {6.7f,8.9f,10.11f},
+  };
+  const algebra::Matrix<float> copiedMatrix2 = givenMatrix2;
+  ASSERT_TRUE(givenMatrix2 == copiedMatrix2);
+
+  const algebra::Matrix<double> givenMatrix3 {
+    {23.65,12.54,19.64,17.23},
+    {98.12,186.32,12.87,145.32},
+    {98.123,76.12,984.12,12.98},
+    {198.43,12.87,164.76,983.1}
+  };
+  const algebra::Matrix<double> copiedMatrix3 = givenMatrix3;
+  ASSERT_TRUE(givenMatrix3 == copiedMatrix3);
+}

@@ -39,14 +39,7 @@ namespace algebra
         m_ElementSequence -> emplace_back(_element);
       });
     }
-    typename std::vector<RealNumericValueType>::iterator begin() const
-    {
-      return m_ElementSequence -> begin();
-    }
-    typename std::vector<RealNumericValueType>::iterator end() const
-    {
-      return m_ElementSequence -> end();
-    }
+    
     ElementSequence(const ElementSequence& _elementSequence)
     {
       m_ElementSequence = std::make_unique<std::vector<RealNumericValueType>>(_elementSequence.Size());
@@ -62,6 +55,14 @@ namespace algebra
     const RealNumericValueType& operator[](const size_t& _index) const
     {
       return m_ElementSequence -> operator[](_index);
+    }
+    typename std::vector<RealNumericValueType>::iterator begin() const
+    {
+      return m_ElementSequence -> begin();
+    }
+    typename std::vector<RealNumericValueType>::iterator end() const
+    {
+      return m_ElementSequence -> end();
     }
   };
     
@@ -85,6 +86,16 @@ namespace algebra
     :ElementSequence<RealNumericValueType>(_row){}
     ~Row(){}
   };
+
+  template<typename ComparableType>
+  std::ostream& operator <<(std::ostream& _stream, const algebra::Row<ComparableType>& _row)
+  {
+    for(size_t _index = 0; _index < _row.Size(); _index += 1)
+    {
+      _stream << _row[_index] << " ";
+    }
+    return _stream;
+  }
     
   template<typename RealNumericValueType>
   struct Column: public ElementSequence<RealNumericValueType>

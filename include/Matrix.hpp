@@ -40,7 +40,6 @@ namespace algebra
 
     #pragma mark Public constructors
     public:
-    //TODO: Think about how to deal with copy behaviour.
     Matrix() = delete;
     Matrix(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
@@ -51,9 +50,24 @@ namespace algebra
       std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
           m_Container -> emplace_back(_element_vector);
         });
-      std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << std::endl;
+      std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << "\n";
     }
     ~Matrix(){}
+    
+    Matrix(const Matrix& _matrix)
+    {
+      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      m_Container -> reserve(_matrix.Order().first);
+      std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
+      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
+        std::vector<RealNumericValueType> _buffer;
+        _buffer.reserve(_row.Size());
+        std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element) {
+          _buffer.emplace_back(_element);
+        });
+        m_Container -> emplace_back(_buffer);
+      });
+    }
     
     #pragma mark Public member functions and accessors
     public:
@@ -230,6 +244,16 @@ namespace algebra
   };
 
   #pragma mark Operator overloaded functions
+  template<typename ComparableType>
+  std::ostream& operator <<(std::ostream& _stream, const algebra::Matrix<ComparableType>& _matrix)
+  {
+    std::vector<algebra::Row<ComparableType>> _rows = _matrix.Rows();
+    std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<ComparableType>& _row) {
+      _stream << _row << "\n";
+    });
+    return _stream;
+  }
+
   template<typename ComparableType>
   bool operator ==(const algebra::Matrix<ComparableType>& _lhs, const algebra::Matrix<ComparableType>& _rhs)
   {

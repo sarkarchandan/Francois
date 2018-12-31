@@ -4,20 +4,20 @@
 
 TEST(MatrixSanityTests, canDetermineMatrixValidity)
 {
-  std::initializer_list<std::vector<int>> givenList1 {
+  const std::initializer_list<std::vector<int>> givenList1 {
     {1,2,3},
     {4,6,7},
     {9,10,11}
   };
   EXPECT_NO_THROW(algebra::Matrix<int> {givenList1});
 
-  std::initializer_list<std::vector<float>> givenList2 {
+  const std::initializer_list<std::vector<float>> givenList2 {
     {1.2f,3.4f,4.5f},
     {6.7f,8.9f,10.11f},
   };
   EXPECT_NO_THROW(algebra::Matrix<float> {givenList2});
 
-  std::initializer_list<std::vector<double>> givenList3 {
+  const std::initializer_list<std::vector<double>> givenList3 {
     {3.5,1.9},
     {1.2,6.2},
     {1.56,3.7}
@@ -27,14 +27,14 @@ TEST(MatrixSanityTests, canDetermineMatrixValidity)
 
 TEST(MatrixSanityTests_ExceptionTest, canDetermineIfMatrixIsInvalid)
 {
-  std::initializer_list<std::vector<int>> givenList1 {
+  const std::initializer_list<std::vector<int>> givenList1 {
     {1,2,3},
     {4,6,7,4},
     {9,10,11,12}
   };
   EXPECT_THROW(algebra::Matrix<int> {givenList1},std::invalid_argument);
 
-  std::initializer_list<std::vector<double>> givenList2 {
+  const std::initializer_list<std::vector<double>> givenList2 {
     {3.5,1.9,8.1},
     {1.2,6.2},
     {1.56,3.7,2.9}
