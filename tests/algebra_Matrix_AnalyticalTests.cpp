@@ -69,7 +69,7 @@ TEST(MatrixAnalyticalTests, canDefineSquareMatrix)
   ASSERT_FALSE(givenMatrix2.IsSquareMatrix());
 }
 
-TEST(MatrixAnalyticalTests, canDetermineMainDiagonalElements)
+TEST(MatrixAnalyticalTests, canDetermineMainDiagonalElementsInASquareMatrix)
 {
   const algebra::Matrix<int> givenMatrix1 {
     {1,2,3,4},
@@ -88,21 +88,23 @@ TEST(MatrixAnalyticalTests, canDetermineMainDiagonalElements)
   };
   const std::vector<double> doubleDiagonalElements {23.65,186.32,984.12,983.1};
   ASSERT_EQ(givenMatrix2.MainDiagonalElements(),doubleDiagonalElements);
-  
-  #pragma mark TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
-  try
-  {
-    const algebra::Matrix<int> givenMatrix3 {
-      {1,2,3,4},
-      {5,6,7,8},
-      {9,10,11,12},
-    };
-    std::vector<int> diagonalElements = givenMatrix3.MainDiagonalElements();
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() != nullptr);
-  }
+}
+
+TEST(MatrixAnalyticalTests_ExceptionTest, canThrowExceptionForMainDiagonalElementsInRectangularMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  EXPECT_THROW(givenMatrix1.MainDiagonalElements(),std::logic_error);
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {23.65,12.54,19.64,17.23},
+    {98.12,186.32,12.87,145.32},
+    {98.123,76.12,984.12,12.98},
+  };
+  EXPECT_THROW(givenMatrix2.MainDiagonalElements(),std::logic_error);
 }
 
 TEST(MatrixAnalyticalTests,canDefineDiagonalMatrix)
@@ -206,7 +208,7 @@ TEST(MatrixAnalyticalTests,canDefineNullMatrix)
   ASSERT_FALSE(givenMatrix3.IsNullMatrix());
 }
 
-TEST(MatrixAnalyticalTests,canDefineUppertriangularMatrix)
+TEST(MatrixAnalyticalTests,canDefineUpperTriangularMatrix)
 {
   const algebra::Matrix<int> givenMatrix1 {
     {4,5,8,1},
@@ -340,21 +342,23 @@ TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
   const double matrix2_Trace = givenMatrix2.Trace();
   const double expected_Matrix2_Trace = (56.12+42.18+76.12+19.56);
   ASSERT_DOUBLE_EQ(matrix2_Trace,expected_Matrix2_Trace);
+}
 
-  #pragma mark TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
-  const algebra::Matrix<int> givenMatrix3 {
+TEST(MatrixAnalyticalTests_ExceptionTest, canThrowExceptionForTraceOfRectangularMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 {
     {1,2,3,4},
     {5,6,7,8},
     {9,8,5,1}
   };
-  try
-  {
-    const int matrix3_Trace = givenMatrix3.Trace();
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() != nullptr);
-  }
+  EXPECT_THROW(givenMatrix1.Trace(),std::logic_error);
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {56.12,0,78.92,19.23},
+    {97.12,42.18,29.4,18.98},
+    {89.43,12.98,76.12,78.19},
+  };
+  EXPECT_THROW(givenMatrix2.Trace(),std::logic_error);
 }
 
 TEST(MatrixAnalyticalTests,canDefineEqualityOfMatrices)

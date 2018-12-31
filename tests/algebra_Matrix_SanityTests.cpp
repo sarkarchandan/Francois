@@ -2,7 +2,7 @@
 #include "Matrix.hpp"
 #include <memory>
 
-TEST(MatrixSanityTests, canDetermineMatrixValidity) //Rev
+TEST(MatrixSanityTests, canDetermineMatrixValidity)
 {
   std::initializer_list<std::vector<int>> givenList1 {
     {1,2,3},
@@ -11,12 +11,18 @@ TEST(MatrixSanityTests, canDetermineMatrixValidity) //Rev
   };
   EXPECT_NO_THROW(algebra::Matrix<int> {givenList1});
 
-  std::initializer_list<std::vector<double>> givenList2 {
+  std::initializer_list<std::vector<float>> givenList2 {
+    {1.2f,3.4f,4.5f},
+    {6.7f,8.9f,10.11f},
+  };
+  EXPECT_NO_THROW(algebra::Matrix<float> {givenList2});
+
+  std::initializer_list<std::vector<double>> givenList3 {
     {3.5,1.9},
     {1.2,6.2},
     {1.56,3.7}
   };
-  EXPECT_NO_THROW(algebra::Matrix<double> {givenList2});
+  EXPECT_NO_THROW(algebra::Matrix<double> {givenList3});
 }
 
 TEST(MatrixSanityTests_ExceptionTest, canDetermineIfMatrixIsInvalid)
