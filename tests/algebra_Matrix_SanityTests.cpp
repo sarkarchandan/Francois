@@ -2,61 +2,38 @@
 #include "Matrix.hpp"
 #include <memory>
 
-TEST(MatrixSanityTests, canDetermineMatrixValidity)
+TEST(MatrixSanityTests, canDetermineMatrixValidity) //Rev
 {
-  try
-  {
-    const algebra::Matrix<int> givenMatrix1 {
-      {1,2,3},
-      {4,6,7},
-      {9,10,11}
-    };
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() == nullptr);
-  }
-  try
-  {
-    const algebra::Matrix<double> givenMatrix2 {
-      {3.5,1.9},
-      {1.2,6.2},
-      {1.56,3.7}
-    };
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() == nullptr);
-  }
+  std::initializer_list<std::vector<int>> givenList1 {
+    {1,2,3},
+    {4,6,7},
+    {9,10,11}
+  };
+  EXPECT_NO_THROW(algebra::Matrix<int> {givenList1});
+
+  std::initializer_list<std::vector<double>> givenList2 {
+    {3.5,1.9},
+    {1.2,6.2},
+    {1.56,3.7}
+  };
+  EXPECT_NO_THROW(algebra::Matrix<double> {givenList2});
 }
 
-TEST(MatrixSanityTests, canDetermineIfMatrixIsInvalid)
+TEST(MatrixSanityTests_ExceptionTest, canDetermineIfMatrixIsInvalid)
 {
-  #pragma mark TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
-  try
-  {
-    const algebra::Matrix<int> givenStructure1 {
-      {1,2,3},
-      {4,6,7,4},
-      {9,10,11,12}
-    };
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() != nullptr);
-  }
-  try
-  {
-    const algebra::Matrix<double> givenStructure2 {
-      {3.5,1.9,8.1},
-      {1.2,6.2},
-      {1.56,3.7,2.9}
-    };
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() != nullptr);
-  }
+  std::initializer_list<std::vector<int>> givenList1 {
+    {1,2,3},
+    {4,6,7,4},
+    {9,10,11,12}
+  };
+  EXPECT_THROW(algebra::Matrix<int> {givenList1},std::invalid_argument);
+
+  std::initializer_list<std::vector<double>> givenList2 {
+    {3.5,1.9,8.1},
+    {1.2,6.2},
+    {1.56,3.7,2.9}
+  };
+  EXPECT_THROW(algebra::Matrix<double> {givenList2},std::invalid_argument);
 }
 
 TEST(MatrixSanityTests, canDetermineMatrixOrder)
@@ -111,22 +88,22 @@ TEST(MatrixSanityTests, canAccessElementsBySubscripting)
   ASSERT_DOUBLE_EQ(givenMatrix2(3,1),81.23);
 }
 
-TEST(MatrixSanityTests, canDetermineOutOfRangeSubscriptingAttempts)
+TEST(MatrixSanityTests_ExceptionTest, canDetermineOutOfRangeSubscriptingAttempts)
 {
-  //TODO: Refactor with ASSERT_EXIT and ASSERT_DEATH
-  try
-  {
-    const algebra::Matrix<int> givenMatrix1 {
-      {1,2,3,4},
-      {4,6,7,8},
-      {9,10,11,12}
-    };
-    const int element = givenMatrix1(3,3);
-  }
-  catch(const std::exception& e)
-  {
-    ASSERT_TRUE(e.what() != nullptr);
-  }
+  const algebra::Matrix<int> givenMatrix1 {
+    {1,2,3,4},
+    {4,6,7,8},
+    {9,10,11,12}
+  };
+  EXPECT_THROW(givenMatrix1(3,3),std::out_of_range);
+  
+  const algebra::Matrix<double> givenMatrix2 {
+    {3.5,1.9},
+    {1.2,6.2},
+    {1.56,3.7},
+    {4.7,1.8}
+  };
+  EXPECT_THROW(givenMatrix2(3,2),std::out_of_range);
 }
 
 TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)

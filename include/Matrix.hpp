@@ -18,6 +18,7 @@ namespace algebra
   class Matrix
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,long>::value ||
     std::is_same<RealNumericValueType,float>::value || 
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
@@ -31,7 +32,7 @@ namespace algebra
     bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
       std::vector<size_t> _buffer(_init_list.size());
-      std::transform(_init_list.begin(),_init_list.end(),_buffer.begin(),[](const std::vector<RealNumericValueType>& _collection) {
+      std::transform(_init_list.begin(),_init_list.end(),_buffer.begin(),[&](const std::vector<RealNumericValueType>& _collection) {
         return _collection.size();
         });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();

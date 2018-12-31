@@ -11,6 +11,7 @@ namespace algebra
   struct ElementSequence
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,long>::value ||
     std::is_same<RealNumericValueType,float>::value || 
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
@@ -68,6 +69,7 @@ namespace algebra
   struct Row: public ElementSequence<RealNumericValueType>
   { 
     static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,long>::value ||
     std::is_same<RealNumericValueType,float>::value || 
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
@@ -88,6 +90,7 @@ namespace algebra
   struct Column: public ElementSequence<RealNumericValueType>
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,long>::value ||
     std::is_same<RealNumericValueType,float>::value || 
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
