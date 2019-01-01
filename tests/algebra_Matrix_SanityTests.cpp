@@ -160,15 +160,16 @@ TEST(MatrixSanityTests, canAddTwoRows)
 
 TEST(MatrixSanityTests, canAddTwoColumns)
 {
-  algebra::Column<int> givenColumn1 {1,2,3,4};
-  algebra::Column<int> givenColumn2 {5,6,7,8};
-  algebra::Column<int> sumOfIntColumns = givenColumn1 + givenColumn2;
-  algebra::Column<int> testableColumn1 {6,8,10,12};
+  const algebra::Column<int> givenColumn1 {1,2,3,4};
+  const algebra::Column<int> givenColumn2 {5,6,7,8};
+  const algebra::Column<int> sumOfIntColumns = givenColumn1 + givenColumn2;
+  const algebra::Column<int> testableColumn1 {6,8,10,12};
   ASSERT_TRUE(sumOfIntColumns == testableColumn1);
 
-  algebra::Column<double> givenColumn3 {198.43,12.87,164.76,983.1};
-  algebra::Column<double> givenColumn4 {98.123,76.12,984.12,12.98};
-  algebra::Column<double> sumOfDoubleColumns = givenColumn3 + givenColumn4;
-  algebra::Column<double> testableColumn2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
+  const algebra::Column<double> givenColumn3 {198.43,12.87,164.76,983.1};
+  const algebra::Column<double> givenColumn4 {98.123,76.12,984.12,12.98};
+  const algebra::Column<double> sumOfDoubleColumns = givenColumn3 + givenColumn4;
+  const algebra::Column<double> testableColumn2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
   ASSERT_TRUE(sumOfDoubleColumns == testableColumn2);
 }
+

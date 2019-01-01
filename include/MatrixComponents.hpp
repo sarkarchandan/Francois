@@ -104,7 +104,7 @@ namespace algebra
     :ElementSequence<RealNumericValueType>(_row_ElementSequence){}
     Row(const std::initializer_list<RealNumericValueType>& _m_RowList)
     :ElementSequence<RealNumericValueType>(_m_RowList){}
-    Row(const Row<RealNumericValueType>& _row)
+    Row(const algebra::Row<RealNumericValueType>& _row)
     :ElementSequence<RealNumericValueType>(_row){}
     ~Row(){}
   };
@@ -150,7 +150,7 @@ namespace algebra
     :ElementSequence<RealNumericValueType>(_mColumnList){}
     Column(const Column<RealNumericValueType>& _column)
     :ElementSequence<RealNumericValueType>(_column){}
-    ~Column(){} 
+    ~Column(){}
   };
 
   #pragma mark Operator overloaded functions for Column
