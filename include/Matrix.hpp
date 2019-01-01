@@ -244,11 +244,11 @@ namespace algebra
   };
 
   #pragma mark Operator overloaded functions
-  template<typename ComparableType>
-  std::ostream& operator <<(std::ostream& _stream, const algebra::Matrix<ComparableType>& _matrix)
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const algebra::Matrix<RealNumericValueType>& _matrix)
   {
-    std::vector<algebra::Row<ComparableType>> _rows = _matrix.Rows();
-    std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<ComparableType>& _row) {
+    std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
+    std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
       _stream << _row << "\n";
     });
     return _stream;

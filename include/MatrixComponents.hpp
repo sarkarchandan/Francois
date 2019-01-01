@@ -65,7 +65,29 @@ namespace algebra
       return m_ElementSequence -> end();
     }
   };
-    
+
+  #pragma mark Operator overloaded functions for ElementSequence
+  template<typename ComparableType>
+  bool operator ==(const algebra::ElementSequence<ComparableType>& _lhs, const typename algebra::ElementSequence<ComparableType>& _rhs)
+  {
+    if(_lhs.Size() != _rhs.Size())
+      return false;
+
+    for(size_t index = 0; index < _lhs.Size(); index += 1)
+    {
+      if(_lhs[index] != _rhs[index])
+        return false;
+    }
+    return true;
+  }
+
+  template<typename ComparableType>
+  bool operator !=(const algebra::ElementSequence<ComparableType>& _lhs, const algebra::ElementSequence<ComparableType>& _rhs)
+  {
+    return !(_lhs == _rhs);
+  }
+
+  #pragma mark Row
   template<typename RealNumericValueType>
   struct Row: public ElementSequence<RealNumericValueType>
   { 
@@ -87,16 +109,29 @@ namespace algebra
     ~Row(){}
   };
 
-  template<typename ComparableType>
-  std::ostream& operator <<(std::ostream& _stream, const algebra::Row<ComparableType>& _row)
+  #pragma mark Operator overloaded functions for Row
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const algebra::Row<RealNumericValueType>& _row)
   {
     for(size_t _index = 0; _index < _row.Size(); _index += 1)
     {
-      _stream << _row[_index] << " ";
+      if (_index < (_row.Size() - 1)) _stream << _row[_index] << " ";
+      else _stream << _row[_index];
     }
     return _stream;
   }
-    
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator +(const algebra::Row<RealNumericValueType>& _lhs, const algebra::Row<RealNumericValueType>& _rhs)
+  {
+    std::vector<RealNumericValueType> _buffer(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_buffer.begin(),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
+      return _l_Element + _r_Element;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  #pragma mark Column
   template<typename RealNumericValueType>
   struct Column: public ElementSequence<RealNumericValueType>
   {
@@ -118,25 +153,26 @@ namespace algebra
     ~Column(){} 
   };
 
-  #pragma mark Operator overloaded functions
-  template<typename ComparableType>
-  bool operator ==(const algebra::ElementSequence<ComparableType>& _lhs, const typename algebra::ElementSequence<ComparableType>& _rhs)
+  #pragma mark Operator overloaded functions for Column
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const algebra::Column<RealNumericValueType>& _column)
   {
-    if(_lhs.Size() != _rhs.Size())
-      return false;
-
-    for(size_t index = 0; index < _lhs.Size(); index += 1)
+    for(size_t _index = 0; _index < _column.Size(); _index += 1)
     {
-      if(_lhs[index] != _rhs[index])
-        return false;
+      if (_index < (_column.Size() - 1)) _stream << _column[_index] << " ";
+      else _stream << _column[_index];
     }
-    return true;
+    return _stream;
   }
 
-  template<typename ComparableType>
-  bool operator !=(const algebra::ElementSequence<ComparableType>& _lhs, const algebra::ElementSequence<ComparableType>& _rhs)
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator +(const algebra::Column<RealNumericValueType>& _lhs, const algebra::Column<RealNumericValueType>& _rhs)
   {
-    return !(_lhs == _rhs);
+    std::vector<RealNumericValueType> _buffer(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_buffer.begin(),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
+      return _l_Element + _r_Element;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
   }
 } // algebra
 

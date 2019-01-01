@@ -413,6 +413,7 @@ TEST(MatrixAnalyticalTests, canCopyMatrix)
     {4,6,7},
     {9,10,11}
   };
+  std::cout << "Given double matrix: " << "\n" << givenMatrix1 << "\n";
   const algebra::Matrix<int> copiedMatrix1 = givenMatrix1;
   ASSERT_TRUE(givenMatrix1 == copiedMatrix1);
 
@@ -429,6 +430,7 @@ TEST(MatrixAnalyticalTests, canCopyMatrix)
     {98.123,76.12,984.12,12.98},
     {198.43,12.87,164.76,983.1}
   };
+  std::cout << "Double Matrix: " << "\n" <<givenMatrix3 << "\n";
   const algebra::Matrix<double> copiedMatrix3 = givenMatrix3;
   ASSERT_TRUE(givenMatrix3 == copiedMatrix3);
 }
