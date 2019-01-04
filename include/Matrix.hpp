@@ -278,11 +278,21 @@ namespace algebra
   }
 
   template<typename RealNumericValueType>
-  std::vector<RealNumericValueType> operator +(const std::vector<RealNumericValueType>& lhs, const std::vector<RealNumericValueType>& rhs)
+  std::vector<RealNumericValueType> operator +(const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs)
   {
-    std::vector<RealNumericValueType> _result(lhs.size());
-    std::transform(lhs.begin(),lhs.end(),rhs.begin(),_result.begin(),[&](const RealNumericValueType& _lhs, const RealNumericValueType& _rhs) {
-      return _lhs + _rhs;
+    std::vector<RealNumericValueType> _result(_lhs.size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_result.begin(),[&](const RealNumericValueType& _lhs_element, const RealNumericValueType& _rhs_element) {
+      return _lhs_element + _rhs_element;
+    });
+    return _result;
+  }
+
+  template<typename RealNumericValueType>
+  std::vector<RealNumericValueType> operator -(const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs)
+  {
+    std::vector<RealNumericValueType> _result(_lhs.size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_result.begin(),[&](const RealNumericValueType& _lhs_element, const RealNumericValueType& _rhs_element) {
+      return _lhs_element - _rhs_element;
     });
     return _result;
   }
@@ -318,11 +328,49 @@ namespace algebra
       _rhs_vectors.emplace_back(_buffer);
     });
 
-    std::vector<std::vector<RealNumericValueType>> _sumOfRows(_lhs_vectors.size());
-    std::transform(_lhs_vectors.begin(),_lhs_vectors.end(),_rhs_vectors.begin(),_sumOfRows.begin(),[&](const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs){
+    std::vector<std::vector<RealNumericValueType>> _differenceOfRows(_lhs_vectors.size());
+    std::transform(_lhs_vectors.begin(),_lhs_vectors.end(),_rhs_vectors.begin(),_differenceOfRows.begin(),[&](const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs){
       return _lhs + _rhs;
     });
-    return algebra::Matrix<RealNumericValueType>(_sumOfRows);
+    return algebra::Matrix<RealNumericValueType>(_differenceOfRows);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Matrix<RealNumericValueType> operator -(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
+  {
+    if(!(_lhs.Order() == _rhs.Order()))
+      throw std::invalid_argument("Matrices of separate orders can not be added");
+    
+    const std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
+    const std::vector<algebra::Row<RealNumericValueType>> _rhs_Rows = _rhs.Rows();
+
+    std::vector<std::vector<RealNumericValueType>> _lhs_vectors;
+    _lhs_vectors.reserve(_lhs_Rows.size());
+    std::for_each(_lhs_Rows.begin(),_lhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
+      std::vector<RealNumericValueType> _buffer;
+      _buffer.reserve(_row.Size());
+      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
+        _buffer.emplace_back(_element);
+      });
+      _lhs_vectors.emplace_back(_buffer);
+    });
+
+    std::vector<std::vector<RealNumericValueType>> _rhs_vectors;
+    _rhs_vectors.reserve(_rhs_Rows.size());
+    std::for_each(_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
+      std::vector<RealNumericValueType> _buffer;
+      _buffer.reserve(_row.Size());
+      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
+        _buffer.emplace_back(_element);
+      });
+      _rhs_vectors.emplace_back(_buffer);
+    });
+
+    std::vector<std::vector<RealNumericValueType>> _differenceOfRows(_lhs_vectors.size());
+    std::transform(_lhs_vectors.begin(),_lhs_vectors.end(),_rhs_vectors.begin(),_differenceOfRows.begin(),[&](const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs){
+      return _lhs - _rhs;
+    });
+    return algebra::Matrix<RealNumericValueType>(_differenceOfRows);
   }
 
   template<typename ComparableType>
