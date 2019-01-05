@@ -74,6 +74,35 @@ TEST(MatrixOperationsTests, canThrowExceptionForSubtractionOfMatricesWithDiffere
   EXPECT_THROW((givenMatrix1 - givenMatrix2),std::invalid_argument);
 }
 
+TEST(MatrixOperationsTests, canMultiplyOneMatrixWithScalar)
+{
+  const algebra::Matrix<int> givenMatrix1{
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> matrixProduct1 = givenMatrix1 * 4;
+  const algebra::Matrix<int> testableMatrix1  {
+    {4,8,12,16},
+    {20,24,28,32},
+    {36,40,44,48}
+  };
+  ASSERT_TRUE(matrixProduct1 == testableMatrix1);
+
+  const algebra::Matrix<double> givenMatrix2 {
+    {1.3,1.4,1.5},
+    {2.7,2.8,2.9},
+    {3.1,3.2,3.3}
+  };
+  const algebra::Matrix<double> matrixProduct2 = 4.1 * givenMatrix2;
+  const algebra::Matrix<double> testableMatrix2 {
+    {1.3 * 4.1,1.4 * 4.1,1.5 * 4.1},
+    {2.7 * 4.1,2.8 * 4.1,2.9 * 4.1},
+    {3.1 * 4.1,3.2 * 4.1,3.3 * 4.1}
+  };
+  ASSERT_TRUE(matrixProduct2 == testableMatrix2);
+}
+
 TEST(MatrixOperationsTests, canMultiplyAMatrixWithAScalar)
 {
   FAIL() << "Not Implemented";

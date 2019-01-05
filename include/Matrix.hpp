@@ -373,6 +373,44 @@ namespace algebra
     return algebra::Matrix<RealNumericValueType>(_differenceOfRows);
   }
 
+  template<typename RealNumericValueType>
+  std::vector<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const std::vector<RealNumericValueType>& _vector)
+  {
+    std::vector<RealNumericValueType> _product(_vector.size());
+    std::transform(_vector.begin(),_vector.end(),_product.begin(),[&](const RealNumericValueType& _element) {
+      return _scalar * _element;
+    });
+    return _product;
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Matrix<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const algebra::Matrix<RealNumericValueType>& _matrix)
+  {
+    std::vector<algebra::Row<RealNumericValueType>> _matrix_Rows = _matrix.Rows();
+    std::vector<std::vector<RealNumericValueType>> _vectors;
+    _vectors.reserve(_matrix_Rows.size());
+    std::for_each(_matrix_Rows.begin(),_matrix_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
+      std::vector<RealNumericValueType> _buffer;
+      _buffer.reserve(_row.Size());
+      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element) {
+        _buffer.emplace_back(_element);
+      });
+      _vectors.emplace_back(_buffer);
+    });
+
+    std::vector<std::vector<RealNumericValueType>> _product(_vectors.size());
+    std::transform(_vectors.begin(),_vectors.end(),_product.begin(),[&](const std::vector<RealNumericValueType>& _vector) {
+      return _scalar * _vector;
+    });
+    return algebra::Matrix<RealNumericValueType>(_product);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Matrix<RealNumericValueType> operator *(const algebra::Matrix<RealNumericValueType>& _matrix, const RealNumericValueType& _scalar)
+  {
+    return _scalar * _matrix;
+  }
+
   template<typename ComparableType>
   bool operator ==(const algebra::Matrix<ComparableType>& _lhs, const algebra::Matrix<ComparableType>& _rhs)
   {
