@@ -60,6 +60,16 @@ namespace algebra
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
 
+    bool IsValid(const std::vector<algebra::Column<RealNumericValueType>>& _columns)
+    {
+      std::vector<size_t> _buffer;
+      _buffer.reserve(_columns.size());
+      std::transform(_columns.begin(),_columns.end(),std::back_inserter(_buffer),[&](const algebra::Column<RealNumericValueType>& _column){
+        return _column.Size();
+      });
+      return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
+    }
+
     #pragma mark Public constructors
     public:
     Matrix() = delete;
@@ -89,7 +99,7 @@ namespace algebra
     Matrix(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
     {
       if(!IsValid(_rows))
-        throw std::invalid_argument("Unequal number of elements in vectors");
+        throw std::invalid_argument("Unequal number of elements in rows");
       m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
       m_Container -> reserve(_rows.size());
       std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
@@ -100,6 +110,25 @@ namespace algebra
         });
         m_Container -> emplace_back(_buffer);
       });
+    }
+
+    Matrix(const std::vector<algebra::Column<RealNumericValueType>>& _columns)
+    {
+      if(!IsValid(_columns))
+        throw std::invalid_argument("Unequal number of elements in columns");
+
+      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      m_Container -> reserve(_columns[0].Size());
+      
+      for(size_t _index = 0; _index < _columns[0].Size(); _index += 1)
+      {
+        std::vector<RealNumericValueType> _row_buffer;
+        _row_buffer.reserve(_columns.size());
+        std::for_each(_columns.begin(),_columns.end(),[&](const algebra::Column<RealNumericValueType>& _column){
+          _row_buffer.emplace_back(_column[_index]);
+        });
+        m_Container -> emplace_back(_row_buffer);
+      }
     }
 
     ~Matrix(){}

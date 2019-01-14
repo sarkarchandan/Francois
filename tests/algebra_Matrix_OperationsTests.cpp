@@ -189,7 +189,7 @@ TEST(MatrixOperationsTests, canMultiplyOneMatrixWithScalar)
   ASSERT_TRUE(matrixProduct2 == testableMatrix2);
 }
 
-// TEST(MatrixOperationsTests, canMultiplyAMatrixWithAScalar)
-// {
-//   FAIL() << "Not Implemented";
-// }
+TEST(MatrixOperationsTests, canMultiplyAMatrixWithAScalar)
+{
+  FAIL() << "Not Implemented";
+}

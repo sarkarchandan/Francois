@@ -77,6 +77,12 @@ TEST(MatrixSanityTests_ExceptionTest, canDetermineIfMatrixIsInvalid)
 
   const std::vector<algebra::Row<double>> givenRows2 {{3.5,1.9,5.3},{1.2,6.2},{1.56,3.7,8.2},{4.7,1.8,7.4}};
   EXPECT_THROW(algebra::Matrix<double>{givenRows2},std::invalid_argument);
+
+  const std::vector<algebra::Column<int>> givenColumns1 {{1,2,3,4},{5,6,8},{9,10,11,12}};
+  EXPECT_THROW(algebra::Matrix<int>{givenColumns1},std::invalid_argument);
+
+  const std::vector<algebra::Column<double>> givenColumns2 {{65.4,936.12,90.23,65.78},{47.1,93.15,43.98}};
+  EXPECT_THROW(algebra::Matrix<double>{givenColumns2},std::invalid_argument);
 }
 
 TEST(MatrixSanityTests, canDetermineMatrixOrder)
@@ -182,13 +188,53 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
 
 TEST(MatrixSanityTests,canInitializeMatrixWithRows)
 {
-  const std::vector<algebra::Row<int>> testableRows {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
-  const algebra::Matrix<int> testableIntMatrix = testableRows;
+  const std::vector<algebra::Row<int>> testableIntRows {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+  const algebra::Matrix<int> testableIntMatrix = testableIntRows;
   const algebra::Matrix<int> expectedIntMatrix {
     {1,2,3,4},
     {5,6,7,8},
     {9,10,11,12}
   };
   ASSERT_TRUE(testableIntMatrix == expectedIntMatrix);
+  const std::pair<size_t,size_t> expectedIntPair = std::make_pair<size_t,size_t>(3,4);
+  ASSERT_TRUE(testableIntMatrix.Order() == expectedIntPair);
+
+  const std::vector<algebra::Row<double>> testableDoubleRows {{1.3,1.4,1.5},{2.7,2.8,2.9},{3.1,3.2,3.3}};
+  const algebra::Matrix<double> testableDoubleMatrix = testableDoubleRows;
+  const algebra::Matrix<double> expectedDoubleMatrix {
+    {1.3,1.4,1.5},
+    {2.7,2.8,2.9},
+    {3.1,3.2,3.3}
+  };
+  ASSERT_TRUE(testableDoubleMatrix == expectedDoubleMatrix);
+  const std::pair<size_t,size_t> expectedDoublepair = std::make_pair<size_t,size_t>(3,3);
+  ASSERT_TRUE(testableDoubleMatrix.Order() == expectedDoublepair);
+}
+
+TEST(MatrixSanityTests, canInitializeMatrixWithColumns)
+{
+  const std::vector<algebra::Column<int>> testableIntColumns {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+  const algebra::Matrix<int> testableIntMatrix = testableIntColumns;
+  const algebra::Matrix<int> expectedIntMatrix {
+    {1,5,9},
+    {2,6,10},
+    {3,7,11},
+    {4,8,12}
+  };
+  ASSERT_TRUE(testableIntMatrix == expectedIntMatrix);
+  std::pair<size_t,size_t> expectedIntPair = std::make_pair<size_t,size_t>(4,3);
+  ASSERT_TRUE(testableIntMatrix.Order() == expectedIntPair);
+
+  const std::vector<algebra::Column<double>> testableDoubleColumns {{65.4,936.12,90.23,65.78},{47.1,93.15,81.32,43.98}};
+  const algebra::Matrix<double> testableDoubleMatrix = testableDoubleColumns;
+  const algebra::Matrix<double> expectedDoubleMatrix {
+    {65.4,47.1},
+    {936.12,93.15},
+    {90.23,81.32},
+    {65.78,43.98}
+  };
+  ASSERT_TRUE(testableDoubleMatrix == expectedDoubleMatrix);
+  std::pair<size_t,size_t> expectedDoublePair = std::make_pair<size_t,size_t>(4,2);
+  ASSERT_TRUE(expectedDoubleMatrix.Order() == expectedDoublePair);
 }
 
