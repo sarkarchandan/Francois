@@ -3,17 +3,16 @@
 
 TEST(MatrixOperationsTests, canAddTwoRows)
 {
-  algebra::Row<int> givenRow1 {1,2,3,4};
-  algebra::Row<int> givenRow2 {5,6,7,8};
-  algebra::Row<int> sumOfIntRows = givenRow1 + givenRow2;
-  std::cout << "Sum of int rows: " << sumOfIntRows << "\n";
-  algebra::Row<int> testableRow1 {6,8,10,12};
+  const algebra::Row<int> givenRow1 {1,2,3,4};
+  const algebra::Row<int> givenRow2 {5,6,7,8};
+  const algebra::Row<int> sumOfIntRows = givenRow1 + givenRow2;
+  const algebra::Row<int> testableRow1 {6,8,10,12};
   ASSERT_TRUE(sumOfIntRows == testableRow1);
 
-  algebra::Row<double> givenRow3 {198.43,12.87,164.76,983.1};
-  algebra::Row<double> givenRow4 {98.123,76.12,984.12,12.98};
-  algebra::Row<double> sumOfDoubleRows = givenRow3 + givenRow4;
-  algebra::Row<double> testableRow2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
+  const algebra::Row<double> givenRow3 {198.43,12.87,164.76,983.1};
+  const algebra::Row<double> givenRow4 {98.123,76.12,984.12,12.98};
+  const algebra::Row<double> sumOfDoubleRows = givenRow3 + givenRow4;
+  const algebra::Row<double> testableRow2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
   ASSERT_TRUE(sumOfDoubleRows == testableRow2);
 }
 
@@ -32,6 +31,62 @@ TEST(MatrixOperationsTests, canAddTwoColumns)
   ASSERT_TRUE(sumOfDoubleColumns == testableColumn2);
 }
 
+TEST(MatrixOperationsTests, canSubtractTwoRows)
+{
+  const algebra::Row<int> givenRow1 {1,2,3,4};
+  const algebra::Row<int> givenRow2 {5,6,7,8};
+  const algebra::Row<int> differenceOfTwoRows = givenRow1 - givenRow2;
+  const algebra::Row<int> testableRow1 = {-4,-4,-4,-4};
+  ASSERT_TRUE(differenceOfTwoRows == testableRow1);
+
+  const algebra::Row<double> givenRow3 {198.43,12.87,164.76,983.1};
+  const algebra::Row<double> givenRow4 {98.123,76.12,984.12,12.98};
+  const algebra::Row<double> differenceOfDoubleRows = givenRow3 - givenRow4;
+  const algebra::Row<double> testableRow2 = {198.43-98.123,12.87-76.12,164.76-984.12,983.1-12.98};
+  ASSERT_TRUE(differenceOfDoubleRows == testableRow2);
+}
+
+TEST(MatrixOperationsTests, canSubtractTwoColumns)
+{
+  const algebra::Column<int> givenColumn1 {1,2,3,4};
+  const algebra::Column<int> givenColumn2 {5,6,7,8};
+  const algebra::Column<int> differenceOfTwoColumns = givenColumn1 - givenColumn2;
+  const algebra::Column<int> testableColumn1 = {-4,-4,-4,-4};
+  ASSERT_TRUE(differenceOfTwoColumns == testableColumn1);
+
+  const algebra::Column<double> givenColumn3 {198.43,12.87,164.76,983.1};
+  const algebra::Column<double> givenColumn4 {98.123,76.12,984.12,12.98};
+  const algebra::Column<double> differenceOfDoubleColumns = givenColumn3 - givenColumn4;
+  const algebra::Column<double> testableColumn2 = {198.43-98.123,12.87-76.12,164.76-984.12,983.1-12.98};
+  ASSERT_TRUE(differenceOfDoubleColumns == testableColumn2);
+}
+
+TEST(MatrixOperationsTests, canMultiplyRowWithScalar)
+{
+  const algebra::Row<int> testableRow1 {1,2,3,4};
+  const algebra::Row<int> computedIntProduct = 3 * testableRow1;
+  const algebra::Row<int> expectedIntRow = {3,6,9,12};
+  ASSERT_TRUE(computedIntProduct == expectedIntRow);
+
+  const algebra::Row<double> testableRow2 {198.43,12.87,164.76,983.1};
+  const algebra::Row<double> computedDoubleProduct = testableRow2 * 3.0;
+  const algebra::Row<double> expectedDoubleRow = {198.43*3.0,12.87*3.0,164.76*3.0,983.1*3.0};
+  ASSERT_TRUE(computedDoubleProduct == expectedDoubleRow);
+}
+
+TEST(MatrixOperationsTests, canMultiplyColumnWithScalar)
+{
+  const algebra::Column<int> testableColumn1 {1,2,3,4};
+  const algebra::Column<int> computedIntProduct = 3 * testableColumn1;
+  const algebra::Column<int> expectedIntColumn = {3,6,9,12};
+  ASSERT_TRUE(computedIntProduct == expectedIntColumn);
+
+  const algebra::Column<double> testableColumn2 {198.43,12.87,164.76,983.1};
+  const algebra::Column<double> computedDoubleProduct = testableColumn2 * 3.0;
+  const algebra::Column<double> expectedDoubleColumn = {198.43*3.0,12.87*3.0,164.76*3.0,983.1*3.0};
+  ASSERT_TRUE(computedDoubleProduct == expectedDoubleColumn);
+}
+
 TEST(MatrixOperationsTests,canAddTwoMatrices)
 {
   const algebra::Matrix<int> givenMatrix1 {
@@ -45,7 +100,6 @@ TEST(MatrixOperationsTests,canAddTwoMatrices)
     {21,22,23,24}
   };
   const algebra::Matrix<int> sumOfIntMatrices = givenMatrix1 + givenMatrix2;
-  std::cout << "Added Matrix: " << "\n" << sumOfIntMatrices << "\n";
   const algebra::Matrix<int> testableMatrix1 {
     {14,16,18,20},
     {22,24,26,28},
