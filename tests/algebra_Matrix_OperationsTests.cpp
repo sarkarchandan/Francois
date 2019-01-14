@@ -1,6 +1,37 @@
 #include "gtest/gtest.h"
 #include "Matrix.hpp"
 
+TEST(MatrixOperationsTests, canAddTwoRows)
+{
+  algebra::Row<int> givenRow1 {1,2,3,4};
+  algebra::Row<int> givenRow2 {5,6,7,8};
+  algebra::Row<int> sumOfIntRows = givenRow1 + givenRow2;
+  std::cout << "Sum of int rows: " << sumOfIntRows << "\n";
+  algebra::Row<int> testableRow1 {6,8,10,12};
+  ASSERT_TRUE(sumOfIntRows == testableRow1);
+
+  algebra::Row<double> givenRow3 {198.43,12.87,164.76,983.1};
+  algebra::Row<double> givenRow4 {98.123,76.12,984.12,12.98};
+  algebra::Row<double> sumOfDoubleRows = givenRow3 + givenRow4;
+  algebra::Row<double> testableRow2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
+  ASSERT_TRUE(sumOfDoubleRows == testableRow2);
+}
+
+TEST(MatrixOperationsTests, canAddTwoColumns)
+{
+  const algebra::Column<int> givenColumn1 {1,2,3,4};
+  const algebra::Column<int> givenColumn2 {5,6,7,8};
+  const algebra::Column<int> sumOfIntColumns = givenColumn1 + givenColumn2;
+  const algebra::Column<int> testableColumn1 {6,8,10,12};
+  ASSERT_TRUE(sumOfIntColumns == testableColumn1);
+
+  const algebra::Column<double> givenColumn3 {198.43,12.87,164.76,983.1};
+  const algebra::Column<double> givenColumn4 {98.123,76.12,984.12,12.98};
+  const algebra::Column<double> sumOfDoubleColumns = givenColumn3 + givenColumn4;
+  const algebra::Column<double> testableColumn2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
+  ASSERT_TRUE(sumOfDoubleColumns == testableColumn2);
+}
+
 TEST(MatrixOperationsTests,canAddTwoMatrices)
 {
   const algebra::Matrix<int> givenMatrix1 {
@@ -14,6 +45,7 @@ TEST(MatrixOperationsTests,canAddTwoMatrices)
     {21,22,23,24}
   };
   const algebra::Matrix<int> sumOfIntMatrices = givenMatrix1 + givenMatrix2;
+  std::cout << "Added Matrix: " << "\n" << sumOfIntMatrices << "\n";
   const algebra::Matrix<int> testableMatrix1 {
     {14,16,18,20},
     {22,24,26,28},
@@ -103,7 +135,7 @@ TEST(MatrixOperationsTests, canMultiplyOneMatrixWithScalar)
   ASSERT_TRUE(matrixProduct2 == testableMatrix2);
 }
 
-TEST(MatrixOperationsTests, canMultiplyAMatrixWithAScalar)
-{
-  FAIL() << "Not Implemented";
-}
+// TEST(MatrixOperationsTests, canMultiplyAMatrixWithAScalar)
+// {
+//   FAIL() << "Not Implemented";
+// }

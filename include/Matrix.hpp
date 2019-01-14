@@ -14,6 +14,7 @@
 
 namespace algebra
 {
+  //TODO: Implement the copy assignment operator
   template<typename RealNumericValueType>
   class Matrix
   {
@@ -31,19 +32,31 @@ namespace algebra
     private:
     bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
-      std::vector<size_t> _buffer(_init_list.size());
-      std::transform(_init_list.begin(),_init_list.end(),_buffer.begin(),[&](const std::vector<RealNumericValueType>& _collection) {
+      std::vector<size_t> _buffer;
+      _buffer.reserve(_init_list.size());
+      std::transform(_init_list.begin(),_init_list.end(),std::back_inserter(_buffer),[&](const std::vector<RealNumericValueType>& _collection) {
         return _collection.size();
-        });
+      });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
 
     bool IsValid(const std::vector<std::vector<RealNumericValueType>>& _vectors)
     {
-      std::vector<size_t> _buffer(_vectors.size());
-      std::transform(_vectors.begin(),_vectors.end(),_buffer.begin(),[&](const std::vector<RealNumericValueType>& _collection) {
+      std::vector<size_t> _buffer;
+      _buffer.reserve(_vectors.size());
+      std::transform(_vectors.begin(),_vectors.end(),std::back_inserter(_buffer),[&](const std::vector<RealNumericValueType>& _collection) {
         return _collection.size();
         });
+      return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
+    }
+
+    bool IsValid(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
+    {
+      std::vector<size_t> _buffer;
+      _buffer.reserve(_rows.size());
+      std::transform(_rows.begin(),_rows.end(),std::back_inserter(_buffer),[&](const algebra::Row<RealNumericValueType>& _row) {
+        return _row.Size();
+      });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
 
@@ -52,27 +65,41 @@ namespace algebra
     Matrix() = delete;
     Matrix(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
-      if (!(IsValid(_init_list)))
+      if (!IsValid(_init_list))
         throw std::invalid_argument("Unequal number of elements in rows");
       m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
       m_Container -> reserve(_init_list.size());
       std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
           m_Container -> emplace_back(_element_vector);
         });
-      std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << "\n";
     }
     
     Matrix(const std::vector<std::vector<RealNumericValueType>>& _vectors)
     {
-      if (!(IsValid(_vectors)))
+      if (!IsValid(_vectors))
         throw std::invalid_argument("Unequal number of elements in vectors");
       
       m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
       m_Container -> reserve(_vectors.size());
       std::for_each(_vectors.begin(),_vectors.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
           m_Container -> emplace_back(_element_vector);
+      });
+    }
+
+    Matrix(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
+    {
+      if(!IsValid(_rows))
+        throw std::invalid_argument("Unequal number of elements in vectors");
+      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      m_Container -> reserve(_rows.size());
+      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
+        std::vector<RealNumericValueType> _buffer;
+        _buffer.reserve(_row.Size());
+        std::transform(_row.begin(),_row.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element){
+          return _element;
         });
-      std::cout << "Container initialized with element type: " << typeid(RealNumericValueType).name() << "\n";
+        m_Container -> emplace_back(_buffer);
+      });
     }
 
     ~Matrix(){}
@@ -270,31 +297,12 @@ namespace algebra
   template<typename RealNumericValueType>
   std::ostream& operator <<(std::ostream& _stream, const algebra::Matrix<RealNumericValueType>& _matrix)
   {
+    _stream << "\n";
     std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
     std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
       _stream << _row << "\n";
     });
     return _stream;
-  }
-
-  template<typename RealNumericValueType>
-  std::vector<RealNumericValueType> operator +(const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs)
-  {
-    std::vector<RealNumericValueType> _result(_lhs.size());
-    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_result.begin(),[&](const RealNumericValueType& _lhs_element, const RealNumericValueType& _rhs_element) {
-      return _lhs_element + _rhs_element;
-    });
-    return _result;
-  }
-
-  template<typename RealNumericValueType>
-  std::vector<RealNumericValueType> operator -(const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs)
-  {
-    std::vector<RealNumericValueType> _result(_lhs.size());
-    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_result.begin(),[&](const RealNumericValueType& _lhs_element, const RealNumericValueType& _rhs_element) {
-      return _lhs_element - _rhs_element;
-    });
-    return _result;
   }
 
   template<typename RealNumericValueType>
@@ -306,33 +314,12 @@ namespace algebra
     const std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
     const std::vector<algebra::Row<RealNumericValueType>> _rhs_Rows = _rhs.Rows();
 
-    std::vector<std::vector<RealNumericValueType>> _lhs_vectors;
-    _lhs_vectors.reserve(_lhs_Rows.size());
-    std::for_each(_lhs_Rows.begin(),_lhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
-      std::vector<RealNumericValueType> _buffer;
-      _buffer.reserve(_row.Size());
-      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
-        _buffer.emplace_back(_element);
-      });
-      _lhs_vectors.emplace_back(_buffer);
-    });
-
-    std::vector<std::vector<RealNumericValueType>> _rhs_vectors;
-    _rhs_vectors.reserve(_rhs_Rows.size());
-    std::for_each(_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
-      std::vector<RealNumericValueType> _buffer;
-      _buffer.reserve(_row.Size());
-      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
-        _buffer.emplace_back(_element);
-      });
-      _rhs_vectors.emplace_back(_buffer);
-    });
-
-    std::vector<std::vector<RealNumericValueType>> _differenceOfRows(_lhs_vectors.size());
-    std::transform(_lhs_vectors.begin(),_lhs_vectors.end(),_rhs_vectors.begin(),_differenceOfRows.begin(),[&](const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs){
+    std::vector<algebra::Row<RealNumericValueType>> _sumOfRows;
+    _sumOfRows.reserve(_lhs_Rows.size());
+    std::transform(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),std::back_inserter(_sumOfRows),[&](const algebra::Row<RealNumericValueType>& _lhs, const algebra::Row<RealNumericValueType>& _rhs){
       return _lhs + _rhs;
     });
-    return algebra::Matrix<RealNumericValueType>(_differenceOfRows);
+    return algebra::Matrix<RealNumericValueType>(_sumOfRows);
   }
 
   template<typename RealNumericValueType>
@@ -344,63 +331,23 @@ namespace algebra
     const std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
     const std::vector<algebra::Row<RealNumericValueType>> _rhs_Rows = _rhs.Rows();
 
-    std::vector<std::vector<RealNumericValueType>> _lhs_vectors;
-    _lhs_vectors.reserve(_lhs_Rows.size());
-    std::for_each(_lhs_Rows.begin(),_lhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
-      std::vector<RealNumericValueType> _buffer;
-      _buffer.reserve(_row.Size());
-      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
-        _buffer.emplace_back(_element);
-      });
-      _lhs_vectors.emplace_back(_buffer);
-    });
-
-    std::vector<std::vector<RealNumericValueType>> _rhs_vectors;
-    _rhs_vectors.reserve(_rhs_Rows.size());
-    std::for_each(_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
-      std::vector<RealNumericValueType> _buffer;
-      _buffer.reserve(_row.Size());
-      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
-        _buffer.emplace_back(_element);
-      });
-      _rhs_vectors.emplace_back(_buffer);
-    });
-
-    std::vector<std::vector<RealNumericValueType>> _differenceOfRows(_lhs_vectors.size());
-    std::transform(_lhs_vectors.begin(),_lhs_vectors.end(),_rhs_vectors.begin(),_differenceOfRows.begin(),[&](const std::vector<RealNumericValueType>& _lhs, const std::vector<RealNumericValueType>& _rhs){
+    std::vector<algebra::Row<RealNumericValueType>> _differenceOfRows;
+    _differenceOfRows.reserve(_lhs_Rows.size());
+    std::transform(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),std::back_inserter(_differenceOfRows),[&](const algebra::Row<RealNumericValueType>& _lhs, const algebra::Row<RealNumericValueType>& _rhs){
       return _lhs - _rhs;
     });
     return algebra::Matrix<RealNumericValueType>(_differenceOfRows);
   }
 
   template<typename RealNumericValueType>
-  std::vector<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const std::vector<RealNumericValueType>& _vector)
-  {
-    std::vector<RealNumericValueType> _product(_vector.size());
-    std::transform(_vector.begin(),_vector.end(),_product.begin(),[&](const RealNumericValueType& _element) {
-      return _scalar * _element;
-    });
-    return _product;
-  }
-
-  template<typename RealNumericValueType>
   algebra::Matrix<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const algebra::Matrix<RealNumericValueType>& _matrix)
   {
     std::vector<algebra::Row<RealNumericValueType>> _matrix_Rows = _matrix.Rows();
-    std::vector<std::vector<RealNumericValueType>> _vectors;
-    _vectors.reserve(_matrix_Rows.size());
-    std::for_each(_matrix_Rows.begin(),_matrix_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
-      std::vector<RealNumericValueType> _buffer;
-      _buffer.reserve(_row.Size());
-      std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element) {
-        _buffer.emplace_back(_element);
-      });
-      _vectors.emplace_back(_buffer);
-    });
-
-    std::vector<std::vector<RealNumericValueType>> _product(_vectors.size());
-    std::transform(_vectors.begin(),_vectors.end(),_product.begin(),[&](const std::vector<RealNumericValueType>& _vector) {
-      return _scalar * _vector;
+    
+    std::vector<algebra::Row<RealNumericValueType>> _product;
+    _product.reserve(_matrix_Rows.size());
+    std::transform(_matrix_Rows.begin(),_matrix_Rows.end(),std::back_inserter(_product),[&](const algebra::Row<RealNumericValueType>& _row) {
+      return _scalar * _row;
     });
     return algebra::Matrix<RealNumericValueType>(_product);
   }

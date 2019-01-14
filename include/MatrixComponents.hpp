@@ -4,9 +4,11 @@
 #include <type_traits>
 #include <initializer_list>
 #include "MatrixElementProtocol.hpp"
+#include <exception>
 
 namespace algebra
 {
+  //TODO: Implement the copy assignment operator
   template<typename RealNumericValueType>
   struct ElementSequence
   {
@@ -28,8 +30,8 @@ namespace algebra
       m_ElementSequence = std::make_unique<std::vector<RealNumericValueType>>();
       m_ElementSequence -> reserve(_m_ElementSequence.size());
       std::for_each(_m_ElementSequence.begin(),_m_ElementSequence.end(),[&](const RealNumericValueType& _element){
-          m_ElementSequence -> emplace_back(_element);
-        });
+        m_ElementSequence -> emplace_back(_element);
+      });
     }
     ElementSequence(const std::initializer_list<RealNumericValueType>& _m_ElementSequence)
     {
@@ -42,7 +44,8 @@ namespace algebra
     
     ElementSequence(const ElementSequence& _elementSequence)
     {
-      m_ElementSequence = std::make_unique<std::vector<RealNumericValueType>>(_elementSequence.Size());
+      m_ElementSequence = std::make_unique<std::vector<RealNumericValueType>>();
+      m_ElementSequence -> reserve(_elementSequence.Size());
       std::for_each(_elementSequence.begin(),_elementSequence.end(),[&](const RealNumericValueType& _element){
         m_ElementSequence -> emplace_back(_element);
       });
@@ -67,8 +70,8 @@ namespace algebra
   };
 
   #pragma mark Operator overloaded functions for ElementSequence
-  template<typename ComparableType>
-  bool operator ==(const algebra::ElementSequence<ComparableType>& _lhs, const typename algebra::ElementSequence<ComparableType>& _rhs)
+  template<typename RealNumericValueType>
+  bool operator ==(const algebra::ElementSequence<RealNumericValueType>& _lhs, const typename algebra::ElementSequence<RealNumericValueType>& _rhs)
   {
     if(_lhs.Size() != _rhs.Size())
       return false;
@@ -81,8 +84,8 @@ namespace algebra
     return true;
   }
 
-  template<typename ComparableType>
-  bool operator !=(const algebra::ElementSequence<ComparableType>& _lhs, const algebra::ElementSequence<ComparableType>& _rhs)
+  template<typename RealNumericValueType>
+  bool operator !=(const algebra::ElementSequence<RealNumericValueType>& _lhs, const algebra::ElementSequence<RealNumericValueType>& _rhs)
   {
     return !(_lhs == _rhs);
   }
@@ -124,11 +127,44 @@ namespace algebra
   template<typename RealNumericValueType>
   algebra::Row<RealNumericValueType> operator +(const algebra::Row<RealNumericValueType>& _lhs, const algebra::Row<RealNumericValueType>& _rhs)
   {
-    std::vector<RealNumericValueType> _buffer(_lhs.Size());
-    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_buffer.begin(),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
+    if(_lhs.Size() != _rhs.Size())
+      throw std::invalid_argument("Two rows of unequal size can not be added");
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),std::back_inserter(_buffer),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
       return _l_Element + _r_Element;
     });
     return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator -(const algebra::Row<RealNumericValueType>& _lhs, const algebra::Row<RealNumericValueType>& _rhs)
+  {
+    if(_lhs.Size() != _rhs.Size())
+      throw std::invalid_argument("Two rows of unequal size can not be added");
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),std::back_inserter(_buffer),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
+      return _l_Element - _r_Element;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator *(const algebra::Row<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element * _scalar;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const algebra::Row<RealNumericValueType>& _rhs)
+  {
+    return _rhs * _scalar;
   }
 
   #pragma mark Column
@@ -168,11 +204,44 @@ namespace algebra
   template<typename RealNumericValueType>
   algebra::Column<RealNumericValueType> operator +(const algebra::Column<RealNumericValueType>& _lhs, const algebra::Column<RealNumericValueType>& _rhs)
   {
-    std::vector<RealNumericValueType> _buffer(_lhs.Size());
-    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),_buffer.begin(),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
+    if(_lhs.Size() != _rhs.Size())
+      throw std::invalid_argument("Two columns of unequal size can not be added");
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),std::back_inserter(_buffer),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
       return _l_Element + _r_Element;
     });
     return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator -(const algebra::Column<RealNumericValueType>& _lhs, const algebra::Column<RealNumericValueType>& _rhs)
+  {
+    if(_lhs.Size() != _rhs.Size())
+      throw std::invalid_argument("Two columns of unequal size can not be added");
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),std::back_inserter(_buffer),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
+      return _l_Element - _r_Element;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator *(const algebra::Column<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element * _scalar;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const algebra::Column<RealNumericValueType>& _rhs)
+  {
+    return _rhs * _scalar;
   }
 } // algebra
 

@@ -57,6 +57,26 @@ TEST(MatrixSanityTests_ExceptionTest, canDetermineIfMatrixIsInvalid)
     {1.56,3.7,2.9}
   };
   EXPECT_THROW(algebra::Matrix<double> {givenList2},std::invalid_argument);
+
+  const std::vector<std::vector<int>> givenVector1 {
+    {1,2,3},
+    {4,6,7,4},
+    {9,10,11,12}
+  };
+  EXPECT_THROW(algebra::Matrix<int> {givenVector1},std::invalid_argument);
+
+  const std::vector<std::vector<double>> givenVector2 {
+    {3.5,1.9,8.1},
+    {1.2,6.2},
+    {1.56,3.7,2.9}
+  };
+  EXPECT_THROW(algebra::Matrix<double>{givenVector2},std::invalid_argument);
+
+  const std::vector<algebra::Row<int>> givenRows1 {{1,2,3,4},{5,6,8},{9,10,11,12}};
+  EXPECT_THROW(algebra::Matrix<int> {givenRows1},std::invalid_argument);
+
+  const std::vector<algebra::Row<double>> givenRows2 {{3.5,1.9,5.3},{1.2,6.2},{1.56,3.7,8.2},{4.7,1.8,7.4}};
+  EXPECT_THROW(algebra::Matrix<double>{givenRows2},std::invalid_argument);
 }
 
 TEST(MatrixSanityTests, canDetermineMatrixOrder)
@@ -160,33 +180,15 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
   ASSERT_TRUE(columns[3] == testableColumn3);
 }
 
-TEST(MatrixSanityTests, canAddTwoRows)
+TEST(MatrixSanityTests,canInitializeMatrixWithRows)
 {
-  algebra::Row<int> givenRow1 {1,2,3,4};
-  algebra::Row<int> givenRow2 {5,6,7,8};
-  algebra::Row<int> sumOfIntRows = givenRow1 + givenRow2;
-  algebra::Row<int> testableRow1 {6,8,10,12};
-  ASSERT_TRUE(sumOfIntRows == testableRow1);
-
-  algebra::Row<double> givenRow3 {198.43,12.87,164.76,983.1};
-  algebra::Row<double> givenRow4 {98.123,76.12,984.12,12.98};
-  algebra::Row<double> sumOfDoubleRows = givenRow3 + givenRow4;
-  algebra::Row<double> testableRow2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
-  ASSERT_TRUE(sumOfDoubleRows == testableRow2);
-}
-
-TEST(MatrixSanityTests, canAddTwoColumns)
-{
-  const algebra::Column<int> givenColumn1 {1,2,3,4};
-  const algebra::Column<int> givenColumn2 {5,6,7,8};
-  const algebra::Column<int> sumOfIntColumns = givenColumn1 + givenColumn2;
-  const algebra::Column<int> testableColumn1 {6,8,10,12};
-  ASSERT_TRUE(sumOfIntColumns == testableColumn1);
-
-  const algebra::Column<double> givenColumn3 {198.43,12.87,164.76,983.1};
-  const algebra::Column<double> givenColumn4 {98.123,76.12,984.12,12.98};
-  const algebra::Column<double> sumOfDoubleColumns = givenColumn3 + givenColumn4;
-  const algebra::Column<double> testableColumn2 {(198.43+98.123),(12.87+76.12),(164.76+984.12),(983.1+12.98)};
-  ASSERT_TRUE(sumOfDoubleColumns == testableColumn2);
+  const std::vector<algebra::Row<int>> testableRows {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+  const algebra::Matrix<int> testableIntMatrix = testableRows;
+  const algebra::Matrix<int> expectedIntMatrix {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  ASSERT_TRUE(testableIntMatrix == expectedIntMatrix);
 }
 
