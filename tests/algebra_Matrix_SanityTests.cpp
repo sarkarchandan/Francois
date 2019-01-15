@@ -331,6 +331,35 @@ TEST(MatrixSanityTests, canUpdateMatrixWithCopyAssignmentOperator)
   ASSERT_TRUE(testableMatrix3 == expectedMatrix3);
 }
 
+TEST(MatrixSanityTests_ExceptionTest, canDetermineCopyAssignmentAttemptsForMatricesOfDifferentOrder)
+{
+  algebra::Matrix<int> testableMatrix1 = {
+    {1,2,3,4},
+    {4,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> testableMatrix2 = {
+    {13,14,15},
+    {17,18,19},
+    {21,22,23}
+  };
+  EXPECT_THROW(testableMatrix1 = testableMatrix2,std::length_error);
+
+  algebra::Matrix<double> testableMatrix3 = {
+    {23.65,12.54,19.64,17.23},
+    {98.12,186.32,12.87,145.32},
+    {98.123,76.12,984.12,12.98},
+    {198.43,12.87,164.76,983.1}
+  };
+
+  const algebra::Matrix<double> testableMatrix4 = {
+    {65.23,54.12,54.19,23.17},
+    {12.98,43.186,87.12,32.145},
+    {123.98,12.76,12.984,98.12}
+  };
+  EXPECT_THROW(testableMatrix3 = testableMatrix4,std::length_error);
+}
+
 TEST(MatrixSanityTests, canUpdateIndividualElementOfRow)
 {
   FAIL() << "Not Implemented";
