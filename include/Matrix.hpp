@@ -342,6 +342,11 @@ namespace algebra
       });
       return *this;
     }
+
+    inline bool IsMultipliableWith(const algebra::Matrix<RealNumericValueType>& _matrix) const
+    {
+      return (Order().second == _matrix.Order().first);
+    }
   };
 
   #pragma mark Operator overloaded functions
@@ -407,6 +412,28 @@ namespace algebra
   algebra::Matrix<RealNumericValueType> operator *(const algebra::Matrix<RealNumericValueType>& _matrix, const RealNumericValueType& _scalar)
   {
     return _scalar * _matrix;
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Matrix<RealNumericValueType> operator *(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
+  {
+    if(!_lhs.IsMultipliableWith(_rhs))
+      throw std::invalid_argument("Argument matrices violate the criterion for multiplication.");
+    std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
+    std::vector<algebra::Column<RealNumericValueType>> _rhs_Columns = _rhs.Columns();
+    
+    std::vector<std::vector<RealNumericValueType>> _resultant_Rows;
+    _resultant_Rows.reserve(_lhs.Order().first);
+    std::transform(_lhs_Rows.begin(),_lhs_Rows.end(),std::back_inserter(_resultant_Rows),[&](const algebra::Row<RealNumericValueType>& _row) {
+
+      std::vector<RealNumericValueType> _buffer;
+      _buffer.reserve(_rhs.Order().second);
+      std::for_each(_rhs_Columns.begin(),_rhs_Columns.end(),[&](const algebra::Column<RealNumericValueType>& _column){
+        _buffer.emplace_back(_row * _column);
+      });
+      return _buffer;
+    });
+    return algebra::Matrix<RealNumericValueType>(_resultant_Rows);
   }
 
   template<typename ComparableType>

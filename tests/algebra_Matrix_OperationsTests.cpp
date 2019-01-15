@@ -189,6 +189,149 @@ TEST(MatrixOperationsTests, canMultiplyOneMatrixWithScalar)
   ASSERT_TRUE(matrixProduct2 == testableMatrix2);
 }
 
+TEST(MatrixOperationsTests, canDetermineIfTwoMatricesAreMultipliable)
+{
+  const algebra::Matrix<int> testableMatrix1 = {
+    {4,8,12,16},
+    {20,24,28,32},
+    {36,40,44,48}
+  };
+  const algebra::Matrix<int> testableMatrix2 = {
+    {4,8,12,16},
+    {20,24,28,32},
+    {36,40,44,48}
+  };
+  ASSERT_FALSE(testableMatrix1.IsMultipliableWith(testableMatrix2));
+
+  const algebra::Matrix<int> testableMatrix3 = {
+    {4,8,12,16},
+    {20,24,28,32},
+    {36,40,44,48}
+  };
+  const algebra::Matrix<int> testableMatrix4 = {
+    {4,8,12,16},
+    {20,24,28,32},
+    {36,40,44,48},
+    {5,23,12,56}
+  };
+  ASSERT_TRUE(testableMatrix3.IsMultipliableWith(testableMatrix4));
+
+  const algebra::Matrix<double> testableMatrix5 = {
+    {13.76,56.12,19.87,78.12}
+  };
+  const algebra::Matrix<double> testableMatrix6 = {
+    {78.12},
+    {19.87},
+    {56.12},
+    {13.76}
+  };
+  ASSERT_TRUE(testableMatrix5.IsMultipliableWith(testableMatrix6));
+}
+
+TEST(MatrixOperationsTests, canMultiplyTwoMatrices)
+{
+  const algebra::Matrix<int> testableMatrix1 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> testableMatrix2 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12},
+    {13,14,15,16}
+  };
+  const algebra::Matrix<int> testableProductMatrix1 = testableMatrix1 * testableMatrix2;
+  const algebra::Matrix<int> expectedProductMatrix1 = {
+    {(1*1)+(2*5)+(3*9)+(4*13),(1*2)+(2*6)+(3*10)+(4*14),(1*3)+(2*7)+(3*11)+(4*15),(1*4)+(2*8)+(3*12)+(4*16)},
+    {(5*1)+(6*5)+(7*9)+(8*13),(5*2)+(6*6)+(7*10)+(8*14),(5*3)+(6*7)+(7*11)+(8*15),(5*4)+(6*8)+(7*12)+(8*16)},
+    {(9*1)+(10*5)+(11*9)+(12*13),(9*2)+(10*6)+(11*10)+(12*14),(9*3)+(10*7)+(11*11)+(12*15),(9*4)+(10*8)+(11*12)+(12*16)}
+  };
+  ASSERT_TRUE(testableProductMatrix1 == expectedProductMatrix1);
+
+  const algebra::Matrix<double> testableMatrix3 = {
+    {1.3,1.4,1.5},
+    {2.7,2.8,2.9},
+    {3.1,3.2,3.3}
+  };
+  const algebra::Matrix<double> testableMatrix4 = {
+    {3.1,3.2,3.3},
+    {2.7,2.8,2.9},
+    {1.3,1.4,1.5}
+  };
+  const algebra::Matrix<double> testableProductMatrix2 = testableMatrix3 * testableMatrix4;
+  const algebra::Matrix<double> expectedProductMatrix2 = {
+    {(1.3*3.1)+(1.4*2.7)+(1.5*1.3),(1.3*3.2)+(1.4*2.8)+(1.5*1.4),(1.3*3.3)+(1.4*2.9)+(1.5*1.5)},
+    {(2.7*3.1)+(2.8*2.7)+(2.9*1.3),(2.7*3.2)+(2.8*2.8)+(2.9*1.4),(2.7*3.3)+(2.8*2.9)+(2.9*1.5)},
+    {(3.1*3.1)+(3.2*2.7)+(3.3*1.3),(3.1*3.2)+(3.2*2.8)+(3.3*1.4),(3.1*3.3)+(3.2*2.9)+(3.3*1.5)}
+  };
+  ASSERT_TRUE(testableProductMatrix2 == expectedProductMatrix2);
+
+  const algebra::Matrix<double> testableMatrix5 = {
+    {13.76,56.12,19.87,78.12}
+  };
+  const algebra::Matrix<double> testableMatrix6 = {
+    {78.12},
+    {19.87},
+    {56.12},
+    {13.76}
+  };
+  const algebra::Matrix<double> testableProductMatrix3 = testableMatrix5 * testableMatrix6;
+  const algebra::Matrix<double> expectedProductMatrix3 = {
+    {(13.76*78.12)+(56.12*19.87)+(19.87*56.12)+(78.12*13.76)}
+  };
+  ASSERT_TRUE(testableProductMatrix3 == expectedProductMatrix3);
+}
+
+TEST(MatrixOperationsTests_ExceptionTest, canDetermineInvalidMultiplicationAttempts)
+{
+  const algebra::Matrix<int> testableMatrix1 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> testableMatrix2 = {
+    {1,2,3,13},
+    {5,6,7,14},
+    {9,10,11,15}
+  };
+  EXPECT_THROW(testableMatrix1 * testableMatrix2,std::logic_error);
+
+  const algebra::Matrix<double> testableMatrix3 = {
+    {1.3,1.4,1.5},
+    {2.7,2.8,2.9}
+  };
+  const algebra::Matrix<double> testableMatrix4 = {
+    {3.1,3.2,3.3},
+    {2.7,2.8,2.9},
+    {1.3,1.4,1.5},
+    {2.7,2.8,2.9}
+  };
+  EXPECT_THROW(testableMatrix3 * testableMatrix4,std::logic_error);
+
+  const algebra::Matrix<double> testableMatrix5 = {
+    {13.76,56.12,19.87,78.12}
+  };
+  const algebra::Matrix<double> testableMatrix6 = {
+    {78.12,19.87,56.12,13.76}
+  };
+  EXPECT_THROW(testableMatrix5 * testableMatrix6,std::logic_error);
+
+  const algebra::Matrix<double> testableMatrix7 = {
+    {78.12},
+    {19.87},
+    {56.12},
+    {13.76}
+  };
+  const algebra::Matrix<double> testableMatrix8 = {
+    {13.76},
+    {56.12},
+    {19.87},
+    {78.12}
+  };
+  EXPECT_THROW(testableMatrix7 * testableMatrix8,std::logic_error);
+}
+
 TEST(MatrixOperationsTests, canOperateOnMatrix)
 {
   FAIL() << "Not Implemented";

@@ -260,6 +260,22 @@ namespace algebra
   {
     return _rhs * _scalar;
   }
+
+  template<typename RealNumericValueType>
+  RealNumericValueType operator *(const algebra::Row<RealNumericValueType>& _lhs_row, const algebra::Column<RealNumericValueType>& _rhs_column)
+  {
+    if(_lhs_row.Size() == 0 || _rhs_column.Size() == 0)
+      throw std::logic_error("Can not operate on row or columns having no elements.");
+    else if(_lhs_row.Size() != _rhs_column.Size())
+      throw std::logic_error("Can not operate on row or column of different sizes.");
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs_row.Size());
+    std::transform(_lhs_row.begin(),_lhs_row.end(),_rhs_column.begin(),std::back_inserter(_buffer),[&](const RealNumericValueType& _lhs_element, const RealNumericValueType& _rhs_element){
+      return _lhs_element * _rhs_element;
+    });
+    const RealNumericValueType _matrix_element = std::accumulate(_buffer.begin(),_buffer.end(),0.0);
+    return _matrix_element;
+  } 
 } // algebra
 
 
