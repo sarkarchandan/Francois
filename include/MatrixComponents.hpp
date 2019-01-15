@@ -54,20 +54,20 @@ namespace algebra
 
     #pragma mark Public accessors and member functions
     public:
-    const size_t Size() const { return m_ElementSequence -> size(); }
-    const RealNumericValueType& operator[](const size_t& _index) const
+    inline const size_t Size() const { return m_ElementSequence -> size(); }
+    inline const RealNumericValueType& operator[](const size_t& _index) const
     {
       return m_ElementSequence -> operator[](_index);
     }
-    RealNumericValueType& operator[](const size_t& _index)
+    inline RealNumericValueType& operator[](const size_t& _index)
     {
       return m_ElementSequence -> operator[](_index);
     }
-    typename std::vector<RealNumericValueType>::iterator begin() const
+    inline typename std::vector<RealNumericValueType>::iterator begin() const
     {
       return m_ElementSequence -> begin();
     }
-    typename std::vector<RealNumericValueType>::iterator end() const
+    inline typename std::vector<RealNumericValueType>::iterator end() const
     {
       return m_ElementSequence -> end();
     }

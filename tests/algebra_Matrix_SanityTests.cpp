@@ -137,6 +137,40 @@ TEST(MatrixSanityTests, canAccessElementsBySubscripting)
   ASSERT_DOUBLE_EQ(givenMatrix2(3,1),81.23);
 }
 
+TEST(MatrixSanityTests, canUpdateElementsOfMatrixBySubscripting)
+{
+  algebra::Matrix<int> givenMatrix1 = {
+    {1,2,3,4},
+    {4,6,7,8},
+    {9,10,11,12}
+  };
+  givenMatrix1(1,1) = 12;
+  givenMatrix1(0,3) = 23;
+  givenMatrix1(2,2) = 66;
+  const algebra::Matrix<int> expectedMatrix1 = {
+    {1,2,3,23},
+    {4,12,7,8},
+    {9,10,66,12}
+  };
+
+  algebra::Matrix<double> givenMatrix2 = {
+    {65.4,936.12},
+    {47.1,93.15},
+    {78.21,45.21},
+    {90.23,81.23}
+  };
+  givenMatrix2(1,1) = 15.93;
+  givenMatrix2(2,0) = 21.78;
+  givenMatrix2(3,1) = 23.81;
+  const algebra::Matrix<double> expectedMatrix2 = {
+    {65.4,936.12},
+    {47.1,15.93},
+    {21.78,45.21},
+    {90.23,23.81}
+  };
+  ASSERT_TRUE(givenMatrix2 == expectedMatrix2);
+}
+
 TEST(MatrixSanityTests_ExceptionTest, canDetermineOutOfRangeSubscriptingAttempts)
 {
   const algebra::Matrix<int> givenMatrix1 = {
@@ -184,6 +218,36 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
   ASSERT_TRUE(columns[1] == testableColumn1);
   ASSERT_TRUE(columns[2] == testableColumn2);
   ASSERT_TRUE(columns[3] == testableColumn3);
+}
+
+TEST(MatrixSanityTests, canUpdateIndividualElementOfRow)
+{
+  algebra::Row<int> testableRow1 = {1,2,3,4,5,6};
+  testableRow1[1] = 12;
+  testableRow1[3] = 11;
+  const algebra::Row<int> expectedRow1 = {1,12,3,11,5,6};
+  ASSERT_TRUE(testableRow1 == expectedRow1);
+
+  algebra::Row<double> testableRow2 = {1.3,1.4,1.5,1.6};
+  testableRow2[1] = 4.45;
+  testableRow2[2] = 87.34;
+  const algebra::Row<double> expectedRow2 = {1.3,4.45,87.34,1.6};
+  ASSERT_TRUE(testableRow2 == expectedRow2);
+}
+
+TEST(MatrixSanityTests, canUpdateIndividualElementOfColumn)
+{
+  algebra::Column<int> testableColumn1 = {1,2,3,4,5,6};
+  testableColumn1[1] = 12;
+  testableColumn1[3] = 11;
+  const algebra::Column<int> expectedColumn1 = {1,12,3,11,5,6};
+  ASSERT_TRUE(testableColumn1 == expectedColumn1);
+
+  algebra::Column<double> testableColumn2 = {1.3,1.4,1.5,1.6};
+  testableColumn2[1] = 4.45;
+  testableColumn2[2] = 87.34;
+  const algebra::Column<double> expectedColumn2 = {1.3,4.45,87.34,1.6};
+  ASSERT_TRUE(testableColumn2 == expectedColumn2);
 }
 
 TEST(MatrixSanityTests,canInitializeMatrixWithRows)
@@ -360,17 +424,6 @@ TEST(MatrixSanityTests_ExceptionTest, canDetermineCopyAssignmentAttemptsForMatri
   EXPECT_THROW(testableMatrix3 = testableMatrix4,std::length_error);
 }
 
-TEST(MatrixSanityTests, canUpdateIndividualElementOfRow)
-{
-  FAIL() << "Not Implemented";
-}
 
-TEST(MatrixSanityTests, canUpdateIndividualElementOfColumn)
-{
-  FAIL() << "Not Implemented";
-}
 
-TEST(MatrixSanityTests, canUpdateIndividualElementOfMatrix)
-{
-  FAIL() << "Not Implemented";
-}
+

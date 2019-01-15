@@ -164,6 +164,14 @@ namespace algebra
         throw std::out_of_range("Out of range subscripting attempted");
     }
 
+    inline RealNumericValueType& operator ()(const size_t& _row, const size_t& _column)
+    {
+      if(_row < Order().first && _column < Order().second)
+        return m_Container -> operator[](_row)[_column];
+      else
+        throw std::out_of_range("Out of range subscripting attempted");
+    }
+
     const std::vector<algebra::Row<RealNumericValueType>> Rows() const
     {
       std::vector<algebra::Row<RealNumericValueType>> _rows;
