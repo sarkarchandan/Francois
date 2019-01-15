@@ -320,6 +320,20 @@ namespace algebra
       const RealNumericValueType _sumOfDiagonalElements = std::accumulate(_mainDiagonalElements.begin(),_mainDiagonalElements.end(),0.0);
       return _sumOfDiagonalElements;
     }
+
+    Matrix& operator =(const algebra::Matrix<RealNumericValueType>& _matrix)
+    {
+      if(this == &_matrix)
+        return *this;
+      if(Order() != _matrix.Order())
+        throw std::length_error("Copy assignment attempted for matrices of different order.");
+      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      m_Container -> reserve(_matrix.Order().first);
+      std::for_each(_matrix.m_Container -> begin(),_matrix.m_Container -> end(),[&](const std::vector<RealNumericValueType>& _row){
+        m_Container -> emplace_back(_row);
+      });
+      return *this;
+    }
   };
 
   #pragma mark Operator overloaded functions

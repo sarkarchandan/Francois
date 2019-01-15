@@ -3,12 +3,12 @@
 
 TEST(MatrixAnalyticalTests, canDefineRowMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {5,1,4,7,8}
   };
   ASSERT_TRUE(givenMatrix1.IsRowMatrix());
 
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {1,2,3,4},
     {4,6,7,8},
     {9,10,11,12}
@@ -18,7 +18,7 @@ TEST(MatrixAnalyticalTests, canDefineRowMatrix)
 
 TEST(MatrixAnalyticalTests, canDefineColumnMatrix)
 {
-  const algebra::Matrix<int>  givenMatrix1 {
+  const algebra::Matrix<int>  givenMatrix1 = {
     {5},
     {1},
     {4},
@@ -27,7 +27,7 @@ TEST(MatrixAnalyticalTests, canDefineColumnMatrix)
   };
   ASSERT_TRUE(givenMatrix1.IsColumnMatrix());
 
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {1,2,3,4},
     {4,6,7,8},
     {9,10,11,12}
@@ -37,14 +37,14 @@ TEST(MatrixAnalyticalTests, canDefineColumnMatrix)
 
 TEST(MatrixAnalyticalTests, canDefineRectangularMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,2,3,4,5},
     {6,7,8,9,10},
     {11,12,13,14,15}
   };
   ASSERT_TRUE(givenMatrix1.IsRectangularMatrix());
 
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {5,2,1},
     {7,1,3},
     {8,4,2}
@@ -54,14 +54,14 @@ TEST(MatrixAnalyticalTests, canDefineRectangularMatrix)
 
 TEST(MatrixAnalyticalTests, canDefineSquareMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {5,2,1},
     {7,1,3},
     {8,4,2}
   };
   ASSERT_TRUE(givenMatrix1.IsSquareMatrix());
 
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {1,2,3,4,5},
     {6,7,8,9,10},
     {11,12,13,14,15}
@@ -71,35 +71,35 @@ TEST(MatrixAnalyticalTests, canDefineSquareMatrix)
 
 TEST(MatrixAnalyticalTests, canDetermineMainDiagonalElementsInASquareMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,2,3,4},
     {5,6,7,8},
     {9,10,11,12},
     {13,14,15,16}
   };
-  const std::vector<int> intDiagonalElements {1,6,11,16};
+  const std::vector<int> intDiagonalElements = {1,6,11,16};
   ASSERT_EQ(givenMatrix1.MainDiagonalElements(),intDiagonalElements);
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {23.65,12.54,19.64,17.23},
     {98.12,186.32,12.87,145.32},
     {98.123,76.12,984.12,12.98},
     {198.43,12.87,165.76,983.1}
   };
-  const std::vector<double> doubleDiagonalElements {23.65,186.32,984.12,983.1};
+  const std::vector<double> doubleDiagonalElements = {23.65,186.32,984.12,983.1};
   ASSERT_EQ(givenMatrix2.MainDiagonalElements(),doubleDiagonalElements);
 }
 
 TEST(MatrixAnalyticalTests_ExceptionTest, canThrowExceptionForMainDiagonalElementsInRectangularMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,2,3,4},
     {5,6,7,8},
     {9,10,11,12}
   };
   EXPECT_THROW(givenMatrix1.MainDiagonalElements(),std::logic_error);
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {23.65,12.54,19.64,17.23},
     {98.12,186.32,12.87,145.32},
     {98.123,76.12,984.12,12.98},
@@ -109,7 +109,7 @@ TEST(MatrixAnalyticalTests_ExceptionTest, canThrowExceptionForMainDiagonalElemen
 
 TEST(MatrixAnalyticalTests,canDefineDiagonalMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {5,0,0,0},
     {0,1,0,0},
     {0,0,2,0},
@@ -117,7 +117,7 @@ TEST(MatrixAnalyticalTests,canDefineDiagonalMatrix)
   };
   ASSERT_TRUE(givenMatrix1.IsDiagonalMatrix());
 
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {5,0,0,1},
     {0,1,0,0},
     {0,0,2,0},
@@ -125,7 +125,7 @@ TEST(MatrixAnalyticalTests,canDefineDiagonalMatrix)
   };
   ASSERT_FALSE(givenMatrix2.IsDiagonalMatrix());
 
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {1,2,3,4,5},
     {6,7,8,9,10},
     {11,12,13,14,15}
@@ -135,7 +135,7 @@ TEST(MatrixAnalyticalTests,canDefineDiagonalMatrix)
 
 TEST(MatrixAnalyticalTests,canDefineScalarMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {4,0,0,0},
     {0,4,0,0},
     {0,0,4,0},
@@ -143,7 +143,7 @@ TEST(MatrixAnalyticalTests,canDefineScalarMatrix)
   };
   ASSERT_TRUE(givenMatrix1.IsScalarMatrix());
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {67.43,0,0,0},
     {0,67.43,0,0},
     {0,0,67.43,0},
@@ -151,7 +151,7 @@ TEST(MatrixAnalyticalTests,canDefineScalarMatrix)
   };
   ASSERT_TRUE(givenMatrix2.IsScalarMatrix());
 
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {4,0,0,0},
     {0,4,0,0},
     {0,0,1,0},
@@ -162,21 +162,21 @@ TEST(MatrixAnalyticalTests,canDefineScalarMatrix)
 
 TEST(MatrixAnalyticalTests,canDefineIdentityMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,0,0,0},
     {0,1,0,0},
     {0,0,1,0},
     {0,0,0,1}
   };
   ASSERT_TRUE(givenMatrix1.IsIdentityMatrix());
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {1,0,0,1},
     {0,1,0,0},
     {0,0,1,0},
     {0,0,0,1}
   };
   ASSERT_FALSE(givenMatrix2.IsIdentityMatrix());
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {1,0,0,0},
     {0,1,0,0},
     {0,0,0,0},
@@ -187,20 +187,20 @@ TEST(MatrixAnalyticalTests,canDefineIdentityMatrix)
 
 TEST(MatrixAnalyticalTests,canDefineNullMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {0,0,0,0},
     {0,0,0,0},
     {0,0,0,0},
     {0,0,0,0}
   };
   ASSERT_TRUE(givenMatrix1.IsNullMatrix());
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {0,0,0,0},
     {0,0,0,0},
     {0,0,0,0}
   };
   ASSERT_TRUE(givenMatrix2.IsNullMatrix());
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {0,0,0,0},
     {0,0,0,2},
     {0,0,0,0}
@@ -210,7 +210,7 @@ TEST(MatrixAnalyticalTests,canDefineNullMatrix)
 
 TEST(MatrixAnalyticalTests,canDefineUpperTriangularMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {4,5,8,1},
     {0,6,7,1},
     {0,0,2,9},
@@ -218,7 +218,7 @@ TEST(MatrixAnalyticalTests,canDefineUpperTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix1.IsUpperTriangularMatrix());
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {98.1,50.32,98.1,16.43},
     {0,61.09,7,23.54},
     {0,0,98.1,12.09},
@@ -226,7 +226,7 @@ TEST(MatrixAnalyticalTests,canDefineUpperTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix2.IsUpperTriangularMatrix());
 
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {4,5,8,1},
     {0,6,7,1},
     {0,0,2,9},
@@ -234,7 +234,7 @@ TEST(MatrixAnalyticalTests,canDefineUpperTriangularMatrix)
   };
   ASSERT_FALSE(givenMatrix3.IsUpperTriangularMatrix());
 
-  const algebra::Matrix<int> givenMatrix4 {
+  const algebra::Matrix<int> givenMatrix4 = {
     {4,5,8,1,5},
     {0,6,7,1,8},
     {0,0,2,9,9},
@@ -245,7 +245,7 @@ TEST(MatrixAnalyticalTests,canDefineUpperTriangularMatrix)
 
 TEST(MatrixAnalyticalTests,canDefineLowerTriangularMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {4,0,0,0},
     {1,6,0,0},
     {9,6,2,0},
@@ -253,7 +253,7 @@ TEST(MatrixAnalyticalTests,canDefineLowerTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix1.IsLowerTriangularMatrix());
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {98.1,0,0,0},
     {54.12,61.09,0,0},
     {87.13,54.89,98.1,0},
@@ -261,7 +261,7 @@ TEST(MatrixAnalyticalTests,canDefineLowerTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix2.IsLowerTriangularMatrix());
 
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {4,0,0,1},
     {6,6,0,0},
     {1,9,2,0},
@@ -269,7 +269,7 @@ TEST(MatrixAnalyticalTests,canDefineLowerTriangularMatrix)
   };
   ASSERT_FALSE(givenMatrix3.IsLowerTriangularMatrix());
 
-  const algebra::Matrix<int> givenMatrix4 {
+  const algebra::Matrix<int> givenMatrix4 = {
     {4,5,8,1,5},
     {0,6,7,1,8},
     {0,0,2,9,9},
@@ -280,7 +280,7 @@ TEST(MatrixAnalyticalTests,canDefineLowerTriangularMatrix)
 
 TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {4,5,8,1},
     {0,6,7,1},
     {0,0,2,9},
@@ -288,7 +288,7 @@ TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix1.IsTriangularMatrix());
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {98.1,50.32,98.1,16.43},
     {0,61.09,7,23.54},
     {0,0,98.1,12.09},
@@ -296,7 +296,7 @@ TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix2.IsTriangularMatrix());
 
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {4,0,0,0},
     {1,6,0,0},
     {9,6,2,0},
@@ -304,7 +304,7 @@ TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix3.IsTriangularMatrix());
 
-  const algebra::Matrix<double> givenMatrix4 {
+  const algebra::Matrix<double> givenMatrix4 = {
     {98.1,0,0,0},
     {54.12,61.09,0,0},
     {87.13,54.89,98.1,0},
@@ -312,7 +312,7 @@ TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
   };
   ASSERT_TRUE(givenMatrix4.IsTriangularMatrix());
   
-  const algebra::Matrix<int> givenMatrix5 {
+  const algebra::Matrix<int> givenMatrix5 = {
     {1,2,0,0},
     {9,6,4,1},
     {4,1,6,1},
@@ -323,7 +323,7 @@ TEST(MatrixAnalyticalTests,canDefineTriangularMatrix)
 
 TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {4,6,8,10},
     {3,5,7,9},
     {8,5,3,6},
@@ -333,7 +333,7 @@ TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
   const int expected_Matrix1_Trace = (4+5+3+1);
   ASSERT_EQ(matrix1_Trace,expected_Matrix1_Trace);
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {56.12,0,78.92,19.23},
     {97.12,42.18,29.4,18.98},
     {89.43,12.98,76.12,78.19},
@@ -346,14 +346,14 @@ TEST(MatrixAnalyticalTests,canDetermineTraceOfSquareMatrix)
 
 TEST(MatrixAnalyticalTests_ExceptionTest, canThrowExceptionForTraceOfRectangularMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,2,3,4},
     {5,6,7,8},
     {9,8,5,1}
   };
   EXPECT_THROW(givenMatrix1.Trace(),std::logic_error);
 
-  const algebra::Matrix<double> givenMatrix2 {
+  const algebra::Matrix<double> givenMatrix2 = {
     {56.12,0,78.92,19.23},
     {97.12,42.18,29.4,18.98},
     {89.43,12.98,76.12,78.19},
@@ -363,19 +363,19 @@ TEST(MatrixAnalyticalTests_ExceptionTest, canThrowExceptionForTraceOfRectangular
 
 TEST(MatrixAnalyticalTests,canDefineEqualityOfMatrices)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,2,3,4},
     {5,6,7,8},
     {9,10,11,12},
     {13,14,15,16}
   };
-  const algebra::Matrix<int> givenMatrix2 {
+  const algebra::Matrix<int> givenMatrix2 = {
     {1,2,3,4},
     {5,6,7,8},
     {9,10,11,12},
     {13,14,15,16}
   };
-  const algebra::Matrix<int> givenMatrix3 {
+  const algebra::Matrix<int> givenMatrix3 = {
     {1,2,3,4},
     {5,6,7,8},
     {9,10,13,12},
@@ -384,19 +384,19 @@ TEST(MatrixAnalyticalTests,canDefineEqualityOfMatrices)
   ASSERT_TRUE(givenMatrix1 == givenMatrix2);
   ASSERT_TRUE(givenMatrix1 != givenMatrix3);
 
-  const algebra::Matrix<double> givenMatrix4 {
+  const algebra::Matrix<double> givenMatrix4 = {
     {23.65,12.54,19.64,17.23},
     {98.12,186.32,12.87,145.32},
     {98.123,76.12,984.12,12.98},
     {198.43,12.87,165.76,983.1}
   };
-  const algebra::Matrix<double> givenMatrix5 {
+  const algebra::Matrix<double> givenMatrix5 = {
     {23.65,12.54,19.64,17.23},
     {98.12,186.32,12.87,145.32},
     {98.123,76.12,984.12,12.98},
     {198.43,12.87,165.76,983.1}
   };
-  const algebra::Matrix<double> givenMatrix6 {
+  const algebra::Matrix<double> givenMatrix6 = {
     {23.65,12.54,19.64,17.23},
     {98.12,186.32,12.87,145.32},
     {98.123,76.12,984.12,12.98},
@@ -408,7 +408,7 @@ TEST(MatrixAnalyticalTests,canDefineEqualityOfMatrices)
 
 TEST(MatrixAnalyticalTests, canCopyMatrix)
 {
-  const algebra::Matrix<int> givenMatrix1 {
+  const algebra::Matrix<int> givenMatrix1 = {
     {1,2,3},
     {4,6,7},
     {9,10,11}
@@ -416,14 +416,14 @@ TEST(MatrixAnalyticalTests, canCopyMatrix)
   const algebra::Matrix<int> copiedMatrix1 = givenMatrix1;
   ASSERT_TRUE(givenMatrix1 == copiedMatrix1);
 
-  const algebra::Matrix<float> givenMatrix2 {
+  const algebra::Matrix<float> givenMatrix2 = {
     {1.2f,3.4f,4.5f},
     {6.7f,8.9f,10.11f},
   };
   const algebra::Matrix<float> copiedMatrix2 = givenMatrix2;
   ASSERT_TRUE(givenMatrix2 == copiedMatrix2);
 
-  const algebra::Matrix<double> givenMatrix3 {
+  const algebra::Matrix<double> givenMatrix3 = {
     {23.65,12.54,19.64,17.23},
     {98.12,186.32,12.87,145.32},
     {98.123,76.12,984.12,12.98},

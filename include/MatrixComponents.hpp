@@ -59,6 +59,10 @@ namespace algebra
     {
       return m_ElementSequence -> operator[](_index);
     }
+    RealNumericValueType& operator[](const size_t& _index)
+    {
+      return m_ElementSequence -> operator[](_index);
+    }
     typename std::vector<RealNumericValueType>::iterator begin() const
     {
       return m_ElementSequence -> begin();
@@ -66,6 +70,19 @@ namespace algebra
     typename std::vector<RealNumericValueType>::iterator end() const
     {
       return m_ElementSequence -> end();
+    }
+    ElementSequence& operator =(const algebra::ElementSequence<RealNumericValueType>& _elementSequence)
+    {
+      if(this == &_elementSequence)
+        return *this;
+      if((Size() != _elementSequence.Size()) || _elementSequence.Size() == 0)
+        throw std::length_error("Copy assignment attempted for sequence of elements of unequal sizes.");
+      m_ElementSequence = std::make_unique<std::vector<RealNumericValueType>>();
+      m_ElementSequence -> reserve(_elementSequence.Size());
+      std::for_each(_elementSequence.begin(),_elementSequence.end(),[&](const RealNumericValueType& _element){
+        m_ElementSequence -> emplace_back(_element);
+      });
+      return *this;
     }
   };
 
