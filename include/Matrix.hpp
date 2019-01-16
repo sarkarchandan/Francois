@@ -9,6 +9,7 @@
 #include <typeinfo>
 #include <initializer_list>
 #include <memory>
+#include <functional>
 #include "MatrixComponents.hpp"
 #include "MatrixElementProtocol.hpp"
 
@@ -347,9 +348,51 @@ namespace algebra
     {
       return (Order().second == _matrix.Order().first);
     }
+
+    void For_EachRow(const std::function<void(const algebra::Row<RealNumericValueType>&)>& _lambda) const
+    {
+      std::vector<algebra::Row<RealNumericValueType>> _rows = Rows();
+      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
+        _lambda(_row);
+      });
+    }
+
+    void For_EachColumn(const std::function<void(const algebra::Column<RealNumericValueType>&)>& _lambda) const
+    {
+      std::vector<algebra::Column<RealNumericValueType>> _columns = Columns();
+      std::for_each(_columns.begin(),_columns.end(),[&](const algebra::Column<RealNumericValueType>& _column){
+        _lambda(_column);
+      });
+    }
+
+    Matrix<RealNumericValueType> Map(const std::function<RealNumericValueType(const RealNumericValueType&)>& _lambda) const
+    {
+      std::vector<std::vector<RealNumericValueType>> _mapped_Container;
+      _mapped_Container.reserve(Order().first);
+      std::transform(m_Container -> begin(), m_Container -> end(),std::back_inserter(_mapped_Container),[&](const std::vector<RealNumericValueType>& _vector){
+        std::vector<RealNumericValueType> _buffer;
+        _buffer.reserve(Order().second);
+        std::transform(_vector.begin(),_vector.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element){
+          return _lambda(_element);
+        });
+        return _buffer;
+      });
+      return algebra::Matrix<RealNumericValueType>(_mapped_Container);
+    }
   };
 
   #pragma mark Operator overloaded functions
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const std::vector<RealNumericValueType>& _vector)
+  {
+    _stream << "{ ";
+    std::for_each(_vector.begin(),_vector.end(),[&](const RealNumericValueType& _element){
+      _stream << _element << " ";
+    });
+    _stream << "}";
+    return _stream;
+  }
+
   template<typename RealNumericValueType>
   std::ostream& operator <<(std::ostream& _stream, const algebra::Matrix<RealNumericValueType>& _matrix)
   {
@@ -436,25 +479,49 @@ namespace algebra
     return algebra::Matrix<RealNumericValueType>(_resultant_Rows);
   }
 
-  template<typename ComparableType>
-  bool operator ==(const algebra::Matrix<ComparableType>& _lhs, const algebra::Matrix<ComparableType>& _rhs)
+  template<typename RealNumericValueType>
+  bool operator ==(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
   {
     if(_lhs.Order() != _rhs.Order())
       return false;
 
-    const std::vector<algebra::Row<ComparableType>> _lhs_Rows = _lhs.Rows();
-    const std::vector<algebra::Row<ComparableType>> _rhs_Rows = _rhs.Rows();
+    const std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
+    const std::vector<algebra::Row<RealNumericValueType>> _rhs_Rows = _rhs.Rows();
 
-    return std::equal(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<ComparableType>& _lhs_Row, const algebra::Row<ComparableType>& _rhs_Row) {
+    return std::equal(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _lhs_Row, const algebra::Row<RealNumericValueType>& _rhs_Row) {
       return _lhs_Row == _rhs_Row;
     });
   }
 
-  template<typename ComparableType>
-  bool operator !=(const algebra::Matrix<ComparableType>& _lhs, const algebra::Matrix<ComparableType>& _rhs)
+  template<typename RealNumericValueType>
+  bool operator !=(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
   {
     return !(_lhs == _rhs);
   }
+
+  Matrix<int> Ints(const size_t& _row, const size_t& _column, const int& _number)
+  {
+    std::vector<std::vector<int>> _vectors;
+    _vectors.reserve(_row);
+    for(size_t _row_index = 0; _row_index < _row; _row_index += 1)
+    {
+      std::vector<int> _buffer(_column);
+      std::generate(_buffer.begin(),_buffer.end(),[counter = _number]() {return counter;});
+      _vectors.emplace_back(_buffer);
+    }
+    return algebra::Matrix<int>(_vectors);
+  }
+
+  Matrix<int> Zeros(const size_t& _row, const size_t& _column)
+  {
+    return algebra::Ints(_row,_column,0);
+  }
+
+  Matrix<int> Ones(const size_t& _row, const size_t& _column)
+  {
+    return algebra::Ints(_row,_column,1);
+  }
+
 } // algebra
 
 #endif //MATRIX_H

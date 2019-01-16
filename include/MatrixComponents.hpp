@@ -184,6 +184,28 @@ namespace algebra
     return _rhs * _scalar;
   }
 
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator /(const algebra::Row<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element / _scalar;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator %(const algebra::Row<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element % _scalar;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
   #pragma mark Column
   template<typename RealNumericValueType>
   struct Column: public ElementSequence<RealNumericValueType>
@@ -259,6 +281,28 @@ namespace algebra
   algebra::Column<RealNumericValueType> operator *(const RealNumericValueType& _scalar, const algebra::Column<RealNumericValueType>& _rhs)
   {
     return _rhs * _scalar;
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator /(const algebra::Column<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element / _scalar;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator %(const algebra::Column<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element % _scalar;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
   }
 
   template<typename RealNumericValueType>
