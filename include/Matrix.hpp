@@ -379,6 +379,21 @@ namespace algebra
       });
       return algebra::Matrix<RealNumericValueType>(_mapped_Container);
     }
+
+    Matrix<RealNumericValueType> Transpose() const
+    {
+      std::vector<algebra::Column<RealNumericValueType>> _columns;
+      _columns.reserve(Order().first);
+      For_EachRow([&](const algebra::Row<RealNumericValueType>& _row){
+        std::vector<RealNumericValueType> _buffer;
+        _buffer.reserve(_row.Size());
+        std::transform(_row.begin(),_row.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element){
+          return _element;
+        });
+        _columns.emplace_back(algebra::Column<RealNumericValueType>(_buffer));
+      });
+      return algebra::Matrix<RealNumericValueType>(_columns);
+    }
   };
 
   #pragma mark Operator overloaded functions

@@ -332,6 +332,61 @@ TEST(MatrixOperationsTests_ExceptionTest, canDetermineInvalidMultiplicationAttem
   EXPECT_THROW(testableMatrix7 * testableMatrix8,std::logic_error);
 }
 
+TEST(MatrixOperationsTests, canDetermineTransposeOfMatrix)
+{
+  const algebra::Matrix<int> testableMatrix1 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> testableTransposeMatrix1 = testableMatrix1.Transpose();
+  const algebra::Matrix<int> expectedTransposeMatrix1 = {
+    {1,5,9},
+    {2,6,10},
+    {3,7,11},
+    {4,8,12}
+  };
+  const algebra::Matrix<double> testableMatrix2 = {
+    {3.1,3.2,3.3},
+    {2.7,2.8,2.9},
+    {1.3,1.4,1.5},
+    {2.7,2.8,2.9}
+  };
+  const algebra::Matrix<double> testableTransposeMatrix2 = testableMatrix2.Transpose();
+  const algebra::Matrix<double> expectedTransposeMatrix2 = {
+    {3.1,2.7,1.3,2.7},
+    {3.2,2.8,1.4,2.8},
+    {3.3,2.9,1.5,2.9}
+  };
+  ASSERT_TRUE(testableTransposeMatrix2 == expectedTransposeMatrix2);
+
+  const algebra::Matrix<int> testableMatrix3 = {
+    {1,2,3,4,5}
+  };
+  const algebra::Matrix<int> testableTransposeMatrix3 = testableMatrix3.Transpose();
+  const algebra::Matrix<int> expectedTransposeMatrix3 = {
+    {1},
+    {2},
+    {3},
+    {4},
+    {5}
+  };
+  ASSERT_TRUE(testableTransposeMatrix3 == expectedTransposeMatrix3);
+
+  const algebra::Matrix<double> testableMatrix4 = {
+    {1.2},
+    {2.3},
+    {3.4},
+    {4.5},
+    {5.6}
+  };
+  const algebra::Matrix<double> testableTransposeMatrix4 = testableMatrix4.Transpose();
+  const algebra::Matrix<double> expectedTransposeMatrix4 = {
+    {1.2,2.3,3.4,4.5,5.6}
+  };
+  ASSERT_TRUE(testableTransposeMatrix4 == expectedTransposeMatrix4);
+}
+
 TEST(MatrixOperationsTests, canOperateOnMatrix)
 {
   FAIL() << "Not Implemented";

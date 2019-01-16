@@ -115,7 +115,7 @@ TEST(MatrixUtilityTests, canProvideAFunctionToMapOneMatrixToAnother)
     {5,6,7,8},
     {9,10,11,12}
   };
-  const algebra::Matrix<int> mappedMatrix1 = testableMatrix1.Map([&](const int& _element){
+  const algebra::Matrix<int> testableMappedMatrix1 = testableMatrix1.Map([&](const int& _element){
     return _element * _element;
   });
   const algebra::Matrix<int> expectedMatrix1 = {
@@ -123,14 +123,14 @@ TEST(MatrixUtilityTests, canProvideAFunctionToMapOneMatrixToAnother)
     {25,36,49,64},
     {81,100,121,144}
   };
-  ASSERT_TRUE(mappedMatrix1 == expectedMatrix1);
+  ASSERT_TRUE(testableMappedMatrix1 == expectedMatrix1);
 
   const algebra::Matrix<double> testableMatrix2 = {
     {1.2,3.4,5.6},
     {7.8,9.10,11.12},
     {13.14,15.16,17.18}
   };
-  const algebra::Matrix<double> mappedMatrix2 = testableMatrix2.Map([&](const double& _element) {
+  const algebra::Matrix<double> testableMappedMatrix2 = testableMatrix2.Map([&](const double& _element) {
     return std::sqrt(_element);
   });
   const algebra::Matrix<double> expectedMatrix2 = {
@@ -138,5 +138,22 @@ TEST(MatrixUtilityTests, canProvideAFunctionToMapOneMatrixToAnother)
     {std::sqrt(7.8),std::sqrt(9.10),std::sqrt(11.12)},
     {std::sqrt(13.14),std::sqrt(15.16),std::sqrt(17.18)}
   };
-  ASSERT_TRUE(mappedMatrix2 == expectedMatrix2);
+  ASSERT_TRUE(testableMappedMatrix2 == expectedMatrix2);
+
+  const algebra::Matrix<int> testableMatrix3 = {
+    {1,2,4,0},
+    {3,3,0,1},
+    {6,2,8,1},
+    {2,7,0,5}
+  };
+  const algebra::Matrix<int> testableNegativeMatrix3 = testableMatrix3.Map([&](const int& _element){
+    return -1 * _element;
+  });
+  const algebra::Matrix<int> expectedNegativeMatrix3 = {
+    {-1,-2,-4,0},
+    {-3,-3,0,-1},
+    {-6,-2,-8,-1},
+    {-2,-7,0,-5}
+  };
+  ASSERT_TRUE(testableNegativeMatrix3 == expectedNegativeMatrix3);
 }

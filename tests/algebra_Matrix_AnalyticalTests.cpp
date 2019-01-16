@@ -432,3 +432,8 @@ TEST(MatrixAnalyticalTests, canCopyMatrix)
   const algebra::Matrix<double> copiedMatrix3 = givenMatrix3;
   ASSERT_TRUE(givenMatrix3 == copiedMatrix3);
 }
+
+TEST(MatrixAnalyticalTests, canValidateMatrixProperties)
+{
+  FAIL() << "Not Implemented";
+}
