@@ -501,7 +501,7 @@ TEST(MatrixAnalyticalTests, canValidatePropertiesOfMatrixTranspose)
 {
   //#1 T(T(A)) == A
   //#2 T(k.A) == k.T(A)
-  //#3 T(A+B) == T(A) + T(B),T(A-B) = T(A) - T(B)
+  //#3 T(A+B) == T(A) + T(B),T(A-B) == T(A) - T(B)
   //#4 T(A*B) == T(B)*T(A)
   //#5 A * T(A) == I
   FAIL() << "Not Implemented";
