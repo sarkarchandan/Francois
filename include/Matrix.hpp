@@ -15,7 +15,6 @@
 
 namespace algebra
 {
-  //TODO: Implement the copy assignment operator
   template<typename RealNumericValueType>
   class Matrix
   {
@@ -393,6 +392,23 @@ namespace algebra
         _columns.emplace_back(algebra::Column<RealNumericValueType>(_buffer));
       });
       return algebra::Matrix<RealNumericValueType>(_columns);
+    }
+
+    bool IsSymmetricMatrix() const 
+    {
+      if(!IsSquareMatrix())
+        return false;
+      return *this == Transpose();
+    }
+
+    bool IsSkewSymmetricMatrix() const
+    {
+      if(!IsSquareMatrix())
+        return false;
+      const algebra::Matrix<RealNumericValueType> _matrix = Transpose().Map([&](const RealNumericValueType& _element){
+        return -_element;
+      });
+      return *this == _matrix;
     }
   };
 

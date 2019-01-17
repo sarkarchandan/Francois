@@ -387,7 +387,7 @@ TEST(MatrixOperationsTests, canDetermineTransposeOfMatrix)
   ASSERT_TRUE(testableTransposeMatrix4 == expectedTransposeMatrix4);
 }
 
-TEST(MatrixOperationsTests, canOperateOnMatrix)
+TEST(MatrixOperationsTests, canPerformElementaryOperationsOnMatrix)
 {
   FAIL() << "Not Implemented";
 }

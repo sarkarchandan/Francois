@@ -8,7 +8,6 @@
 
 namespace algebra
 {
-  //TODO: Implement the copy assignment operator
   template<typename RealNumericValueType>
   struct ElementSequence
   {

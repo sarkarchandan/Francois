@@ -147,7 +147,7 @@ TEST(MatrixUtilityTests, canProvideAFunctionToMapOneMatrixToAnother)
     {2,7,0,5}
   };
   const algebra::Matrix<int> testableNegativeMatrix3 = testableMatrix3.Map([&](const int& _element){
-    return -1 * _element;
+    return -_element;
   });
   const algebra::Matrix<int> expectedNegativeMatrix3 = {
     {-1,-2,-4,0},

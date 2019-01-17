@@ -433,7 +433,76 @@ TEST(MatrixAnalyticalTests, canCopyMatrix)
   ASSERT_TRUE(givenMatrix3 == copiedMatrix3);
 }
 
-TEST(MatrixAnalyticalTests, canValidateMatrixProperties)
+TEST(MatrixAnalyticalTests, canDefineSymmetricMatrix)
 {
+  const algebra::Matrix<int> testableMatrix1 = {
+    {1,-1,5},
+    {-1,2,1},
+    {5,1,3}
+  };
+  ASSERT_TRUE(testableMatrix1.IsSymmetricMatrix());
+
+  const algebra::Matrix<double> testableMatrix2 = {
+    {2.3,5.1,9.3,3.7},
+    {5.1,3.1,1.2,9.3},
+    {9.3,1.2,1.1,4.3},
+    {3.7,9.3,4.3,6.6}
+  };
+  ASSERT_TRUE(testableMatrix2.IsSymmetricMatrix());
+
+  const algebra::Matrix<int> testableMatrix3 = {
+    {1,-1,5},
+    {-1,2,3},
+    {5,1,1}
+  };
+  ASSERT_FALSE(testableMatrix3.IsSymmetricMatrix());
+
+  const algebra::Matrix<double> testableMatrix4 = {
+    {2.3,5.1,9.3,3.7},
+    {5.1,3.1,1.1,9.3},
+    {9.3,1.2,1.2,4.3},
+    {3.7,9.3,4.3,6.6}
+  };
+  ASSERT_FALSE(testableMatrix4.IsSymmetricMatrix());
+
+  const algebra::Matrix<int> testableMatrix5 = {
+    {1,1,1,1},
+    {1,1,1,1},
+    {1,1,1,1}
+  };
+  ASSERT_FALSE(testableMatrix5.IsSymmetricMatrix());
+}
+
+TEST(MatrixAnalyticalTests, canDefineSkewSymmetricMatrix)
+{
+  const algebra::Matrix<int> testableMatrix1 = {
+    {0,1,-1},
+    {-1,0,1},
+    {1,-1,0}
+  };
+  ASSERT_TRUE(testableMatrix1.IsSkewSymmetricMatrix());
+
+  const algebra::Matrix<double> testableMatrix2 = {
+    {0,4.4,-3.3},
+    {-4.4,0,3.3},
+    {3.3,-3.3,0}
+  };
+  ASSERT_TRUE(testableMatrix2.IsSkewSymmetricMatrix());
+
+  const algebra::Matrix<int> testableMatrix3 = {
+    {0,1,-1,0},
+    {-1,0,1,0},
+    {1,-1,0,0}
+  };
+  ASSERT_FALSE(testableMatrix3.IsSkewSymmetricMatrix());
+}
+
+TEST(MatrixAnalyticalTests, canValidatePropertiesOfMatrixTranspose)
+{
+  //#1 T(T(A)) == A
+  //#2 T(k.A) == k.T(A)
+  //#3 T(A+B) == T(A) + T(B),T(A-B) = T(A) - T(B)
+  //#4 T(A*B) == T(B)*T(A)
+  //#5 A * T(A) == I
   FAIL() << "Not Implemented";
 }
