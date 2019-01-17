@@ -500,9 +500,106 @@ TEST(MatrixAnalyticalTests, canDefineSkewSymmetricMatrix)
 TEST(MatrixAnalyticalTests, canValidatePropertiesOfMatrixTranspose)
 {
   //#1 T(T(A)) == A
+  const algebra::Matrix<int> testableIntMatrix1 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<double> testableDoubleMatrix1 = {
+    {2.3,5.1,9.3,3.7},
+    {5.1,3.1,1.1,9.3},
+    {9.3,1.2,1.2,4.3},
+    {3.7,9.3,4.3,6.6}
+  };
+  ASSERT_TRUE(testableIntMatrix1.Transpose().Transpose() == testableIntMatrix1);
+  ASSERT_TRUE(testableDoubleMatrix1.Transpose().Transpose() == testableDoubleMatrix1);
+
   //#2 T(k.A) == k.T(A)
+  const algebra::Matrix<int> testableIntMatrix2 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<double> testableDoubleMatrix2 = {
+    {2.3,5.1,9.3,3.7},
+    {5.1,3.1,1.1,9.3},
+    {9.3,1.2,1.2,4.3},
+    {3.7,9.3,4.3,6.6}
+  };
+  ASSERT_TRUE((4 * testableIntMatrix2).Transpose() == 4 * testableIntMatrix2.Transpose());
+  ASSERT_TRUE((4.0 * testableDoubleMatrix2).Transpose() == 4.0 * testableDoubleMatrix2.Transpose());
+
   //#3 T(A+B) == T(A) + T(B),T(A-B) == T(A) - T(B)
+  const algebra::Matrix<int> testableIntMatrix3 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> testableIntMatrix4 = {
+    {12,11,10,9},
+    {8,7,6,5},
+    {4,3,2,1}
+  };
+  const algebra::Matrix<double> testableDoubleMatrix3 = {
+    {2.3,5.1,9.3,3.7},
+    {5.1,3.1,1.1,9.3},
+    {9.3,1.2,1.2,4.3},
+    {3.7,9.3,4.3,6.6}
+  };
+  const algebra::Matrix<double> testableDoubleMatrix4 = {
+    {3.7,9.3,4.3,6.6},
+    {9.3,1.2,1.2,4.3},
+    {5.1,3.1,1.1,9.3},
+    {2.3,5.1,9.3,3.7}
+  };
+  ASSERT_TRUE((testableIntMatrix3 + testableIntMatrix4).Transpose() == testableIntMatrix3.Transpose() + testableIntMatrix4.Transpose());
+  ASSERT_TRUE((testableIntMatrix3 - testableIntMatrix4).Transpose() == testableIntMatrix3.Transpose() - testableIntMatrix4.Transpose());
+  ASSERT_TRUE((testableDoubleMatrix3 + testableDoubleMatrix4).Transpose() == testableDoubleMatrix3.Transpose() + testableDoubleMatrix4.Transpose());
+  ASSERT_TRUE((testableDoubleMatrix3 - testableDoubleMatrix4).Transpose() == testableDoubleMatrix3.Transpose() - testableDoubleMatrix4.Transpose());
+
   //#4 T(A*B) == T(B)*T(A)
-  //#5 A * T(A) == I
-  FAIL() << "Not Implemented";
+  const algebra::Matrix<int> testableIntMatrix5 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  const algebra::Matrix<int> testableIntMatrix6 = {
+    {16,15,14,13},
+    {12,11,10,9},
+    {8,7,6,5},
+    {4,3,2,1}
+  };
+  const algebra::Matrix<double> testableDoubleMatrix5 = {
+    {2.3,5.1,9.3,3.7},
+    {5.1,3.1,1.1,9.3},
+    {9.3,1.2,1.2,4.3},
+    {3.7,9.3,4.3,6.6}
+  };
+  const algebra::Matrix<double> testableDoubleMatrix6 = {
+    {3.7,9.3,4.3,6.6},
+    {9.3,1.2,1.2,4.3},
+    {5.1,3.1,1.1,9.3},
+    {2.3,5.1,9.3,3.7}
+  };
+  ASSERT_TRUE((testableIntMatrix5 * testableIntMatrix6).Transpose() == testableIntMatrix6.Transpose() * testableIntMatrix5.Transpose());
+  ASSERT_TRUE((testableDoubleMatrix5 * testableDoubleMatrix6).Transpose() == testableDoubleMatrix6.Transpose() * testableDoubleMatrix5.Transpose());
+
+  //#5 For any square matrix A, A+T(A) is symmteric and A-T(A) is skew-symmetric
+  const algebra::Matrix<int> testableIntMatrix7 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12},
+    {13,14,15,16}
+  };
+  ASSERT_TRUE((testableIntMatrix7 + testableIntMatrix7.Transpose()).IsSymmetricMatrix());
+  ASSERT_TRUE((testableIntMatrix7 - testableIntMatrix7.Transpose()).IsSkewSymmetricMatrix());
+
+  const algebra::Matrix<double> testableDoubleMatrix7 = {
+    {3.7,9.3,4.3,6.6},
+    {9.3,1.2,1.2,4.3},
+    {5.1,3.1,1.1,9.3},
+    {2.3,5.1,9.3,3.7}
+  };
+  ASSERT_TRUE((testableDoubleMatrix7 + testableDoubleMatrix7.Transpose()).IsSymmetricMatrix());
+  ASSERT_TRUE((testableDoubleMatrix7 - testableDoubleMatrix7.Transpose()).IsSkewSymmetricMatrix());
 }

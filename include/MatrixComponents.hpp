@@ -91,13 +91,9 @@ namespace algebra
   {
     if(_lhs.Size() != _rhs.Size())
       return false;
-
-    for(size_t index = 0; index < _lhs.Size(); index += 1)
-    {
-      if(_lhs[index] != _rhs[index])
-        return false;
-    }
-    return true;
+    return std::equal(_lhs.begin(),_lhs.end(),_rhs.begin(),_rhs.end(),[&](const RealNumericValueType& _lhs_element, const RealNumericValueType& _rhs_element){
+      return _lhs_element == _rhs_element;
+    });
   }
 
   template<typename RealNumericValueType>

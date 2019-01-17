@@ -49,7 +49,7 @@ namespace algebra
         });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
-
+    
     bool IsValid(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
     {
       std::vector<size_t> _buffer;
@@ -68,6 +68,18 @@ namespace algebra
         return _column.Size();
       });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
+    }
+
+    void SetRowByIndex(const algebra::Row<RealNumericValueType>& _row, const size_t& _row_index)
+    {
+      for(size_t _column_index = 0; _column_index < Order().second; _column_index += 1)
+          operator()(_row_index,_column_index) = _row[_column_index];
+    }
+
+    void SetColumnByIndex(const algebra::Column<RealNumericValueType>& _column, const size_t& _column_index)
+    {
+      for(size_t _row_index = 0; _row_index < Order().first; _row_index += 1)
+          operator()(_row_index,_column_index) = _column[_row_index];
     }
 
     #pragma mark Public constructors
@@ -410,6 +422,58 @@ namespace algebra
       });
       return *this == _matrix;
     }
+
+    void ElementaryRowOperation_Interchange_ByIndex(const size_t& _fist_row_index, const size_t& _second_row_index)
+    {
+      if(!(_fist_row_index < Order().first) || !(_second_row_index < Order().first))
+        throw std::out_of_range("One or both of the row indices are out of range");
+      std::vector<algebra::Row<RealNumericValueType>> _rows = Rows();
+      SetRowByIndex(_rows[_fist_row_index],_second_row_index);
+      SetRowByIndex(_rows[_second_row_index],_fist_row_index);
+    }
+
+    void ElementaryRowOperation_MultiplicationByNonZeroScalar_ByIndex(const RealNumericValueType& _scalar, const size_t& _row_index)
+    {
+      if(!(_row_index < Order().first))
+        throw std::out_of_range("Row index is out of range");
+      const algebra::Row<RealNumericValueType> _row = Rows()[_row_index];
+      SetRowByIndex(_scalar * _row, _row_index);
+    }
+
+    void ElementaryRowOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(const size_t& _target_row_index,const RealNumericValueType& _scalar, const size_t& _source_row_index)
+    {
+      if(!(_target_row_index < Order().first) || !(_source_row_index < Order().first))
+        throw std::out_of_range("One or both of source and target row indices are out of range");
+      const algebra::Row<RealNumericValueType> _source_row = Rows()[_source_row_index];
+      const algebra::Row<RealNumericValueType> _target_row = Rows()[_target_row_index];
+      SetRowByIndex((_target_row + (_scalar * _source_row)),_target_row_index);
+    }
+
+    void ElementaryColumnOperation_Interchange_ByIndex(const size_t& _first_column_index, const size_t& _second_column_index)
+    {
+      if(!(_first_column_index < Order().second) || !(_second_column_index < Order().second))
+        throw std::out_of_range("One or both of the column indices are out of range");
+      std::vector<algebra::Column<RealNumericValueType>> _columns = Columns();
+      SetColumnByIndex(_columns[_first_column_index],_second_column_index);
+      SetColumnByIndex(_columns[_second_column_index],_first_column_index);
+    }
+
+    void ElementaryColumnOperation_MultiplicationByNonZeroScalar_ByIndex(const RealNumericValueType& _scalar, const size_t& _column_index)
+    {
+      if(!(_column_index < Order().second))
+        throw std::out_of_range("Column index is out of range");
+      const algebra::Column<RealNumericValueType> _column = Columns()[_column_index];
+      SetColumnByIndex(_scalar * _column,_column_index);
+    }
+
+    void ElementaryColumnOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(const size_t& _target_column_index, const RealNumericValueType& _scalar, const size_t& _source_column_index)
+    {
+      if(!(_target_column_index < Order().second) || !(_source_column_index < Order().second))
+        throw std::out_of_range("One or both of source and target column indices are out of range");
+      const algebra::Column<RealNumericValueType> _source_column = Columns()[_source_column_index];
+      const algebra::Column<RealNumericValueType> _target_column = Columns()[_target_column_index];
+      SetColumnByIndex((_target_column + (_scalar * _source_column)),_target_column_index);
+    }
   };
 
   #pragma mark Operator overloaded functions
@@ -552,7 +616,6 @@ namespace algebra
   {
     return algebra::Ints(_row,_column,1);
   }
-
 } // algebra
 
 #endif //MATRIX_H

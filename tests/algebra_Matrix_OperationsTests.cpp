@@ -387,7 +387,94 @@ TEST(MatrixOperationsTests, canDetermineTransposeOfMatrix)
   ASSERT_TRUE(testableTransposeMatrix4 == expectedTransposeMatrix4);
 }
 
-TEST(MatrixOperationsTests, canPerformElementaryOperationsOnMatrix)
+TEST(MatrixOperationsTests, canPerformElementaryRowOperationsOnMatrix)
 {
-  FAIL() << "Not Implemented";
+  //#1 Row[i] <-> Row[j]
+  algebra::Matrix<int> testableMatrix1 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  testableMatrix1.ElementaryRowOperation_Interchange_ByIndex(0,2);
+  const algebra::Matrix<int> expectedMatrix1 = {
+    {9,10,11,12},
+    {5,6,7,8},
+    {1,2,3,4}
+  };
+  ASSERT_TRUE(testableMatrix1 == expectedMatrix1);
+  
+  //#2 Row[i] -> k * Row[i]
+  algebra::Matrix<int> testableMatrix2 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  testableMatrix2.ElementaryRowOperation_MultiplicationByNonZeroScalar_ByIndex(4,1);
+  const algebra::Matrix<int> expectedMatrix2 = {
+    {1,2,3,4},
+    {20,24,28,32},
+    {9,10,11,12}
+  };
+  ASSERT_TRUE(testableMatrix2 == expectedMatrix2);
+
+  //#3 Row[i] -> Row[i] + k * Row[j]
+  algebra::Matrix<int> testableMatrix3 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  testableMatrix3.ElementaryRowOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(0,4,2);
+  const algebra::Matrix<int> expectedMatrix3 = {
+    {37,42,47,52},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  ASSERT_TRUE(testableMatrix3 == expectedMatrix3);
 }
+
+TEST(MatrixOperationsTests, canPerformElementaryColumnOperationsOnMatrix)
+{
+  //#1 Column[i] <-> Column[j]
+  algebra::Matrix<int> testableMatrix1 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  testableMatrix1.ElementaryColumnOperation_Interchange_ByIndex(0,3);
+
+  const algebra::Matrix<int> expectedMatrix1 = {
+    {4,2,3,1},
+    {8,6,7,5},
+    {12,10,11,9}
+  };
+  ASSERT_TRUE(testableMatrix1 == expectedMatrix1);
+
+  //#2 Column[i] -> k * Column[i]
+  algebra::Matrix<int> testableMatrix2 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  testableMatrix2.ElementaryColumnOperation_MultiplicationByNonZeroScalar_ByIndex(4,1);
+  const algebra::Matrix<int> expectedMatrix2 = {
+    {1,8,3,4},
+    {5,24,7,8},
+    {9,40,11,12}
+  };
+  ASSERT_TRUE(testableMatrix2 == expectedMatrix2);
+
+  //#3 Column[i] -> Column[i] + k * Column[j]
+  algebra::Matrix<int> testableMatrix3 = {
+    {1,2,3,4},
+    {5,6,7,8},
+    {9,10,11,12}
+  };
+  testableMatrix3.ElementaryColumnOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(0,4,2);
+  const algebra::Matrix<int> expectedMatrix3 = {
+    {13,2,3,4},
+    {33,6,7,8},
+    {53,10,11,12}
+  };
+  ASSERT_TRUE(testableMatrix3 == expectedMatrix3);
+}
+
