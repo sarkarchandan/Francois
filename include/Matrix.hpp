@@ -17,7 +17,7 @@ namespace algebra
 {
 
   template<typename RealNumericValueType>
-  class MultiSequence
+  struct MultiSequence
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
     std::is_same<RealNumericValueType,long>::value ||
