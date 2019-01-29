@@ -15,8 +15,9 @@
 
 namespace algebra
 {
+
   template<typename RealNumericValueType>
-  class Matrix
+  class MultiSequence
   {
     static_assert(std::is_same<RealNumericValueType,int>::value || 
     std::is_same<RealNumericValueType,long>::value ||
@@ -24,11 +25,11 @@ namespace algebra
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
 
-    #pragma mark Private member properties
-    private:
+    #pragma mark Protected member properties
+    protected:
     std::unique_ptr<std::vector<std::vector<RealNumericValueType>>> m_Container;
 
-    #pragma mark Private member functions
+    #pragma mark Private helper functions
     private:
     bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
@@ -70,6 +71,79 @@ namespace algebra
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
 
+    #pragma mark Protected member functions to be accessed only by child classes
+    protected:
+    MultiSequence(){}
+    MultiSequence(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
+    {
+      if (!IsValid(_init_list))
+        throw std::invalid_argument("Unequal number of elements in rows");
+      this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      this -> m_Container -> reserve(_init_list.size());
+      std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
+          this -> m_Container -> emplace_back(_element_vector);
+        });
+    }
+    MultiSequence(const std::vector<std::vector<RealNumericValueType>>& _vectors)
+    {
+      if (!IsValid(_vectors))
+        throw std::invalid_argument("Unequal number of elements in vectors");
+      
+      this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      this -> m_Container -> reserve(_vectors.size());
+      std::for_each(_vectors.begin(),_vectors.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
+          this -> m_Container -> emplace_back(_element_vector);
+      });
+    }
+    MultiSequence(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
+    {
+      if(!IsValid(_rows))
+        throw std::invalid_argument("Unequal number of elements in rows");
+      this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      this -> m_Container -> reserve(_rows.size());
+      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
+        std::vector<RealNumericValueType> _buffer;
+        _buffer.reserve(_row.Size());
+        std::transform(_row.begin(),_row.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element){
+          return _element;
+        });
+        this -> m_Container -> emplace_back(_buffer);
+      });
+    }
+    MultiSequence(const std::vector<algebra::Column<RealNumericValueType>>& _columns)
+    {
+      if(!IsValid(_columns))
+        throw std::invalid_argument("Unequal number of elements in columns");
+
+      this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      this -> m_Container -> reserve(_columns[0].Size());
+      
+      for(size_t _index = 0; _index < _columns[0].Size(); _index += 1)
+      {
+        std::vector<RealNumericValueType> _row_buffer;
+        _row_buffer.reserve(_columns.size());
+        std::for_each(_columns.begin(),_columns.end(),[&](const algebra::Column<RealNumericValueType>& _column){
+          _row_buffer.emplace_back(_column[_index]);
+        });
+        this -> m_Container -> emplace_back(_row_buffer);
+      }
+    }
+    MultiSequence(const MultiSequence& _matrix)
+    {
+      this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      this -> m_Container -> reserve(_matrix.Order().first);
+      std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
+      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
+        std::vector<RealNumericValueType> _buffer;
+        _buffer.reserve(_row.Size());
+        std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element) {
+          _buffer.emplace_back(_element);
+        });
+        this -> m_Container -> emplace_back(_buffer);
+      });
+    }
+    ~MultiSequence(){}
+
     void SetRowByIndex(const algebra::Row<RealNumericValueType>& _row, const size_t& _row_index)
     {
       for(size_t _column_index = 0; _column_index < Order().second; _column_index += 1)
@@ -82,96 +156,18 @@ namespace algebra
           operator()(_row_index,_column_index) = _column[_row_index];
     }
 
-    #pragma mark Public constructors
-    public:
-    Matrix() = delete;
-    Matrix(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
-    {
-      if (!IsValid(_init_list))
-        throw std::invalid_argument("Unequal number of elements in rows");
-      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      m_Container -> reserve(_init_list.size());
-      std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
-          m_Container -> emplace_back(_element_vector);
-        });
-    }
-    
-    Matrix(const std::vector<std::vector<RealNumericValueType>>& _vectors)
-    {
-      if (!IsValid(_vectors))
-        throw std::invalid_argument("Unequal number of elements in vectors");
-      
-      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      m_Container -> reserve(_vectors.size());
-      std::for_each(_vectors.begin(),_vectors.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
-          m_Container -> emplace_back(_element_vector);
-      });
-    }
-
-    Matrix(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
-    {
-      if(!IsValid(_rows))
-        throw std::invalid_argument("Unequal number of elements in rows");
-      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      m_Container -> reserve(_rows.size());
-      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
-        std::vector<RealNumericValueType> _buffer;
-        _buffer.reserve(_row.Size());
-        std::transform(_row.begin(),_row.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element){
-          return _element;
-        });
-        m_Container -> emplace_back(_buffer);
-      });
-    }
-
-    Matrix(const std::vector<algebra::Column<RealNumericValueType>>& _columns)
-    {
-      if(!IsValid(_columns))
-        throw std::invalid_argument("Unequal number of elements in columns");
-
-      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      m_Container -> reserve(_columns[0].Size());
-      
-      for(size_t _index = 0; _index < _columns[0].Size(); _index += 1)
-      {
-        std::vector<RealNumericValueType> _row_buffer;
-        _row_buffer.reserve(_columns.size());
-        std::for_each(_columns.begin(),_columns.end(),[&](const algebra::Column<RealNumericValueType>& _column){
-          _row_buffer.emplace_back(_column[_index]);
-        });
-        m_Container -> emplace_back(_row_buffer);
-      }
-    }
-
-    ~Matrix(){}
-    
-    Matrix(const Matrix& _matrix)
-    {
-      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      m_Container -> reserve(_matrix.Order().first);
-      std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
-      std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
-        std::vector<RealNumericValueType> _buffer;
-        _buffer.reserve(_row.Size());
-        std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element) {
-          _buffer.emplace_back(_element);
-        });
-        m_Container -> emplace_back(_buffer);
-      });
-    }
-    
     #pragma mark Public member functions and accessors
     public:
     inline std::pair<size_t,size_t> Order() const
     {
-      const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(m_Container -> size(),m_Container -> operator[](0).size());
+      const std::pair<size_t,size_t> _pair = std::make_pair<size_t,size_t>(this -> m_Container -> size(),this -> m_Container -> operator[](0).size());
       return _pair;
     }
 
     inline const RealNumericValueType& operator ()(const size_t& _row,const size_t& _column) const
     {
       if(_row < Order().first && _column < Order().second)
-        return m_Container -> operator[](_row)[_column];
+        return this -> m_Container -> operator[](_row)[_column];
       else
         throw std::out_of_range("Out of range subscripting attempted");
     }
@@ -179,7 +175,7 @@ namespace algebra
     inline RealNumericValueType& operator ()(const size_t& _row, const size_t& _column)
     {
       if(_row < Order().first && _column < Order().second)
-        return m_Container -> operator[](_row)[_column];
+        return this -> m_Container -> operator[](_row)[_column];
       else
         throw std::out_of_range("Out of range subscripting attempted");
     }
@@ -188,7 +184,7 @@ namespace algebra
     {
       std::vector<algebra::Row<RealNumericValueType>> _rows;
       _rows.reserve(Order().first);
-      std::for_each(m_Container -> begin(),m_Container -> end(),[&](const std::vector<RealNumericValueType>& _row){
+      std::for_each(this -> m_Container -> begin(),this -> m_Container -> end(),[&](const std::vector<RealNumericValueType>& _row){
         _rows.emplace_back(_row);
       });
       return _rows;
@@ -212,26 +208,73 @@ namespace algebra
       return _columns;
     }
 
-    inline bool IsRowMatrix() const { return Order().first == 1; }
+    MultiSequence& operator =(const algebra::MultiSequence<RealNumericValueType>& _sequence)
+    {
+      if(this == &_sequence)
+        return *this;
+      if(this -> Order() != _sequence.Order())
+        throw std::length_error("Copy assignment attempted for matrices of different order.");
+      this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
+      this -> m_Container -> reserve(_sequence.Order().first);
+      std::for_each(_sequence.m_Container -> begin(),_sequence.m_Container -> end(),[&](const std::vector<RealNumericValueType>& _row){
+        this -> m_Container -> emplace_back(_row);
+      });
+      return *this;
+    }
+  };
 
-    inline bool IsColumnMatrix() const { return Order().second == 1; }
 
-    inline bool IsRectangularMatrix() const { return Order().first != Order().second; }
+  template<typename RealNumericValueType>
+  class Matrix: public MultiSequence<RealNumericValueType>
+  {
+    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    std::is_same<RealNumericValueType,long>::value ||
+    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,double>::value ||
+    std::is_same<RealNumericValueType,algebra::MatrixElementProtocol>::value,"Container can accept only integers or double data type for now.");
+
+    #pragma mark Public constructors
+    public:
+    Matrix() = delete;
+    Matrix(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
+    :MultiSequence<RealNumericValueType>(_init_list)
+    {}
+    Matrix(const std::vector<std::vector<RealNumericValueType>>& _vectors)
+    :MultiSequence<RealNumericValueType>(_vectors)
+    {}
+    Matrix(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
+    :MultiSequence<RealNumericValueType>(_rows)
+    {}
+    Matrix(const std::vector<algebra::Column<RealNumericValueType>>& _columns)
+    :MultiSequence<RealNumericValueType>(_columns)
+    {}
+    Matrix(const Matrix& _matrix)
+    :MultiSequence<RealNumericValueType>(_matrix)
+    {}
+    ~Matrix(){}
     
-    inline bool IsSquareMatrix() const { return Order().first == Order().second; }
+    #pragma mark Public member functions and accessors
+    public:
+    inline bool IsRowMatrix() const { return this -> Order().first == 1; }
+
+    inline bool IsColumnMatrix() const { return this -> Order().second == 1; }
+
+    inline bool IsRectangularMatrix() const { return this -> Order().first != this -> Order().second; }
+    
+    inline bool IsSquareMatrix() const { return this -> Order().first == this -> Order().second; }
 
     const std::vector<RealNumericValueType> MainDiagonalElements() const
     {
       if(IsRectangularMatrix())
         throw std::logic_error("Only square matrices are having main diagonal elements");
 
-      std::vector<size_t> _buffer(Order().first);
+      std::vector<size_t> _buffer(this -> Order().first);
       std::generate(_buffer.begin(),_buffer.end(),[_index = -1]() mutable {
         return _index += 1;
       });
-      std::vector<RealNumericValueType> _diagonalElements(Order().first);
+      std::vector<RealNumericValueType> _diagonalElements(this -> Order().first);
       std::transform(_buffer.begin(),_buffer.end(),_diagonalElements.begin(),[&](const size_t& _index){
-        return operator()(_index,_index);
+        return this -> operator()(_index,_index);
       });
       return _diagonalElements;
     }
@@ -240,16 +283,16 @@ namespace algebra
     {
       if(!IsSquareMatrix())
         return false;
-      for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+      for(size_t row_index = 0; row_index < this -> Order().first; row_index += 1)
       {
-        if(operator()(row_index,row_index) == 0)
+        if(this -> operator()(row_index,row_index) == 0)
           return false;
         
-        for(size_t column_index = row_index + 1; column_index < Order().second; column_index += 1)
+        for(size_t column_index = row_index + 1; column_index < this -> Order().second; column_index += 1)
         {
-          if(operator()(row_index,column_index) != 0)
+          if(this -> operator()(row_index,column_index) != 0)
             return false;
-          if(operator()(column_index,row_index) != 0) 
+          if(this -> operator()(column_index,row_index) != 0) 
             return false;
         }
       }
@@ -277,7 +320,7 @@ namespace algebra
     bool IsNullMatrix() const
     {
       bool _isNull = true;
-      std::for_each(m_Container -> begin(),m_Container -> end(),[&](const std::vector<RealNumericValueType>& _vector){
+      std::for_each(this -> m_Container -> begin(),this -> m_Container -> end(),[&](const std::vector<RealNumericValueType>& _vector){
         if(_vector[0] != 0)
           _isNull = false;
         if(!(std::adjacent_find(_vector.begin(),_vector.end(),std::not_equal_to<RealNumericValueType>()) == _vector.end()))
@@ -290,16 +333,16 @@ namespace algebra
     {
       if(!IsSquareMatrix())
         return false;
-      for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+      for(size_t row_index = 0; row_index < this -> Order().first; row_index += 1)
       {
-        if(operator()(row_index,row_index) == 0)
+        if(this -> operator()(row_index,row_index) == 0)
           return false;
         
-        for(size_t column_index = row_index + 1; column_index < Order().second; column_index += 1)
+        for(size_t column_index = row_index + 1; column_index < this -> Order().second; column_index += 1)
         {
-          if(operator()(row_index,column_index) == 0)
+          if(this -> operator()(row_index,column_index) == 0)
             return false;
-          if(operator()(column_index,row_index) != 0) 
+          if(this -> operator()(column_index,row_index) != 0) 
             return false;
         }
       }
@@ -310,16 +353,16 @@ namespace algebra
     {
       if(!IsSquareMatrix())
         return false;
-      for(size_t row_index = 0; row_index < Order().first; row_index += 1)
+      for(size_t row_index = 0; row_index < this -> Order().first; row_index += 1)
       {
-        if(operator()(row_index,row_index) == 0)
+        if(this -> operator()(row_index,row_index) == 0)
           return false;
         
-        for(size_t column_index = row_index + 1; column_index < Order().second; column_index += 1)
+        for(size_t column_index = row_index + 1; column_index < this -> Order().second; column_index += 1)
         {
-          if(operator()(row_index,column_index) != 0)
+          if(this -> operator()(row_index,column_index) != 0)
             return false;
-          if(operator()(column_index,row_index) == 0) 
+          if(this -> operator()(column_index,row_index) == 0) 
             return false;
         }
       }
@@ -341,28 +384,14 @@ namespace algebra
       return _sumOfDiagonalElements;
     }
 
-    Matrix& operator =(const algebra::Matrix<RealNumericValueType>& _matrix)
-    {
-      if(this == &_matrix)
-        return *this;
-      if(Order() != _matrix.Order())
-        throw std::length_error("Copy assignment attempted for matrices of different order.");
-      m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      m_Container -> reserve(_matrix.Order().first);
-      std::for_each(_matrix.m_Container -> begin(),_matrix.m_Container -> end(),[&](const std::vector<RealNumericValueType>& _row){
-        m_Container -> emplace_back(_row);
-      });
-      return *this;
-    }
-
     inline bool IsMultipliableWith(const algebra::Matrix<RealNumericValueType>& _matrix) const
     {
-      return (Order().second == _matrix.Order().first);
+      return (this -> Order().second == _matrix.Order().first);
     }
 
     void For_EachRow(const std::function<void(const algebra::Row<RealNumericValueType>&)>& _lambda) const
     {
-      std::vector<algebra::Row<RealNumericValueType>> _rows = Rows();
+      std::vector<algebra::Row<RealNumericValueType>> _rows = this -> Rows();
       std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row){
         _lambda(_row);
       });
@@ -370,7 +399,7 @@ namespace algebra
 
     void For_EachColumn(const std::function<void(const algebra::Column<RealNumericValueType>&)>& _lambda) const
     {
-      std::vector<algebra::Column<RealNumericValueType>> _columns = Columns();
+      std::vector<algebra::Column<RealNumericValueType>> _columns = this -> Columns();
       std::for_each(_columns.begin(),_columns.end(),[&](const algebra::Column<RealNumericValueType>& _column){
         _lambda(_column);
       });
@@ -379,10 +408,10 @@ namespace algebra
     Matrix<RealNumericValueType> Map(const std::function<RealNumericValueType(const RealNumericValueType&)>& _lambda) const
     {
       std::vector<std::vector<RealNumericValueType>> _mapped_Container;
-      _mapped_Container.reserve(Order().first);
-      std::transform(m_Container -> begin(), m_Container -> end(),std::back_inserter(_mapped_Container),[&](const std::vector<RealNumericValueType>& _vector){
+      _mapped_Container.reserve(this -> Order().first);
+      std::transform(this -> m_Container -> begin(), this -> m_Container -> end(),std::back_inserter(_mapped_Container),[&](const std::vector<RealNumericValueType>& _vector){
         std::vector<RealNumericValueType> _buffer;
-        _buffer.reserve(Order().second);
+        _buffer.reserve(this -> Order().second);
         std::transform(_vector.begin(),_vector.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element){
           return _lambda(_element);
         });
@@ -394,7 +423,7 @@ namespace algebra
     Matrix<RealNumericValueType> Transpose() const
     {
       std::vector<algebra::Column<RealNumericValueType>> _columns;
-      _columns.reserve(Order().first);
+      _columns.reserve(this -> Order().first);
       For_EachRow([&](const algebra::Row<RealNumericValueType>& _row){
         std::vector<RealNumericValueType> _buffer;
         _buffer.reserve(_row.Size());
@@ -425,54 +454,54 @@ namespace algebra
 
     void ElementaryRowOperation_Interchange_ByIndex(const size_t& _fist_row_index, const size_t& _second_row_index)
     {
-      if(!(_fist_row_index < Order().first) || !(_second_row_index < Order().first))
+      if(!(_fist_row_index < this -> Order().first) || !(_second_row_index < this -> Order().first))
         throw std::out_of_range("One or both of the row indices are out of range");
-      std::vector<algebra::Row<RealNumericValueType>> _rows = Rows();
-      SetRowByIndex(_rows[_fist_row_index],_second_row_index);
-      SetRowByIndex(_rows[_second_row_index],_fist_row_index);
+      std::vector<algebra::Row<RealNumericValueType>> _rows = this -> Rows();
+      this -> SetRowByIndex(_rows[_fist_row_index],_second_row_index);
+      this -> SetRowByIndex(_rows[_second_row_index],_fist_row_index);
     }
 
     void ElementaryRowOperation_MultiplicationByNonZeroScalar_ByIndex(const RealNumericValueType& _scalar, const size_t& _row_index)
     {
-      if(!(_row_index < Order().first))
+      if(!(_row_index < this -> Order().first))
         throw std::out_of_range("Row index is out of range");
-      const algebra::Row<RealNumericValueType> _row = Rows()[_row_index];
-      SetRowByIndex(_scalar * _row, _row_index);
+      const algebra::Row<RealNumericValueType> _row = this -> Rows()[_row_index];
+      this -> SetRowByIndex(_scalar * _row, _row_index);
     }
 
     void ElementaryRowOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(const size_t& _target_row_index,const RealNumericValueType& _scalar, const size_t& _source_row_index)
     {
-      if(!(_target_row_index < Order().first) || !(_source_row_index < Order().first))
+      if(!(_target_row_index < this -> Order().first) || !(_source_row_index < this -> Order().first))
         throw std::out_of_range("One or both of source and target row indices are out of range");
-      const algebra::Row<RealNumericValueType> _source_row = Rows()[_source_row_index];
-      const algebra::Row<RealNumericValueType> _target_row = Rows()[_target_row_index];
-      SetRowByIndex((_target_row + (_scalar * _source_row)),_target_row_index);
+      const algebra::Row<RealNumericValueType> _source_row = this -> Rows()[_source_row_index];
+      const algebra::Row<RealNumericValueType> _target_row = this -> Rows()[_target_row_index];
+      this -> SetRowByIndex((_target_row + (_scalar * _source_row)),_target_row_index);
     }
 
     void ElementaryColumnOperation_Interchange_ByIndex(const size_t& _first_column_index, const size_t& _second_column_index)
     {
-      if(!(_first_column_index < Order().second) || !(_second_column_index < Order().second))
+      if(!(_first_column_index < this -> Order().second) || !(_second_column_index < this -> Order().second))
         throw std::out_of_range("One or both of the column indices are out of range");
-      std::vector<algebra::Column<RealNumericValueType>> _columns = Columns();
-      SetColumnByIndex(_columns[_first_column_index],_second_column_index);
-      SetColumnByIndex(_columns[_second_column_index],_first_column_index);
+      std::vector<algebra::Column<RealNumericValueType>> _columns = this -> Columns();
+      this -> SetColumnByIndex(_columns[_first_column_index],_second_column_index);
+      this -> SetColumnByIndex(_columns[_second_column_index],_first_column_index);
     }
 
     void ElementaryColumnOperation_MultiplicationByNonZeroScalar_ByIndex(const RealNumericValueType& _scalar, const size_t& _column_index)
     {
-      if(!(_column_index < Order().second))
+      if(!(_column_index < this -> Order().second))
         throw std::out_of_range("Column index is out of range");
-      const algebra::Column<RealNumericValueType> _column = Columns()[_column_index];
-      SetColumnByIndex(_scalar * _column,_column_index);
+      const algebra::Column<RealNumericValueType> _column = this -> Columns()[_column_index];
+      this -> SetColumnByIndex(_scalar * _column,_column_index);
     }
 
     void ElementaryColumnOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(const size_t& _target_column_index, const RealNumericValueType& _scalar, const size_t& _source_column_index)
     {
-      if(!(_target_column_index < Order().second) || !(_source_column_index < Order().second))
+      if(!(_target_column_index < this -> Order().second) || !(_source_column_index < this -> Order().second))
         throw std::out_of_range("One or both of source and target column indices are out of range");
-      const algebra::Column<RealNumericValueType> _source_column = Columns()[_source_column_index];
-      const algebra::Column<RealNumericValueType> _target_column = Columns()[_target_column_index];
-      SetColumnByIndex((_target_column + (_scalar * _source_column)),_target_column_index);
+      const algebra::Column<RealNumericValueType> _source_column = this -> Columns()[_source_column_index];
+      const algebra::Column<RealNumericValueType> _target_column = this -> Columns()[_target_column_index];
+      this -> SetColumnByIndex((_target_column + (_scalar * _source_column)),_target_column_index);
     }
   };
 
