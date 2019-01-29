@@ -8,7 +8,7 @@ project(FrancoisTestSuite VERSION 1.0 DESCRIPTION "Francois test suite" LANGUAGE
 mark_as_advanced(
   BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS
   gmock_build_tests gmock_build_samples gtest_build_tests
-  gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols 
+  gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
 )
 
 target_compile_features(gtest PUBLIC cxx_std_11)
@@ -30,3 +30,7 @@ PACKAGE_ADD_TEST(algebra_Matrix_AnalyticalTests algebra_Matrix_AnalyticalTests.c
 PACKAGE_ADD_TEST(algebra_Matrix_OperationsTests algebra_Matrix_OperationsTests.cpp)
 PACKAGE_ADD_TEST(algebra_Matrix_UtilityTests algebra_Matrix_UtilityTests.cpp)
 
+PACKAGE_ADD_TEST(algebra_Determinant_SanityTests algebra_Determinant_SanityTests.cpp)
+PACKAGE_ADD_TEST(algebra_Determinant_AnalyticalTests algebra_Determinant_AnalyticalTests.cpp)
+PACKAGE_ADD_TEST(algebra_Determinant_OperationsTests algebra_Determinant_OperationsTests.cpp)
+PACKAGE_ADD_TEST(algebra_Determinant_UtilityTests algebra_Determinant_UtilityTests.cpp)
