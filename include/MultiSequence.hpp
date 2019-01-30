@@ -18,9 +18,9 @@ namespace algebra
   template<typename RealNumericValueType>
   struct MultiSequence
   {
-    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    static_assert(std::is_same<RealNumericValueType,int>::value ||
     std::is_same<RealNumericValueType,long>::value ||
-    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,float>::value ||
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::ElementProtocol>::value,"Container can accept only integers or double data type for now.");
 
@@ -28,9 +28,9 @@ namespace algebra
     protected:
     std::unique_ptr<std::vector<std::vector<RealNumericValueType>>> m_Container;
 
-    #pragma mark Private helper functions
-    private:
-    bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
+    #pragma mark Protected helper functions
+    protected:
+    virtual bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list) const
     {
       std::vector<size_t> _buffer;
       _buffer.reserve(_init_list.size());
@@ -40,7 +40,7 @@ namespace algebra
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
 
-    bool IsValid(const std::vector<std::vector<RealNumericValueType>>& _vectors)
+    virtual bool IsValid(const std::vector<std::vector<RealNumericValueType>>& _vectors) const
     {
       std::vector<size_t> _buffer;
       _buffer.reserve(_vectors.size());
@@ -49,8 +49,8 @@ namespace algebra
         });
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
-    
-    bool IsValid(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
+
+    virtual bool IsValid(const std::vector<algebra::Row<RealNumericValueType>>& _rows) const
     {
       std::vector<size_t> _buffer;
       _buffer.reserve(_rows.size());
@@ -60,7 +60,7 @@ namespace algebra
       return std::adjacent_find(_buffer.begin(),_buffer.end(),std::not_equal_to<size_t>()) == _buffer.end();
     }
 
-    bool IsValid(const std::vector<algebra::Column<RealNumericValueType>>& _columns)
+    virtual bool IsValid(const std::vector<algebra::Column<RealNumericValueType>>& _columns) const
     {
       std::vector<size_t> _buffer;
       _buffer.reserve(_columns.size());
@@ -82,13 +82,13 @@ namespace algebra
           operator()(_row_index,_column_index) = _column[_row_index];
     }
 
-    #pragma mark Protected member functions to be accessed only by child classes
+    #pragma mark Protected constructors to be accessed only by child classes
     protected:
     MultiSequence(){}
     MultiSequence(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
     {
       if (!IsValid(_init_list))
-        throw std::invalid_argument("Unequal number of elements in rows");
+        throw std::invalid_argument("Unequal number of elements in list");
       this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
       this -> m_Container -> reserve(_init_list.size());
       std::for_each(_init_list.begin(),_init_list.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
@@ -99,11 +99,10 @@ namespace algebra
     {
       if (!IsValid(_vectors))
         throw std::invalid_argument("Unequal number of elements in vectors");
-      
       this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
       this -> m_Container -> reserve(_vectors.size());
       std::for_each(_vectors.begin(),_vectors.end(),[&](const std::vector<RealNumericValueType>& _element_vector) {
-          this -> m_Container -> emplace_back(_element_vector);
+        this -> m_Container -> emplace_back(_element_vector);
       });
     }
     MultiSequence(const std::vector<algebra::Row<RealNumericValueType>>& _rows)
@@ -125,10 +124,8 @@ namespace algebra
     {
       if(!IsValid(_columns))
         throw std::invalid_argument("Unequal number of elements in columns");
-
       this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
       this -> m_Container -> reserve(_columns[0].Size());
-      
       for(size_t _index = 0; _index < _columns[0].Size(); _index += 1)
       {
         std::vector<RealNumericValueType> _row_buffer;
@@ -139,11 +136,11 @@ namespace algebra
         this -> m_Container -> emplace_back(_row_buffer);
       }
     }
-    MultiSequence(const MultiSequence& _matrix)
+    MultiSequence(const MultiSequence& _multiSequence)
     {
       this -> m_Container = std::make_unique<std::vector<std::vector<RealNumericValueType>>>();
-      this -> m_Container -> reserve(_matrix.Order().first);
-      std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
+      this -> m_Container -> reserve(_multiSequence.Order().first);
+      std::vector<algebra::Row<RealNumericValueType>> _rows = _multiSequence.Rows();
       std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
         std::vector<RealNumericValueType> _buffer;
         _buffer.reserve(_row.Size());
@@ -154,7 +151,7 @@ namespace algebra
       });
     }
     ~MultiSequence(){}
-    
+
     #pragma mark Public member functions and accessors
     public:
     inline std::pair<size_t,size_t> Order() const
@@ -273,6 +270,49 @@ namespace algebra
       this -> SetColumnByIndex((_target_column + (_scalar * _source_column)),_target_column_index);
     }
   };
+
+  template<typename RealNumericValueType>
+  bool operator ==(const algebra::MultiSequence<RealNumericValueType>& _lhs, const algebra::MultiSequence<RealNumericValueType>& _rhs)
+  {
+    if(_lhs.Order() != _rhs.Order())
+      return false;
+
+    const std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
+    const std::vector<algebra::Row<RealNumericValueType>> _rhs_Rows = _rhs.Rows();
+
+    return std::equal(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _lhs_Row, const algebra::Row<RealNumericValueType>& _rhs_Row) {
+      return _lhs_Row == _rhs_Row;
+    });
+  }
+
+  template<typename RealNumericValueType>
+  bool operator !=(const algebra::MultiSequence<RealNumericValueType>& _lhs, const algebra::MultiSequence<RealNumericValueType>& _rhs)
+  {
+    return !(_lhs == _rhs);
+  }
+
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const std::vector<RealNumericValueType>& _vector)
+  {
+    _stream << "{ ";
+    std::for_each(_vector.begin(),_vector.end(),[&](const RealNumericValueType& _element){
+      _stream << _element << " ";
+    });
+    _stream << "}";
+    return _stream;
+  }
+
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const algebra::MultiSequence<RealNumericValueType>& _sequence)
+  {
+    _stream << "\n";
+    std::vector<algebra::Row<RealNumericValueType>> _rows = _sequence.Rows();
+    std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
+      _stream << _row << "\n";
+    });
+    return _stream;
+  }
+
 } // algebra
 
 

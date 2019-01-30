@@ -9,7 +9,7 @@ TEST(MatrixSanityTests, canInstantiateMatrixWithInitializerListAndVector)
     {4,6,7},
     {9,10,11}
   };
-  const std::vector<std::vector<int>> givenVectors1 = { 
+  const std::vector<std::vector<int>> givenVectors1 = {
     {1,2,3},
     {4,6,7},
     {9,10,11}
@@ -152,6 +152,7 @@ TEST(MatrixSanityTests, canUpdateElementsOfMatrixBySubscripting)
     {4,12,7,8},
     {9,10,66,12}
   };
+  ASSERT_TRUE(givenMatrix1 == expectedMatrix1);
 
   algebra::Matrix<double> givenMatrix2 = {
     {65.4,936.12},
@@ -179,7 +180,7 @@ TEST(MatrixSanityTests_ExceptionTest, canDetermineOutOfRangeSubscriptingAttempts
     {9,10,11,12}
   };
   EXPECT_THROW(givenMatrix1(3,3),std::out_of_range);
-  
+
   const algebra::Matrix<double> givenMatrix2 = {
     {3.5,1.9},
     {1.2,6.2},
@@ -196,7 +197,7 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
     {4,6,7,8},
     {9,10,11,12}
   };
-  
+
   const std::vector<algebra::Row<int>> rows = givenMatrix1.Rows();
   ASSERT_EQ(rows.size(),3);
   const algebra::Row<int> testableRow0 {1,2,3,4};
@@ -213,7 +214,7 @@ TEST(MatrixSanityTests,canDetermineRowsAndColumnsSeparately)
   const algebra::Column<int> testableColumn1 {2,6,10};
   const algebra::Column<int> testableColumn2 {3,7,11};
   const algebra::Column<int> testableColumn3 {4,8,12};
-  
+
   ASSERT_TRUE(columns[0] == testableColumn0);
   ASSERT_TRUE(columns[1] == testableColumn1);
   ASSERT_TRUE(columns[2] == testableColumn2);
@@ -423,7 +424,3 @@ TEST(MatrixSanityTests_ExceptionTest, canDetermineCopyAssignmentAttemptsForMatri
   };
   EXPECT_THROW(testableMatrix3 = testableMatrix4,std::length_error);
 }
-
-
-
-

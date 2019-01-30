@@ -236,28 +236,6 @@ namespace algebra
 
   #pragma mark Operator overloaded functions
   template<typename RealNumericValueType>
-  std::ostream& operator <<(std::ostream& _stream, const std::vector<RealNumericValueType>& _vector)
-  {
-    _stream << "{ ";
-    std::for_each(_vector.begin(),_vector.end(),[&](const RealNumericValueType& _element){
-      _stream << _element << " ";
-    });
-    _stream << "}";
-    return _stream;
-  }
-
-  template<typename RealNumericValueType>
-  std::ostream& operator <<(std::ostream& _stream, const algebra::Matrix<RealNumericValueType>& _matrix)
-  {
-    _stream << "\n";
-    std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
-    std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
-      _stream << _row << "\n";
-    });
-    return _stream;
-  }
-
-  template<typename RealNumericValueType>
   algebra::Matrix<RealNumericValueType> operator +(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
   {
     if (!(_lhs.Order() == _rhs.Order()))
@@ -330,26 +308,6 @@ namespace algebra
       return _buffer;
     });
     return algebra::Matrix<RealNumericValueType>(_resultant_Rows);
-  }
-
-  template<typename RealNumericValueType>
-  bool operator ==(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
-  {
-    if(_lhs.Order() != _rhs.Order())
-      return false;
-
-    const std::vector<algebra::Row<RealNumericValueType>> _lhs_Rows = _lhs.Rows();
-    const std::vector<algebra::Row<RealNumericValueType>> _rhs_Rows = _rhs.Rows();
-
-    return std::equal(_lhs_Rows.begin(),_lhs_Rows.end(),_rhs_Rows.begin(),_rhs_Rows.end(),[&](const algebra::Row<RealNumericValueType>& _lhs_Row, const algebra::Row<RealNumericValueType>& _rhs_Row) {
-      return _lhs_Row == _rhs_Row;
-    });
-  }
-
-  template<typename RealNumericValueType>
-  bool operator !=(const algebra::Matrix<RealNumericValueType>& _lhs, const algebra::Matrix<RealNumericValueType>& _rhs)
-  {
-    return !(_lhs == _rhs);
   }
 
   Matrix<int> Ints(const size_t& _row, const size_t& _column, const int& _number)
