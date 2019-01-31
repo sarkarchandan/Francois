@@ -99,16 +99,21 @@ namespace algebra
     #pragma mark Public member functions
     RealNumericValueType Value() const
     {
-      if(this -> Order().first > 2 && this -> Order().second > 2)
+      if(this -> Order().first > 3 && this -> Order().second > 3)
         throw std::runtime_error("Determinant beyond order 2 has not been implemented yet");
 
       if(this -> Order().first == 1 && this -> Order().second == 1) 
         return this -> operator()(0,0);
-      // else if(this -> Order().first == 2 && this -> Order().second == 2)
-      //   return (this -> operator()(0,0) * this -> operator()(1,1)) - (this -> operator()(1,0) * this -> operator()(0,1));
+      else if(this -> Order().first == 2 && this -> Order().second == 2)
+        return (this -> operator()(0,0) * this -> operator()(1,1)) - (this -> operator()(1,0) * this -> operator()(0,1));
       else
       {
-        return (this -> operator()(0,0) * this -> operator()(1,1)) - (this -> operator()(1,0) * this -> operator()(0,1));
+        RealNumericValueType _temp_Value = 0;
+        for(size_t _column_index = 0; _column_index < this -> Order().second; _column_index += 1)
+        {
+          _temp_Value += CoFactor_ByIndex(0,_column_index);
+        }
+        return _temp_Value;
       }
     }
 
