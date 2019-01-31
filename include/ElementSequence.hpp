@@ -70,6 +70,10 @@ namespace algebra
     {
       return m_ElementSequence -> end();
     }
+    inline void Erase_ByIndex(const size_t& _index) const
+    {
+      m_ElementSequence -> erase(m_ElementSequence -> begin() + _index);
+    }
     ElementSequence& operator =(const algebra::ElementSequence<RealNumericValueType>& _elementSequence)
     {
       if(this == &_elementSequence)

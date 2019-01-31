@@ -162,7 +162,7 @@ namespace algebra
 
     inline const RealNumericValueType& operator ()(const size_t& _row,const size_t& _column) const
     {
-      if(_row < Order().first && _column < Order().second)
+      if(_row >= 0 && _row < Order().first && _column >= 0 && _column < Order().second)
         return this -> m_Container -> operator[](_row)[_column];
       else
         throw std::out_of_range("Out of range subscripting attempted");
@@ -170,7 +170,7 @@ namespace algebra
 
     inline RealNumericValueType& operator ()(const size_t& _row, const size_t& _column)
     {
-      if(_row < Order().first && _column < Order().second)
+      if(_row >= 0 && _row < Order().first && _column >= 0 && _column < Order().second)
         return this -> m_Container -> operator[](_row)[_column];
       else
         throw std::out_of_range("Out of range subscripting attempted");
@@ -220,7 +220,7 @@ namespace algebra
 
     void ElementaryRowOperation_Interchange_ByIndex(const size_t& _fist_row_index, const size_t& _second_row_index)
     {
-      if(!(_fist_row_index < this -> Order().first) || !(_second_row_index < this -> Order().first))
+      if(!(_fist_row_index >= 0 && _fist_row_index < this -> Order().first) || !(_second_row_index >= 0 && _second_row_index < this -> Order().first))
         throw std::out_of_range("One or both of the row indices are out of range");
       std::vector<algebra::Row<RealNumericValueType>> _rows = this -> Rows();
       this -> SetRowByIndex(_rows[_fist_row_index],_second_row_index);
@@ -229,7 +229,7 @@ namespace algebra
 
     void ElementaryRowOperation_MultiplicationByNonZeroScalar_ByIndex(const RealNumericValueType& _scalar, const size_t& _row_index)
     {
-      if(!(_row_index < this -> Order().first))
+      if(!(_row_index >= 0 && _row_index < this -> Order().first))
         throw std::out_of_range("Row index is out of range");
       const algebra::Row<RealNumericValueType> _row = this -> Rows()[_row_index];
       this -> SetRowByIndex(_scalar * _row, _row_index);
@@ -237,7 +237,7 @@ namespace algebra
 
     void ElementaryRowOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(const size_t& _target_row_index,const RealNumericValueType& _scalar, const size_t& _source_row_index)
     {
-      if(!(_target_row_index < this -> Order().first) || !(_source_row_index < this -> Order().first))
+      if(!(_target_row_index >= 0  && _target_row_index < this -> Order().first) || !(_source_row_index >= 0 && _source_row_index < this -> Order().first))
         throw std::out_of_range("One or both of source and target row indices are out of range");
       const algebra::Row<RealNumericValueType> _source_row = this -> Rows()[_source_row_index];
       const algebra::Row<RealNumericValueType> _target_row = this -> Rows()[_target_row_index];
@@ -246,7 +246,7 @@ namespace algebra
 
     void ElementaryColumnOperation_Interchange_ByIndex(const size_t& _first_column_index, const size_t& _second_column_index)
     {
-      if(!(_first_column_index < this -> Order().second) || !(_second_column_index < this -> Order().second))
+      if(!(_first_column_index >= 0 && _first_column_index < this -> Order().second) || !(_second_column_index >= 0 && _second_column_index < this -> Order().second))
         throw std::out_of_range("One or both of the column indices are out of range");
       std::vector<algebra::Column<RealNumericValueType>> _columns = this -> Columns();
       this -> SetColumnByIndex(_columns[_first_column_index],_second_column_index);
@@ -255,7 +255,7 @@ namespace algebra
 
     void ElementaryColumnOperation_MultiplicationByNonZeroScalar_ByIndex(const RealNumericValueType& _scalar, const size_t& _column_index)
     {
-      if(!(_column_index < this -> Order().second))
+      if(!(_column_index >= 0 && _column_index < this -> Order().second))
         throw std::out_of_range("Column index is out of range");
       const algebra::Column<RealNumericValueType> _column = this -> Columns()[_column_index];
       this -> SetColumnByIndex(_scalar * _column,_column_index);
@@ -263,7 +263,7 @@ namespace algebra
 
     void ElementaryColumnOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(const size_t& _target_column_index, const RealNumericValueType& _scalar, const size_t& _source_column_index)
     {
-      if(!(_target_column_index < this -> Order().second) || !(_source_column_index < this -> Order().second))
+      if(!(_target_column_index >= 0 && _target_column_index < this -> Order().second) || !(_source_column_index >= 0 && _source_column_index < this -> Order().second))
         throw std::out_of_range("One or both of source and target column indices are out of range");
       const algebra::Column<RealNumericValueType> _source_column = this -> Columns()[_source_column_index];
       const algebra::Column<RealNumericValueType> _target_column = this -> Columns()[_target_column_index];

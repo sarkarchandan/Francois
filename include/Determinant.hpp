@@ -2,6 +2,7 @@
 #define DETERMINANT_H
 
 #include "MultiSequence.hpp"
+#include <cmath>
 
 namespace algebra
 {
@@ -96,7 +97,59 @@ namespace algebra
     ~Determinant(){}
     
     #pragma mark Public member functions
-    // RealNumericValueType Value(); const
+    RealNumericValueType Value() const
+    {
+      if(this -> Order().first > 2 && this -> Order().second > 2)
+        throw std::runtime_error("Determinant beyond order 2 has not been implemented yet");
+
+      if(this -> Order().first == 1 && this -> Order().second == 1) 
+        return this -> operator()(0,0);
+      // else if(this -> Order().first == 2 && this -> Order().second == 2)
+      //   return (this -> operator()(0,0) * this -> operator()(1,1)) - (this -> operator()(1,0) * this -> operator()(0,1));
+      else
+      {
+        return (this -> operator()(0,0) * this -> operator()(1,1)) - (this -> operator()(1,0) * this -> operator()(0,1));
+      }
+    }
+
+    RealNumericValueType Minor_ByIndex(const size_t& _row_index, const size_t& _column_index) const
+    {
+      if(!(_row_index >= 0 && _row_index < this -> Order().first && _column_index >= 0 && _column_index < this -> Order().second))
+        throw std::out_of_range("Out of range row or column index supplied");
+
+      if(this -> Order().first > 3 && this -> Order().second > 3)
+        throw std::runtime_error("Determinant beyond order 3 has not been implemented yet");
+      if(this -> Order().first == 1 && this -> Order().second == 1) 
+        return this -> operator ()(0,0);
+      else if(this -> Order().first == 2 && this -> Order().second == 2)
+      {
+        if(_row_index == _column_index)
+        {
+          if(_row_index == 0 && _column_index == 0) return this -> operator()(1,1);
+          else return  this -> operator()(0,0);
+        }else
+        {
+          if(_row_index == 0 && _column_index == 1) return this -> operator()(1,0);
+          else return this -> operator()(0,1);
+        }
+      }
+      else
+      {
+        std::vector<algebra::Row<RealNumericValueType>> _rows = this -> Rows();
+        _rows.erase(_rows.begin() + _row_index);
+        std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
+          _row.Erase_ByIndex(_column_index);
+        });
+        const algebra::Determinant<RealNumericValueType> _temp_Determinant = _rows;
+        return _temp_Determinant.Value();
+       }
+    }
+
+    RealNumericValueType CoFactor_ByIndex(const size_t& _row_index, const size_t& _column_index) const
+    {
+      return (RealNumericValueType) std::pow(-1,(_row_index + _column_index)) * Minor_ByIndex(_row_index,_column_index);
+    }
+
   };
 } // algebra
 
