@@ -119,8 +119,3 @@ TEST(DeterminantAnalyticalTests_ExceptionTest,canNotComputeMinorsAndCoFactorsFor
   EXPECT_THROW(givenDeterminant1.Minor_ByIndex(0,0),std::runtime_error);
   EXPECT_THROW(givenDeterminant1.CoFactor_ByIndex(0,0),std::runtime_error);
 }
-
-// TEST(DeterminantOperationsTests, canPerformOperationsTestsOnDeterminants)
-// {
-//   FAIL() << "Not Implemented";
-// }
