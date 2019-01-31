@@ -603,3 +603,21 @@ TEST(MatrixAnalyticalTests, canValidatePropertiesOfMatrixTranspose)
   ASSERT_TRUE((testableDoubleMatrix7 + testableDoubleMatrix7.Transpose()).IsSymmetricMatrix());
   ASSERT_TRUE((testableDoubleMatrix7 - testableDoubleMatrix7.Transpose()).IsSkewSymmetricMatrix());
 }
+
+TEST(MatrixAnalyticalTests, canDefineSingularMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+
+  ASSERT_TRUE(givenMatrix1.IsSingularMatrix());
+
+  const algebra::Matrix<int> givenMatrix2 = {
+    {3,-4,5},
+    {1,1,-2},
+    {2,3,1}
+  };
+  ASSERT_FALSE(givenMatrix2.IsSingularMatrix());
+}

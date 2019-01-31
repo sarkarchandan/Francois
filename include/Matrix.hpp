@@ -2,6 +2,7 @@
 #define MATRIX_H
 
 #include "MultiSequence.hpp"
+#include "Determinant.hpp"
 
 namespace algebra
 {
@@ -216,14 +217,14 @@ namespace algebra
       return algebra::Matrix<RealNumericValueType>(_columns);
     }
 
-    bool IsSymmetricMatrix() const
+    inline bool IsSymmetricMatrix() const
     {
       if(!IsSquareMatrix())
         return false;
       return *this == Transpose();
     }
 
-    bool IsSkewSymmetricMatrix() const
+    inline bool IsSkewSymmetricMatrix() const
     {
       if(!IsSquareMatrix())
         return false;
@@ -231,6 +232,19 @@ namespace algebra
         return -_element;
       });
       return *this == _matrix;
+    }
+
+    inline bool IsSingularMatrix() const
+    {
+      if(this -> Order().first > 3 || this -> Order().second > 3)
+        throw std::runtime_error("SingularMatrix check beyond order 3 has not been implemented yet.");
+      if(!IsSquareMatrix()) return false;
+      else
+      {
+        const std::vector<algebra::Row<RealNumericValueType>> _rows = this -> Rows();
+        const algebra::Determinant<RealNumericValueType> _temp_Determinant = _rows;
+        return _temp_Determinant.Value() == 0;
+      }
     }
   };
 
@@ -331,6 +345,32 @@ namespace algebra
   Matrix<int> Ones(const size_t& _row, const size_t& _column)
   {
     return algebra::Ints(_row,_column,1);
+  }
+
+  template <typename RealNumericValueType>
+  Matrix<RealNumericValueType> FindAdjointMatrixFor(const algebra::Matrix<RealNumericValueType>& _matrix)
+  {
+    if(!_matrix.IsSquareMatrix())
+      throw std::invalid_argument("Adjoint can be obtained only for square matrices");
+    if(_matrix.Order().first > 3)
+      throw std::runtime_error("Adjoint for matrix beyond order 3 has not been implemented yet");
+    
+    const std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
+    const algebra::Determinant<RealNumericValueType> _temp_Determinant = _rows;
+    
+    std::vector<std::vector<RealNumericValueType>> _major_row_buffer;
+    _major_row_buffer.reserve(_matrix.Order().first);
+    for(size_t _row_index = 0; _row_index < _matrix.Order().first; _row_index++)
+    {
+      std::vector<RealNumericValueType> _minor_row_buffer;
+      _minor_row_buffer.reserve(_matrix.Order().second);
+      for(size_t _column_index = 0; _column_index < _matrix.Order().second; _column_index++)
+      {
+        _minor_row_buffer.emplace_back(_temp_Determinant.CoFactor_ByIndex(_row_index,_column_index));
+      }
+      _major_row_buffer.emplace_back(_minor_row_buffer);
+    }
+    return Matrix<RealNumericValueType>(_major_row_buffer);
   }
 } // algebra
 

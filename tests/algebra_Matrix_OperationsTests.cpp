@@ -478,3 +478,19 @@ TEST(MatrixOperationsTests, canPerformElementaryColumnOperationsOnMatrix)
   ASSERT_TRUE(testableMatrix3 == expectedMatrix3);
 }
 
+TEST(MatrixOperationsTests, canComputeAdjointMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+
+  const algebra::Matrix<int> expectedAdjointMatrix1 = {
+    {-3,6,-3},
+    {6,-12,6},
+    {-3,6,-3}
+  };
+
+  ASSERT_TRUE(algebra::FindAdjointMatrixFor(givenMatrix1) == expectedAdjointMatrix1);
+}
