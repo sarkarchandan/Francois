@@ -237,7 +237,7 @@ namespace algebra
     inline bool IsSingularMatrix() const
     {
       if(this -> Order().first > 3 || this -> Order().second > 3)
-        throw std::runtime_error("SingularMatrix check beyond order 3 has not been implemented yet.");
+        throw std::runtime_error("SingularMatrix check beyond order 3 has not been implemented yet");
       if(!IsSquareMatrix()) return false;
       else
       {
@@ -245,6 +245,15 @@ namespace algebra
         const algebra::Determinant<RealNumericValueType> _temp_Determinant = _rows;
         return _temp_Determinant.Value() == 0;
       }
+    }
+
+    inline bool IsInvertibleMatrix() const
+    {
+      if(this -> Order().first > 3 || this -> Order().second > 3)
+        throw std::runtime_error("InvertibleMatrix check beyond order 3 has not been implemented yet");
+      if(!IsSquareMatrix()) return false;
+      const algebra::Determinant<RealNumericValueType> _temp_Determinant = this -> Rows();
+      return _temp_Determinant.Value() != 0;
     }
   };
 
@@ -354,10 +363,10 @@ namespace algebra
       throw std::invalid_argument("Adjoint can be obtained only for square matrices");
     if(_matrix.Order().first > 3)
       throw std::runtime_error("Adjoint for matrix beyond order 3 has not been implemented yet");
-    
+
     const std::vector<algebra::Row<RealNumericValueType>> _rows = _matrix.Rows();
     const algebra::Determinant<RealNumericValueType> _temp_Determinant = _rows;
-    
+
     std::vector<std::vector<RealNumericValueType>> _major_row_buffer;
     _major_row_buffer.reserve(_matrix.Order().first);
     for(size_t _row_index = 0; _row_index < _matrix.Order().first; _row_index++)
@@ -370,7 +379,22 @@ namespace algebra
       }
       _major_row_buffer.emplace_back(_minor_row_buffer);
     }
-    return Matrix<RealNumericValueType>(_major_row_buffer);
+    return Matrix<RealNumericValueType>(_major_row_buffer).Transpose();
+  }
+
+  Matrix<int> Invert(const algebra::Matrix<int>& _invertibleMatrix)
+  {
+    if(_invertibleMatrix.Order().first > 3 || _invertibleMatrix.Order().second > 3)
+      throw std::runtime_error("Invert utility for matrices beyond order 3 has not been implemented yet");
+    if(!_invertibleMatrix.IsInvertibleMatrix())
+      throw std::invalid_argument("Matrix is not invertible");
+
+    const algebra::Determinant<int> _temp_Determinant = _invertibleMatrix.Rows();
+    const int _determinant_Value = _temp_Determinant.Value();
+    const algebra::Matrix<int> _temp_AdjointMatrix = algebra::FindAdjointMatrixFor(_invertibleMatrix);
+
+    int _temp_Multiplier = _determinant_Value < 0 ? -1 : 1;
+    return  _temp_Multiplier * _temp_AdjointMatrix;
   }
 } // algebra
 

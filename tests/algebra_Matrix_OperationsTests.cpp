@@ -491,6 +491,62 @@ TEST(MatrixOperationsTests, canComputeAdjointMatrix)
     {6,-12,6},
     {-3,6,-3}
   };
-
   ASSERT_TRUE(algebra::FindAdjointMatrixFor(givenMatrix1) == expectedAdjointMatrix1);
+
+  const algebra::Matrix<int> givenMatrix2 = {
+    {1,2},
+    {3,4}
+  };
+  const algebra::Matrix<int> expectedAdjointMatrix2 = {
+    {4,-2},
+    {-3,1}
+  };
+  ASSERT_TRUE(algebra::FindAdjointMatrixFor(givenMatrix2) == expectedAdjointMatrix2);
+  const algebra::Matrix<int> givenMatrix3 = {
+    {1,-1,2},
+    {2,3,5},
+    {-2,0,1}
+  };
+  const algebra::Matrix<int> expectedAdjointMatrix3 = {
+    {3,1,-11},
+    {-12,5,-1},
+    {6,2,5}
+  };
+  ASSERT_TRUE(algebra::FindAdjointMatrixFor(givenMatrix3) == expectedAdjointMatrix3);
 }
+
+TEST(MatrixOperationsTests, canComputeInverseOfMatrixWithIntElements)
+{
+  const algebra::Matrix<int> givenMatrix1 = {
+    {2,-2},
+    {4,3}
+  };
+  const algebra::Matrix<int> expectedInvertedMatrix1 = {
+    {3,2},
+    {-4,2}
+  };
+  ASSERT_TRUE(algebra::Invert(givenMatrix1) == expectedInvertedMatrix1);
+  const algebra::Matrix<int> givenMatrix2 = {
+    {1,-1,2},
+    {0,2,-3},
+    {3,-2,4}
+  };
+  const algebra::Matrix<int> expectedInvertedMatrix2 = {
+    {-2,0,1},
+    {9,2,-3},
+    {6,1,-2}
+  };
+  ASSERT_TRUE(algebra::Invert(givenMatrix2) == expectedInvertedMatrix2);
+  const algebra::Matrix<int> givenMatrix3 = {
+    {-3,-3,-4},
+    {0,1,1},
+    {4,3,4}
+  };
+  const algebra::Matrix<int> expectedInvertedmatrix3 = {
+    {1,0,1},
+    {4,4,3},
+    {-4,-3,-3}
+  };
+  ASSERT_TRUE(algebra::Invert(givenMatrix3) == expectedInvertedmatrix3);
+}
+

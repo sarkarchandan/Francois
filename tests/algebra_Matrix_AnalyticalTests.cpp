@@ -621,3 +621,25 @@ TEST(MatrixAnalyticalTests, canDefineSingularMatrix)
   };
   ASSERT_FALSE(givenMatrix2.IsSingularMatrix());
 }
+
+TEST(MatrixAnalyticalTests, canDefineAnInvertibleMatrix)
+{
+  const algebra::Matrix<int> givenMatrix1 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+  ASSERT_FALSE(givenMatrix1.IsInvertibleMatrix());
+  const algebra::Matrix<int> givenMatrix2 = {
+    {-3,-3,-4},
+    {0,1,1},
+    {4,3,4}
+  };
+  ASSERT_TRUE(givenMatrix2.IsInvertibleMatrix());
+
+  const algebra::Matrix<int> givenMatrix3 = {
+    {1,2,3},
+    {5,6,7}
+  };
+  ASSERT_FALSE(givenMatrix3.IsInvertibleMatrix());
+}
