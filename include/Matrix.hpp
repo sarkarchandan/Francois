@@ -6,6 +6,13 @@
 
 namespace algebra
 {
+  enum ExpansionType {E_AlongRow,E_AlongColumn};
+  enum ContractionType {C_AlongRow,C_AlongColumn};
+} // algebra
+
+
+namespace algebra
+{
   template<typename RealNumericValueType>
   class Matrix: public MultiSequence<RealNumericValueType>
   {
@@ -395,6 +402,29 @@ namespace algebra
 
     int _temp_Multiplier = _determinant_Value < 0 ? -1 : 1;
     return  _temp_Multiplier * _temp_AdjointMatrix;
+  }
+
+  template<typename RealNumericValueType>
+  void MatrixToArray(const algebra::Matrix<RealNumericValueType>& _from_matrix,const algebra::ExpansionType _expansion_type,RealNumericValueType *_to_array)
+  {
+    size_t _to_array_index = 0;
+    if(_expansion_type == algebra::ExpansionType::E_AlongRow)
+    {
+      _from_matrix.For_EachRow([&](const algebra::Row<RealNumericValueType>& _row) {
+        std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element){
+          *(_to_array + _to_array_index) = _element;
+          _to_array_index += 1;
+        });
+      });
+    }else
+    {
+      _from_matrix.For_EachColumn([&](const algebra::Column<RealNumericValueType>& _column) {
+        std::for_each(_column.begin(),_column.end(),[&](const RealNumericValueType& _element){
+          *(_to_array + _to_array_index) = _element;
+          _to_array_index += 1;
+        });
+      });
+    }
   }
 } // algebra
 

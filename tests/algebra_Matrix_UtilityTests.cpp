@@ -157,3 +157,52 @@ TEST(MatrixUtilityTests, canProvideAFunctionToMapOneMatrixToAnother)
   };
   ASSERT_TRUE(testableNegativeMatrix3 == expectedNegativeMatrix3);
 }
+
+TEST(MatrixUtilityTests, canUnwrapMatrixToArray)
+{
+  const algebra::Matrix<int> givenMatrix1 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+  const size_t expectedLength1 = givenMatrix1.Order().first * givenMatrix1.Order().second;
+  int *outcomeArray1 = new int[expectedLength1];
+  algebra::MatrixToArray(givenMatrix1,algebra::ExpansionType::E_AlongRow,outcomeArray1);
+  const int expectedArray1[] = {1,2,3,4,5,6,7,8,9};
+  for(size_t _index = 0; _index < expectedLength1; _index+= 1)
+  {
+    ASSERT_EQ(*(expectedArray1 + _index),*(outcomeArray1 + _index));
+  }
+  delete []outcomeArray1;
+
+  const algebra::Matrix<int> givenMatrix2 = {
+    {1,2,3,4,5,6},
+    {7,8,9,10,11,12},
+    {13,14,15,16,17,18}
+  };
+  const size_t expectedLength2 = givenMatrix2.Order().first * givenMatrix2.Order().second;
+  int *outcomeArray2 = new int[expectedLength2];
+  algebra::MatrixToArray(givenMatrix2,algebra::ExpansionType::E_AlongColumn,outcomeArray2);
+  const int expectedArray2[] = {1,7,13,2,8,14,3,9,15,4,10,16,5,11,17,6,12,18};
+  for(size_t _index = 0; _index < expectedLength2; _index += 1)
+  {
+    ASSERT_EQ(*(expectedArray2 + _index),*(outcomeArray2 + _index));
+  }
+  delete []outcomeArray2;
+
+  const algebra::Matrix<double> givenMatrix3 = {
+    {3.7,9.3,4.3,6.6},
+    {9.3,1.2,1.2,4.3},
+    {5.1,3.1,1.1,9.3},
+    {2.3,5.1,9.3,3.7}
+  };
+  const size_t expectedLength3 = givenMatrix3.Order().first * givenMatrix3.Order().second;
+  double *outcomeArray3 = new double[expectedLength3];
+  algebra::MatrixToArray(givenMatrix3,algebra::ExpansionType::E_AlongColumn,outcomeArray3);
+  const double expectedArray3[] = {3.7,9.3,5.1,2.3,9.3,1.2,3.1,5.1,4.3,1.2,1.1,9.3,6.6,4.3,9.3,3.7};
+  for(size_t _index = 0; _index < expectedLength3; _index+= 1)
+  {
+    ASSERT_DOUBLE_EQ(*(expectedArray3 + _index),*(outcomeArray3 + _index));
+  }
+  delete []outcomeArray3;
+}
