@@ -164,8 +164,24 @@ namespace algebra
       //RECON: Reconsider the logic here
       // return (RealNumericValueType) std::pow(-1,(_row_index + _column_index)) * ;
     }
-
   };
+
+  double DeterminantUtility_AreaOfTriangle(const std::vector<std::pair<int,int>>& _points_of_triangle)
+  {
+    std::vector<int> _minor_x_buffer;
+    _minor_x_buffer.reserve(3);
+    std::vector<int> _minor_y_buffer;
+    _minor_y_buffer.reserve(3);
+    std::for_each(_points_of_triangle.begin(),_points_of_triangle.end(),[&](const std::pair<int,int>& _point) {
+      _minor_x_buffer.emplace_back(_point.first);
+      _minor_y_buffer.emplace_back(_point.second);
+    });
+    const std::vector<algebra::Column<int>> _major_column_buffer = {_minor_x_buffer,_minor_y_buffer,{1,1,1}};
+    const algebra::Determinant<int> _temp_Determinant = _major_column_buffer;
+    if(_temp_Determinant.Value() == 0)
+      throw std::runtime_error("Collinear points are provided for computing area");
+    else return std::fabs(0.5 * _temp_Determinant.Value());
+  }
 } // algebra
 
 
