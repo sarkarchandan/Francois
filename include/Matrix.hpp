@@ -405,7 +405,7 @@ namespace algebra
   }
 
   template<typename RealNumericValueType>
-  void MatrixToArray(const algebra::Matrix<RealNumericValueType>& _from_matrix,const algebra::ExpansionType _expansion_type,RealNumericValueType *_to_array)
+  void MatrixToArray(const algebra::Matrix<RealNumericValueType>& _from_matrix,const algebra::ExpansionType& _expansion_type,RealNumericValueType *_to_array)
   {
     size_t _to_array_index = 0;
     if(_expansion_type == algebra::ExpansionType::E_AlongRow)
@@ -424,6 +424,53 @@ namespace algebra
           _to_array_index += 1;
         });
       });
+    }
+  }
+
+  template<typename RealNumericValueType>
+  Matrix<RealNumericValueType> ArrayToMatrix(const RealNumericValueType* _from_array, const size_t& _from_array_length, const algebra::ContractionType& _contraction_type,const std::pair<size_t,size_t>& _intended_matrix_order)
+  {
+    if((_intended_matrix_order.first * _intended_matrix_order.second) != _from_array_length)
+      throw std::length_error("Provided array length is not compatible with the intended order of matrix");
+
+    if(_contraction_type == algebra::ContractionType::C_AlongRow)
+    {
+      std::vector<algebra::Row<RealNumericValueType>> _major_buffer;
+      _major_buffer.reserve(_intended_matrix_order.first);
+      for(size_t _major_index = 0; _major_index < _from_array_length; _major_index += _intended_matrix_order.second)
+      {
+        const size_t _pivot_index = _major_index;
+        std::vector<RealNumericValueType> _minor_buffer;
+        _minor_buffer.reserve(_intended_matrix_order.second);
+
+        for(size_t _minor_index = _major_index; _minor_index < _pivot_index+_intended_matrix_order.second; _minor_index+= 1)
+        {
+          _minor_buffer.emplace_back(*(_from_array + _minor_index));
+        }
+
+        const algebra::Row<RealNumericValueType> _row = _minor_buffer;
+        _major_buffer.emplace_back(_row);
+      }
+      return Matrix<RealNumericValueType>(_major_buffer);
+    }else
+    {
+      std::vector<algebra::Column<RealNumericValueType>> _major_buffer;
+      _major_buffer.reserve(_intended_matrix_order.second);
+      for(size_t _major_index = 0; _major_index < _from_array_length; _major_index += _intended_matrix_order.first)
+      {
+        const size_t _pivot_index = _major_index;
+        std::vector<RealNumericValueType> _minor_buffer;
+        _minor_buffer.reserve(_intended_matrix_order.first);
+
+        for(size_t _minor_index = _major_index; _minor_index < _pivot_index+_intended_matrix_order.first; _minor_index+= 1)
+        {
+          _minor_buffer.emplace_back(*(_from_array + _minor_index));
+        }
+
+        const algebra::Column<RealNumericValueType> _column = _minor_buffer;
+        _major_buffer.emplace_back(_column);
+      }
+      return Matrix<RealNumericValueType>(_major_buffer);
     }
   }
 } // algebra
