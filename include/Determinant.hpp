@@ -9,32 +9,39 @@ namespace algebra
   template<typename RealNumericValueType>
   class Determinant: public MultiSequence<RealNumericValueType>
   {
-    static_assert(std::is_same<RealNumericValueType,int>::value || 
+    static_assert(std::is_same<RealNumericValueType,int>::value ||
     std::is_same<RealNumericValueType,long>::value ||
-    std::is_same<RealNumericValueType,float>::value || 
+    std::is_same<RealNumericValueType,float>::value ||
     std::is_same<RealNumericValueType,double>::value ||
     std::is_same<RealNumericValueType,algebra::ElementProtocol>::value,"Container can accept only integers or double data type for now.");
 
     #pragma mark Private helper functions
     private:
-    bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list) const override 
+    bool IsValid(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list) const override
     {
       return MultiSequence<RealNumericValueType>::IsValid(_init_list) && _init_list.size() == _init_list.begin() -> size();
     }
 
-    bool IsValid(const std::vector<std::vector<RealNumericValueType>>& _vectors)const override 
+    bool IsValid(const std::vector<std::vector<RealNumericValueType>>& _vectors)const override
     {
       return MultiSequence<RealNumericValueType>::IsValid(_vectors) && _vectors.size() == _vectors.begin() -> size();
     }
-    
+
     bool IsValid(const std::vector<algebra::Row<RealNumericValueType>>& _rows)const override
     {
       return MultiSequence<RealNumericValueType>::IsValid(_rows) && _rows.size() == _rows.begin() -> Size();
-    } 
+    }
 
     bool IsValid(const std::vector<algebra::Column<RealNumericValueType>>& _columns)const override
     {
       return MultiSequence<RealNumericValueType>::IsValid(_columns) && _columns.size() == _columns.begin() -> Size();
+    }
+
+    inline bool IsEvenPower(const size_t& _lhs, const size_t& _rhs) const
+    {
+      if((_lhs + _rhs) == 0) return true;
+      else if((_lhs + _rhs) % 2 == 0) return true;
+      else return false;
     }
 
     #pragma mark Public constructors
@@ -95,14 +102,14 @@ namespace algebra
     :MultiSequence<RealNumericValueType>(_determinant)
     {}
     ~Determinant(){}
-    
+
     #pragma mark Public member functions
     RealNumericValueType Value() const
     {
       if(this -> Order().first > 3 && this -> Order().second > 3)
-        throw std::runtime_error("Determinant beyond order 2 has not been implemented yet");
+        throw std::runtime_error("Determinant beyond order 3 has not been implemented yet");
 
-      if(this -> Order().first == 1 && this -> Order().second == 1) 
+      if(this -> Order().first == 1 && this -> Order().second == 1)
         return this -> operator()(0,0);
       else if(this -> Order().first == 2 && this -> Order().second == 2)
         return (this -> operator()(0,0) * this -> operator()(1,1)) - (this -> operator()(1,0) * this -> operator()(0,1));
@@ -111,7 +118,7 @@ namespace algebra
         RealNumericValueType _temp_Value = 0;
         for(size_t _column_index = 0; _column_index < this -> Order().second; _column_index += 1)
         {
-          _temp_Value += CoFactor_ByIndex(0,_column_index);
+          _temp_Value += (this -> operator()(0,_column_index) * CoFactor_ByIndex(0,_column_index));
         }
         return _temp_Value;
       }
@@ -124,7 +131,7 @@ namespace algebra
 
       if(this -> Order().first > 3 && this -> Order().second > 3)
         throw std::runtime_error("Determinant beyond order 3 has not been implemented yet");
-      if(this -> Order().first == 1 && this -> Order().second == 1) 
+      if(this -> Order().first == 1 && this -> Order().second == 1)
         return this -> operator ()(0,0);
       else if(this -> Order().first == 2 && this -> Order().second == 2)
       {
@@ -152,7 +159,10 @@ namespace algebra
 
     RealNumericValueType CoFactor_ByIndex(const size_t& _row_index, const size_t& _column_index) const
     {
-      return (RealNumericValueType) std::pow(-1,(_row_index + _column_index)) * Minor_ByIndex(_row_index,_column_index);
+      if (IsEvenPower(_row_index,_column_index)) return Minor_ByIndex(_row_index,_column_index);
+      else return -Minor_ByIndex(_row_index,_column_index);
+      //RECON: Reconsider the logic here
+      // return (RealNumericValueType) std::pow(-1,(_row_index + _column_index)) * ;
     }
 
   };

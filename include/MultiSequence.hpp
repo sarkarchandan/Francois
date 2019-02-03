@@ -82,7 +82,7 @@ namespace algebra
           operator()(_row_index,_column_index) = _column[_row_index];
     }
 
-    #pragma mark Protected constructors to be accessed only by child classes
+    #pragma mark protected constructors to be accessed only by child classes
     protected:
     MultiSequence(){}
     MultiSequence(const std::initializer_list<std::vector<RealNumericValueType>>& _init_list)
