@@ -310,6 +310,7 @@ namespace algebra
     std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
       _stream << _row << "\n";
     });
+    _stream << "\n";
     return _stream;
   }
 
