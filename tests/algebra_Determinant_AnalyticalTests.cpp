@@ -14,11 +14,9 @@ TEST(DeterminantAnalyticalTests, canValidateDeterminantProperty_1)
   };
   const algebra::Determinant<int> givenDeterminant1 = givenMatrix1.Rows();
   const int computedDeterminantValue1 = givenDeterminant1.Value();
-  std::cout << "Determinant value: " << computedDeterminantValue1 << "\n";
   const algebra::Matrix<int> givenTransposedMatrix1 = givenMatrix1.Transpose();
   const algebra::Determinant<int> givenTransposedDeterminant1 = givenTransposedMatrix1.Rows();
   const int computedTransposedDeterminantValue1 = givenTransposedDeterminant1.Value();
-  std::cout << "Transposed determinant value: " << computedTransposedDeterminantValue1 << "\n";
   ASSERT_EQ(computedDeterminantValue1,computedTransposedDeterminantValue1);
 
   const algebra::Matrix<int> givenmatrix2 = {
