@@ -473,6 +473,32 @@ namespace algebra
       return Matrix<RealNumericValueType>(_major_buffer);
     }
   }
+
+  template<typename RealNumericValueType>
+  std::vector<RealNumericValueType> MatrixToVector(const algebra::Matrix<RealNumericValueType>& _from_matrix, const algebra::ExpansionType& _expansion_type)
+  {
+    if(_expansion_type == algebra::ExpansionType::E_AlongRow)
+    {
+      std::vector<RealNumericValueType> _major_element_buffer;
+      _major_element_buffer.reserve(_from_matrix.Order().first * _from_matrix.Order().second);
+      _from_matrix.For_EachRow([&](const algebra::Row<RealNumericValueType>& _row) {
+        std::for_each(_row.begin(),_row.end(),[&](const RealNumericValueType& _element) {
+          _major_element_buffer.emplace_back(_element);
+        });
+      });
+      return _major_element_buffer;
+    }else
+    {
+      std::vector<RealNumericValueType> _major_element_buffer;
+      _major_element_buffer.reserve(_from_matrix.Order().first * _from_matrix.Order().second);
+      _from_matrix.For_EachColumn([&](const algebra::Column<RealNumericValueType>& _column) {
+        std::for_each(_column.begin(),_column.end(),[&](const RealNumericValueType& _element) {
+          _major_element_buffer.emplace_back(_element);
+        });
+      });
+      return _major_element_buffer;
+    }
+  }
 } // algebra
 
 #endif //MATRIX_H

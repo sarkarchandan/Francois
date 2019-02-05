@@ -277,3 +277,34 @@ TEST(MatrixUtilityTests_ExceptionTest, canNotWrapArrayToMatrixWhenArrayLengthAnd
   const std::pair<size_t,size_t> intendedOrder1 = std::make_pair<size_t,size_t>(4,4);
   EXPECT_THROW(algebra::ArrayToMatrix(givenArray1,givenArrayLength1,algebra::ContractionType::C_AlongRow,intendedOrder1),std::length_error);
 }
+
+TEST(MatrixUtilityTests, canUnwrapMatrixToVector)
+{
+  const algebra::Matrix<int> givenMatrix1 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+  const std::vector<int> computedVector1 = algebra::MatrixToVector(givenMatrix1,algebra::ExpansionType::E_AlongRow);
+  const std::vector<int> expectedVector1 = {1,2,3,4,5,6,7,8,9};
+  ASSERT_TRUE(computedVector1 == expectedVector1);
+
+  const algebra::Matrix<int> givenMatrix2 = {
+    {1,2,3,4,5,6},
+    {7,8,9,10,11,12},
+    {13,14,15,16,17,18}
+  };
+  const std::vector<int> computedVector2 = algebra::MatrixToVector(givenMatrix2,algebra::ExpansionType::E_AlongColumn);
+  const std::vector<int> expectedVector2 = {1,7,13,2,8,14,3,9,15,4,10,16,5,11,17,6,12,18};
+  ASSERT_TRUE(computedVector2 == expectedVector2);
+
+  const algebra::Matrix<double> givenMatrix3 = {
+    {3.7,9.3,4.3,6.6},
+    {9.3,1.2,1.2,4.3},
+    {5.1,3.1,1.1,9.3},
+    {2.3,5.1,9.3,3.7}
+  };
+  const std::vector<double> computedVector3 = algebra::MatrixToVector(givenMatrix3,algebra::ExpansionType::E_AlongColumn);
+  const std::vector<double> expectedVector3 = {3.7,9.3,5.1,2.3,9.3,1.2,3.1,5.1,4.3,1.2,1.1,9.3,6.6,4.3,9.3,3.7};
+  ASSERT_TRUE(computedVector3 == expectedVector3);
+}
