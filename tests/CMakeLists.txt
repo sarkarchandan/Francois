@@ -2,14 +2,7 @@ cmake_minimum_required(VERSION 3.1...3.13)
 if(${CMAKE_VERSION} VERSION_LESS 3.13)
   cmake_policy(VERSION  ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
-
-project(FrancoisTestSuite VERSION 1.0 DESCRIPTION "Francois test suite" LANGUAGES CXX)
-
-mark_as_advanced(
-  BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS
-  gmock_build_tests gmock_build_samples gtest_build_tests
-  gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
-)
+project(FrancoisTestSuite VERSION 1.0 DESCRIPTION "A test suite to test features that Francois library offers" LANGUAGES CXX)
 
 target_compile_features(gtest PUBLIC cxx_std_11)
 target_compile_features(gtest_main PUBLIC cxx_std_11)
