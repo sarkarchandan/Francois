@@ -40,6 +40,15 @@ namespace algebra
   }
 
   template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const std::vector<algebra::Row<RealNumericValueType>>& _rows)
+  {
+    std::for_each(_rows.begin(),_rows.end(),[&](const algebra::Row<RealNumericValueType>& _row) {
+      _stream << "{" << _row << "}" << " ";
+    });
+    return _stream;
+  }
+
+  template<typename RealNumericValueType>
   algebra::Row<RealNumericValueType> operator +(const algebra::Row<RealNumericValueType>& _lhs, const algebra::Row<RealNumericValueType>& _rhs)
   {
     if(_lhs.Size() != _rhs.Size())
@@ -141,6 +150,15 @@ namespace algebra
       if (_index < (_column.Size() - 1)) _stream << _column[_index] << " ";
       else _stream << _column[_index];
     }
+    return _stream;
+  }
+
+  template<typename RealNumericValueType>
+  std::ostream& operator <<(std::ostream& _stream, const std::vector<algebra::Column<RealNumericValueType>>& _columns)
+  {
+    std::for_each(_columns.begin(),_columns.end(),[&](const algebra::Column<RealNumericValueType>& _column) {
+      _stream << "{" << _column << "}" << " ";
+    });
     return _stream;
   }
 

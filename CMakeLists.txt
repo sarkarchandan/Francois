@@ -23,6 +23,10 @@ add_library(Francois INTERFACE)
 target_include_directories(Francois INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(Francois INTERFACE cxx_std_14)
 
+add_executable(Example ${CMAKE_CURRENT_SOURCE_DIR}/example/main.cpp)
+target_include_directories(Example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/example/include)
+target_compile_features(Example PRIVATE cxx_std_14)
+target_link_libraries(Example Francois)
 
 option(PACKAGE_TEST "Build for tests" ON)
 if(PACKAGE_TEST)
