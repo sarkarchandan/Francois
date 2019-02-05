@@ -308,3 +308,70 @@ TEST(MatrixUtilityTests, canUnwrapMatrixToVector)
   const std::vector<double> expectedVector3 = {3.7,9.3,5.1,2.3,9.3,1.2,3.1,5.1,4.3,1.2,1.1,9.3,6.6,4.3,9.3,3.7};
   ASSERT_TRUE(computedVector3 == expectedVector3);
 }
+
+TEST(MatrixUtilityTests, canWrapVectorToMatrix)
+{
+  const std::vector<int> givenVector1 = {1,2,3,4,5,6,7,8,9};
+  const std::pair<size_t,size_t> intendedMatrixOrder1 = std::make_pair<size_t,size_t>(3,3);
+  const algebra::Matrix<int> outcomeMatrix1 = algebra::VectorToMatrix(givenVector1,algebra::ContractionType::C_AlongRow,intendedMatrixOrder1);
+  const algebra::Matrix<int> outcomeMatrix2 = algebra::VectorToMatrix(givenVector1,algebra::ContractionType::C_AlongColumn,intendedMatrixOrder1);
+  const algebra::Matrix<int> expectedMatrix1 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+  const algebra::Matrix<int> expectedMatrix2 = {
+    {1,4,7},
+    {2,5,8},
+    {3,6,9}
+  };
+  ASSERT_TRUE(outcomeMatrix1 == expectedMatrix1);
+  ASSERT_TRUE(outcomeMatrix2 == expectedMatrix2);
+
+  const std::vector<int> givenVector2 = {1,7,13,2,8,14,3,9,15,4,10,16,5,11,17,6,12,18};
+  const std::pair<size_t,size_t> intendedMatrixOrder2 = std::make_pair<size_t,size_t>(3,6);
+  const std::pair<size_t,size_t> intendedMatrixOrder3 = std::make_pair<size_t,size_t>(6,3);
+  const algebra::Matrix<int> outcomeMatrix3 = algebra::VectorToMatrix(givenVector2,algebra::ContractionType::C_AlongRow,intendedMatrixOrder2);
+  const algebra::Matrix<int> outcomeMatrix4 = algebra::VectorToMatrix(givenVector2,algebra::ContractionType::C_AlongColumn,intendedMatrixOrder3);
+  const algebra::Matrix<int> expectedMatrix3 = {
+    {1,7,13,2,8,14},
+    {3,9,15,4,10,16},
+    {5,11,17,6,12,18}
+  };
+  const algebra::Matrix<int> expectedMatrix4 = {
+    {1,3,5},
+    {7,9,11},
+    {13,15,17},
+    {2,4,6},
+    {8,10,12},
+    {14,16,18}
+  };
+  ASSERT_TRUE(outcomeMatrix3 == expectedMatrix3);
+  ASSERT_TRUE(outcomeMatrix4 == expectedMatrix4);
+
+  const std::vector<double> givenVector3 = {3.7,9.3,5.1,2.3,9.3,1.2,3.1,5.1,4.3,1.2,1.1,9.3,6.6,4.3,9.3,3.7};
+  const std::pair<size_t,size_t> intendedMatrixOrder4 = std::make_pair<size_t,size_t>(4,4);
+  const algebra::Matrix<double> outcomeMatrix5 = algebra::VectorToMatrix(givenVector3,algebra::ContractionType::C_AlongRow,intendedMatrixOrder4);
+  const algebra::Matrix<double> outcomeMatrix6 = algebra::VectorToMatrix(givenVector3,algebra::ContractionType::C_AlongColumn,intendedMatrixOrder4);
+  const algebra::Matrix<double> expectedMatrix5 = {
+    {3.7,9.3,5.1,2.3},
+    {9.3,1.2,3.1,5.1},
+    {4.3,1.2,1.1,9.3},
+    {6.6,4.3,9.3,3.7}
+  };
+  const algebra::Matrix<double> expectedMatrix6 = {
+    {3.7,9.3,4.3,6.6},
+    {9.3,1.2,1.2,4.3},
+    {5.1,3.1,1.1,9.3},
+    {2.3,5.1,9.3,3.7}
+  };
+  ASSERT_TRUE(outcomeMatrix5 == expectedMatrix5);
+  ASSERT_TRUE(outcomeMatrix6 == expectedMatrix6);
+}
+
+TEST(MatrixUtilityTests_ExceptionTest, canNotWrapVectorToMatrixWhenVectorSizeAndIntendedOrderAreIncompatible)
+{
+  const std::vector<int> givenVector1 = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
+  const std::pair<size_t,size_t> intendedOrder1 = std::make_pair<size_t,size_t>(4,4);
+  EXPECT_THROW(algebra::VectorToMatrix(givenVector1,algebra::ContractionType::C_AlongRow,intendedOrder1),std::length_error);
+}

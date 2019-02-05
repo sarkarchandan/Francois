@@ -499,6 +499,52 @@ namespace algebra
       return _major_element_buffer;
     }
   }
+
+  template<typename RealNumericValueType>
+  Matrix<RealNumericValueType> VectorToMatrix(const std::vector<RealNumericValueType>& _from_vector, const algebra::ContractionType& _contraction_type, const std::pair<size_t,size_t>& _intended_matrix_order)
+  {
+    if((_intended_matrix_order.first * _intended_matrix_order.second) != _from_vector.size())
+      throw std::length_error("Provided vector size is not compatible with the intended order of matrix");
+    if(_contraction_type == algebra::ContractionType::C_AlongRow)
+    {
+      std::vector<algebra::Row<RealNumericValueType>> _major_buffer;
+      _major_buffer.reserve(_intended_matrix_order.first);
+      for(size_t _major_index = 0; _major_index < _from_vector.size(); _major_index += _intended_matrix_order.second)
+      {
+        const size_t _pivot_index = _major_index;
+        std::vector<RealNumericValueType> _minor_buffer;
+        _minor_buffer.reserve(_intended_matrix_order.second);
+
+        for(size_t _minor_index = _major_index; _minor_index < _pivot_index+_intended_matrix_order.second; _minor_index+= 1)
+        {
+          _minor_buffer.emplace_back(_from_vector[_minor_index]);
+        }
+
+        const algebra::Row<RealNumericValueType> _row = _minor_buffer;
+        _major_buffer.emplace_back(_row);
+      }
+      return Matrix<RealNumericValueType>(_major_buffer);
+    }else
+    {
+      std::vector<algebra::Column<RealNumericValueType>> _major_buffer;
+      _major_buffer.reserve(_intended_matrix_order.second);
+      for(size_t _major_index = 0; _major_index < _from_vector.size(); _major_index += _intended_matrix_order.first)
+      {
+        const size_t _pivot_index = _major_index;
+        std::vector<RealNumericValueType> _minor_buffer;
+        _minor_buffer.reserve(_intended_matrix_order.first);
+
+        for(size_t _minor_index = _major_index; _minor_index < _pivot_index+_intended_matrix_order.first; _minor_index+= 1)
+        {
+          _minor_buffer.emplace_back(_from_vector[_minor_index]);
+        }
+
+        const algebra::Column<RealNumericValueType> _column = _minor_buffer;
+        _major_buffer.emplace_back(_column);
+      }
+      return Matrix<RealNumericValueType>(_major_buffer);
+    }
+  }
 } // algebra
 
 #endif //MATRIX_H
