@@ -290,11 +290,11 @@ TEST(MatrixSanityTests, canInitializeMatrixWithColumns)
   std::pair<size_t,size_t> expectedIntPair = std::make_pair<size_t,size_t>(4,3);
   ASSERT_TRUE(testableIntMatrix.Order() == expectedIntPair);
 
-  const std::vector<algebra::Column<double>> testableDoubleColumns = {{65.4,936.12,90.23,65.78},{47.1,93.15,81.32,43.98}};
+  const std::vector<algebra::Column<double>> testableDoubleColumns = {{65.4,36.12,90.23,65.78},{47.1,93.15,81.32,43.98}};
   const algebra::Matrix<double> testableDoubleMatrix = testableDoubleColumns;
   const algebra::Matrix<double> expectedDoubleMatrix = {
     {65.4,47.1},
-    {936.12,93.15},
+    {36.12,93.15},
     {90.23,81.32},
     {65.78,43.98}
   };
