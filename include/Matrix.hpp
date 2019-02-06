@@ -20,7 +20,7 @@ namespace algebra
     std::is_same<RealNumericValueType,long>::value ||
     std::is_same<RealNumericValueType,float>::value ||
     std::is_same<RealNumericValueType,double>::value ||
-    std::is_same<RealNumericValueType,algebra::ElementProtocol>::value,"Container can accept only integers or double data type for now.");
+    std::is_same<RealNumericValueType,algebra::ElementProtocol>::value,"Container can accept only real numbers for now.");
 
     #pragma mark Public constructors
     public:
