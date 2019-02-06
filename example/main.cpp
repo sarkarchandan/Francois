@@ -4,6 +4,7 @@
 #include "Matrix_Utility.hpp"
 #include "Determinant_Sanity.hpp"
 #include "Determinant_Operations.hpp"
+#include "Determinant_Utility.hpp"
 
 int main(int argc, const char **argv)
 {
@@ -53,6 +54,10 @@ int main(int argc, const char **argv)
   //2.3 Examples of the operations group demonstrate some of the inherent operations which are usually performed in context of the determinant.
   //2.3.1 Determinant Operations Demo - Computing the value of the determinant, finding out the minors and cofactors in a determinant by index.
   Determinant_Demo_Operations();
+
+  //2.4 Examples of the operations group demonstrate one of the utility methods implemented in context of determinant
+  //2.4.1 Determinant Operations Demo - Computing area of triangle from non-collinear 2D coordinates.
+  Determinant_Demo_Utility();
 
 
   return EXIT_SUCCESS;

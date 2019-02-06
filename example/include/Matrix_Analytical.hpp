@@ -33,7 +33,7 @@ void Matrix_Demo_Classification()
     {11,12,13,14,15}
   };
   if(matrix3.IsRectangularMatrix())
-    std::cout << "The matrix: " << matrix3 << "is an example of rectangualr matrix." << "\n";
+    std::cout << "The matrix: " << matrix3 << "is an example of rectangular matrix." << "\n";
   std::cout << "\n";
   const algebra::Matrix<int> matrix4 = {
     {5,2,1},
