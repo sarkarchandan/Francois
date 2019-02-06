@@ -1,6 +1,7 @@
 #ifndef MATRIX_SANITY
 #define MATRIX_SANITY
 
+#include <iostream>
 #include "Matrix.hpp"
 
 void Demo_Init()

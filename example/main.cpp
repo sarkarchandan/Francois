@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Matrix_Sanity.hpp"
 #include "Matrix_Analytical.hpp"
+#include "Matrix_Operations.hpp"
 
 int main(int argc, const char **argv)
 {
@@ -15,7 +16,12 @@ int main(int argc, const char **argv)
   //#.1 Matrix Analytical Demo - Classification of matrices
   Demo_Classification();
 
-  //#1.3 
+  //#1.3 Examples of the operations group demonstrate of the basic operations on the matrix datatype.
+  //#.1 Matrix Operations Demo - Arithmetic operations on matrices
+  Demo_Arithmetic_Operations();
+
+  //#.2 Matrix Operations Demo - Logical operations on matrices
+  Demo_Logical_Operations();
 
   return EXIT_SUCCESS;
 }

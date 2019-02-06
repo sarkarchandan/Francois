@@ -1,6 +1,7 @@
 #ifndef MATRIX_ANALYTICAL_H
 #define MATRIX_ANALYTICAL_H
 
+#include <iostream>
 #include "Matrix.hpp"
 
 void Demo_Classification()
@@ -156,7 +157,7 @@ void Demo_Classification()
   };
   if(matrix17.IsInvertibleMatrix())
     std::cout << "The matrix " << matrix17 << "is an example of non-singular invertible matrix." << "\n";
-  
+  std::cout << "\n";
 }
 
 
