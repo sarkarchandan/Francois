@@ -44,25 +44,25 @@ TEST(DeterminantAnalyticalTests, canDetermineMinorsByIndex)
     {7,8,9}
   };
 
-  const int expectedCoFactor00 = (givenDeterminant3(1,1) * givenDeterminant3(2,2)) - (givenDeterminant3(2,1) * givenDeterminant3(1,2));
-  const int expectedCoFactor01 = (givenDeterminant3(1,0) * givenDeterminant3(2,2)) - (givenDeterminant3(2,0) * givenDeterminant3(1,2));
-  const int expectedCoFactor02 = (givenDeterminant3(1,0) * givenDeterminant3(2,1)) - (givenDeterminant3(2,0) * givenDeterminant3(1,1));
-  const int expectedCoFactor10 = (givenDeterminant3(0,1) * givenDeterminant3(2,2)) - (givenDeterminant3(2,1) * givenDeterminant3(0,2));
-  const int expectedCoFactor11 = (givenDeterminant3(0,0) * givenDeterminant3(2,2)) - (givenDeterminant3(2,0) * givenDeterminant3(0,2));
-  const int expectedCoFactor12 = (givenDeterminant3(0,0) * givenDeterminant3(2,1)) - (givenDeterminant3(2,0) * givenDeterminant3(0,1));
-  const int expectedCoFactor20 = (givenDeterminant3(0,1) * givenDeterminant3(1,2)) - (givenDeterminant3(1,1) * givenDeterminant3(0,2));
-  const int expectedCoFactor21 = (givenDeterminant3(0,0) * givenDeterminant3(1,2)) - (givenDeterminant3(1,0) * givenDeterminant3(0,2));
-  const int expectedCoFactor22 = (givenDeterminant3(0,0) * givenDeterminant3(1,1)) - (givenDeterminant3(1,0) * givenDeterminant3(0,1));
+  const int expectedMinor00 = (givenDeterminant3(1,1) * givenDeterminant3(2,2)) - (givenDeterminant3(2,1) * givenDeterminant3(1,2));
+  const int expectedMinor01 = (givenDeterminant3(1,0) * givenDeterminant3(2,2)) - (givenDeterminant3(2,0) * givenDeterminant3(1,2));
+  const int expectedMinor02 = (givenDeterminant3(1,0) * givenDeterminant3(2,1)) - (givenDeterminant3(2,0) * givenDeterminant3(1,1));
+  const int expectedMinor10 = (givenDeterminant3(0,1) * givenDeterminant3(2,2)) - (givenDeterminant3(2,1) * givenDeterminant3(0,2));
+  const int expectedMinor11 = (givenDeterminant3(0,0) * givenDeterminant3(2,2)) - (givenDeterminant3(2,0) * givenDeterminant3(0,2));
+  const int expectedMinor12 = (givenDeterminant3(0,0) * givenDeterminant3(2,1)) - (givenDeterminant3(2,0) * givenDeterminant3(0,1));
+  const int expectedMinor20 = (givenDeterminant3(0,1) * givenDeterminant3(1,2)) - (givenDeterminant3(1,1) * givenDeterminant3(0,2));
+  const int expectedMinor21 = (givenDeterminant3(0,0) * givenDeterminant3(1,2)) - (givenDeterminant3(1,0) * givenDeterminant3(0,2));
+  const int expectedMinor22 = (givenDeterminant3(0,0) * givenDeterminant3(1,1)) - (givenDeterminant3(1,0) * givenDeterminant3(0,1));
 
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(0,0) == expectedCoFactor00);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(0,1) == expectedCoFactor01);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(0,2) == expectedCoFactor02);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(1,0) == expectedCoFactor10);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(1,1) == expectedCoFactor11);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(1,2) == expectedCoFactor12);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(2,0) == expectedCoFactor20);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(2,1) == expectedCoFactor21);
-  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(2,2) == expectedCoFactor22);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(0,0) == expectedMinor00);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(0,1) == expectedMinor01);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(0,2) == expectedMinor02);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(1,0) == expectedMinor10);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(1,1) == expectedMinor11);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(1,2) == expectedMinor12);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(2,0) == expectedMinor20);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(2,1) == expectedMinor21);
+  ASSERT_TRUE(givenDeterminant3.Minor_ByIndex(2,2) == expectedMinor22);
 }
 
 TEST(DeterminantAnalyticalTests, canDetermineCoFactorsByIndex)

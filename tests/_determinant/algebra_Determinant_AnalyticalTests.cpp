@@ -60,7 +60,7 @@ TEST(DeterminantAnalyticalTests, canValidateDeterminantProperty_2)
   ASSERT_EQ(computedDeterminantValue2,-computedChangedDeterminantValue2);
 }
 
-//#3 If any two rows or columns of a determinant are identical(all corresponding elements are same) then value of the determinant is 0.
+//#3 If any two rows or columns of a determinant are identical(i.e. all corresponding elements are same) then value of the determinant is 0.
 TEST(DeterminantAnalyticalTests, canValidateDeterminantProperty_3)
 {
   const algebra::Matrix<int> givenMatrix1 = {
@@ -82,7 +82,7 @@ TEST(DeterminantAnalyticalTests, canValidateDeterminantProperty_3)
   ASSERT_EQ(computedDeterminantValue2,0);
 }
 
-//#4 If each element of a given row or column of a determinant is multiplied by the value k then the determinant value is multiplied by the value k.
+//#4 If each element of a given row or column of a determinant is multiplied by the value k then the determinant is multiplied by the value k.
 TEST(DeterminantAnalyticalTests, canValidateDeterminantProperty_4)
 {
   algebra::Matrix<int> givenMatrix1 = {
