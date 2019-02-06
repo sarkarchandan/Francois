@@ -139,6 +139,24 @@ void Demo_Classification()
   if(matrix15.IsSkewSymmetricMatrix())
     std::cout << "The matrix " << matrix15 << "is an example of skew-symmetric matrix." << "\n";
   std::cout << "\n";
+
+  const algebra::Matrix<int> matrix16 = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  };
+  if(matrix16.IsSingularMatrix())
+    std::cout << "The matrix " << matrix16 << "is an example of the singular matrix." << "\n";
+  std::cout << "\n";
+
+  const algebra::Matrix<int> matrix17 = {
+    {-3,-3,-4},
+    {0,1,1},
+    {4,3,4}
+  };
+  if(matrix17.IsInvertibleMatrix())
+    std::cout << "The matrix " << matrix17 << "is an example of non-singular invertible matrix." << "\n";
+  
 }
 
 
