@@ -61,6 +61,58 @@ TEST(MatrixOperationsTests, canSubtractTwoColumns)
   ASSERT_TRUE(differenceOfDoubleColumns == testableColumn2);
 }
 
+TEST(MatrixOperationsTests, canAddAScalarToEachElementOfRow)
+{
+  const algebra::Row<int> testableRow1 = {1,2,3,4};
+  const algebra::Row<int> computedIntSum1 = 3 + testableRow1;
+  const algebra::Row<int> expectedIntRow = {4,5,6,7};
+  ASSERT_TRUE(computedIntSum1 == expectedIntRow);
+
+  const algebra::Row<double> testableRow2 = {4.1,3.2,2.1,1.0};
+  const algebra::Row<double> computedIntSum2 = testableRow2 + 1.1;
+  const algebra::Row<double> expectedDoubleRow = {4.1+1.1,3.2+1.1,2.1+1.1,1.0+1.1};
+  ASSERT_TRUE(computedIntSum2 == expectedDoubleRow);
+}
+
+TEST(MatrixOperationsTests, canAddAScalarToEachElementOfColumn)
+{
+  const algebra::Column<int> testableColumn1 = {1,2,3,4};
+  const algebra::Column<int> computedIntSum1 = 3 + testableColumn1;
+  const algebra::Column<int> expectedIntColumn = {4,5,6,7};
+  ASSERT_TRUE(computedIntSum1 == expectedIntColumn);
+
+  const algebra::Column<double> testableColumn2 = {4.1,3.2,2.1,1.0};
+  const algebra::Column<double> computedIntSum2 = testableColumn2 + 1.1;
+  const algebra::Column<double> expectedDoubleColumn = {4.1+1.1,3.2+1.1,2.1+1.1,1.0+1.1};
+  ASSERT_TRUE(computedIntSum2 == expectedDoubleColumn);
+}
+
+TEST(MatrixOperationsTests, canSubtractAScalarFromEachElementOfRow)
+{
+  const algebra::Row<int> testableRow1 = {1,2,3,4};
+  const algebra::Row<int> computedIntDifference1 = 3 - testableRow1;
+  const algebra::Row<int> expectedIntRow = {3-1,3-2,3-3,3-4};
+  ASSERT_TRUE(computedIntDifference1 == expectedIntRow);
+
+  const algebra::Row<double> testableRow2 = {4.1,3.2,2.1,1.0};
+  const algebra::Row<double> computedIntDifference2 = testableRow2 - 1.1;
+  const algebra::Row<double> expectedDoubleRow = {4.1-1.1,3.2-1.1,2.1-1.1,1.0-1.1};
+  ASSERT_TRUE(computedIntDifference2 == expectedDoubleRow);
+}
+
+TEST(MatrixOperationsTests, canSubtractAScalarFromEachElementOfColumn)
+{
+  const algebra::Column<int> testableColumn1 = {1,2,3,4};
+  const algebra::Column<int> computedIntDifference1 = 3 - testableColumn1;
+  const algebra::Column<int> expectedIntColumn = {3-1,3-2,3-3,3-4};
+  ASSERT_TRUE(computedIntDifference1 == expectedIntColumn);
+
+  const algebra::Column<double> testableColumn2 = {4.1,3.2,2.1,1.0};
+  const algebra::Column<double> computedIntDifference2 = testableColumn2 - 1.1;
+  const algebra::Column<double> expectedDoubleColumn = {4.1-1.1,3.2-1.1,2.1-1.1,1.0-1.1};
+  ASSERT_TRUE(computedIntDifference2 == expectedDoubleColumn);
+}
+
 TEST(MatrixOperationsTests, canMultiplyRowWithScalar)
 {
   const algebra::Row<int> testableRow1 = {1,2,3,4};
@@ -402,7 +454,7 @@ TEST(MatrixOperationsTests, canPerformElementaryRowOperationsOnMatrix)
     {1,2,3,4}
   };
   ASSERT_TRUE(testableMatrix1 == expectedMatrix1);
-  
+
   //#2 Row[i] -> k * Row[i]
   algebra::Matrix<int> testableMatrix2 = {
     {1,2,3,4},
@@ -549,4 +601,3 @@ TEST(MatrixOperationsTests, canComputeInverseOfMatrixWithIntElements)
   };
   ASSERT_TRUE(algebra::Invert(givenMatrix3) == expectedInvertedmatrix3);
 }
-

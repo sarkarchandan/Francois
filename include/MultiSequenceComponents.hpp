@@ -75,6 +75,45 @@ namespace algebra
   }
 
   template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator +(const algebra::Row<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element + _scalar;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator +(const RealNumericValueType& _scalar, const algebra::Row<RealNumericValueType>& _rhs)
+  {
+    return _rhs + _scalar;
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator -(const algebra::Row<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element - _scalar;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Row<RealNumericValueType> operator -(const RealNumericValueType& _scalar, const algebra::Row<RealNumericValueType>& _rhs)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_rhs.Size());
+    std::transform(_rhs.begin(),_rhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _scalar - _element;
+    });
+    return algebra::Row<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
   algebra::Row<RealNumericValueType> operator *(const algebra::Row<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
   {
     std::vector<RealNumericValueType> _buffer;
@@ -184,6 +223,45 @@ namespace algebra
     _buffer.reserve(_lhs.Size());
     std::transform(_lhs.begin(),_lhs.end(),_rhs.begin(),std::back_inserter(_buffer),[&](const RealNumericValueType& _l_Element, const RealNumericValueType& _r_Element) {
       return _l_Element - _r_Element;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator +(const algebra::Column<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element + _scalar;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator +(const RealNumericValueType& _scalar, const algebra::Column<RealNumericValueType>& _rhs)
+  {
+    return _rhs + _scalar;
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator -(const algebra::Column<RealNumericValueType>& _lhs, const RealNumericValueType& _scalar)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_lhs.Size());
+    std::transform(_lhs.begin(),_lhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _element - _scalar;
+    });
+    return algebra::Column<RealNumericValueType>(_buffer);
+  }
+
+  template<typename RealNumericValueType>
+  algebra::Column<RealNumericValueType> operator -(const RealNumericValueType& _scalar, const algebra::Column<RealNumericValueType>& _rhs)
+  {
+    std::vector<RealNumericValueType> _buffer;
+    _buffer.reserve(_rhs.Size());
+    std::transform(_rhs.begin(),_rhs.end(),std::back_inserter(_buffer),[&](const RealNumericValueType& _element) {
+      return _scalar - _element;
     });
     return algebra::Column<RealNumericValueType>(_buffer);
   }
