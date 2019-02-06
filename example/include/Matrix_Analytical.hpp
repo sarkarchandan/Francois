@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Matrix.hpp"
 
-void Demo_Classification()
+void Matrix_Demo_Classification()
 {
   /*
   * Based on certain properties we can classify the matrices in certain types. This library offers convenient methods to check if a matrix is qualified to be of certain class of matrix. Efforts have been made to maintain the coherence between these methods with corresponding mathematical definitions of individual class of matrices.

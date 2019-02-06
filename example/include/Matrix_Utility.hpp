@@ -16,7 +16,7 @@ std::ostream& operator <<(std::ostream& _stream, const std::vector<T>& _vector)
   return _stream;
 }
 
-void Demo_Utilities()
+void Matrix_Demo_Utilities()
 {
   /*
   * This code segment demonstrates some of the convenient utilities defined on the matrix datatype. These utilites provide ways to create matrices as per the need, provide ways to perform basic arithmetic operations on components like rows or columns, provide way to transform matrix elements, wrap or unwrap the matrix from or to one dimensioanl structures etc..

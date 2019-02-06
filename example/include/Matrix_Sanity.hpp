@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Matrix.hpp"
 
-void Demo_Init()
+void Matrix_Demo_Init()
 {
   /*
   * A simple matrix with real number elements can be initialized like below using the std::initializer_list. A matrix can also be initialized using a nested vector like this std::vector<std::vector<T>>. Later on two other options to initialize a matrix are demonstrated using vector of algebra::Row<T> amd algebra::Column<T> datatypes.
@@ -46,7 +46,7 @@ void Demo_Init()
   std::cout << "Now the double matrix is changed to: " << matrix2;
 }
 
-void Demo_Components_AlternateInit()
+void Matrix_Demo_Components_AlternateInit()
 {
   /*
   * Rows and columns of a matrix can be separately accessed with vectors of algebra::Row<T> and algebra::Column<T> datatype. One can construct rows or columns individually and initialize a matrix with rows or columns. Matrix initialized in this way behaves alike with the matrix initialized in the earlier example.

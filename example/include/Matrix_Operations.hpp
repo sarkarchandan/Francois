@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Matrix.hpp"
 
-void Demo_Arithmetic_Operations()
+void Matrix_Demo_Arithmetic_Operations()
 {
   /*
   * This code segment demonstrate some of the fundamental arithmetic operations of matrices. These operations have several constraints that needs to be satisfied by the operand matrices. The respective tesuite vividly describes these constraints and their implications.
@@ -70,10 +70,11 @@ void Demo_Arithmetic_Operations()
   std::cout << "\n";
 }
 
-void Demo_Logical_Operations()
+void Matrix_Demo_Logical_Operations()
 {
   /*
-  * This code segment demonstrates some of the common logical operations that can be performed on matrices. This includes computing transpose of a matrix, performing elementary operations on rows or columns, finding inverse of an invertible matrix etc.. Some of the capabilities e.g., finding adjoint or inverse matrices are limited to matrices of order 3 for the time being. Work is in progress to overcome such limitations.
+  * This code segment demonstrates some of the common logical operations that can be performed on matrices. This includes computing transpose of a matrix, performing elementary operations on rows or columns, finding inverse of an invertible matrix etc.. 
+  ** Some of the capabilities which depends upon the algebra::Determinant<T> datatype e.g., finding adjoint matrices or inverse matrices are limited to matrices of order 3 for the time being. Work is in progress to improve and overcome these limitations.**
   * In addition to this demo the respective test suite comprehensively describes these capabilities.
   */
   std::cout << "**Demonstrate some of the fundamental logical operations**" << "\n";
