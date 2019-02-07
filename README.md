@@ -233,8 +233,10 @@ $ ctest
 
 ##### The library uses CMake [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html#id1 "CMake - FetchContent Module") module in order to integrate _googletest_ framework at configuration time. FetchContent is introduced with CMake version 3.11.
 
-## Author
-##### These are the project authors
+## Authors
+* Chandan Sarkar
+
+##### I am a grad student in computer science and learning C++ programming. This library is being created as part of my educational endeavors. I welcome all feedback and suggestions to improve my work.
 
 ## License
 ##### MIT Opensource License
