@@ -217,7 +217,16 @@ $ make
 ```
 
 ## Tests
-##### This is how to run the tests
+##### Francois provides a grouped and illustrative test suite. The test suite, on the other hand, works as secondary documentation of the library features. It uses the _googletest_ framework and CTest driver program to execute the tests. In this section, we describe the execution of the test suite assuming the steps described in the Installation section are performed.
+
+```bash
+$ cd build/extern/Francois/
+$ make
+$ ctest
+
+```
+
+##### This should execute the complete test suite.
 
 ## Dependencies
 ##### These are the dependencies
