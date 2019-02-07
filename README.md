@@ -1,7 +1,7 @@
 # Francois
 #### This is a library written in C++, using STL containers and algorithms in order to provide implementations for some of the core structures of the linear algebra,  starting with the Matrix and Determinants. Relevant concepts and structures are being added. This library attempts to draw a coherence between the mathematical properties of these structures and their respective implementations in programming. At the same time, it provides some convenient methods to create, transform, and utilize these structures. It uses the _algebra_ namespace to provide implementations for all of its features. C++ static assertion is implemented in order to restrict its use only for the datatypes representing real numbers for the time being. A separate extension is being defined in order to explore more possibilities of working with custom datatypes, involving numeric computations.
 
-#### Furthermore,  it is an interface library which uses CMake build system to build and integrate the [googletest](https://github.com/google/googletest "Googletest - Google Testing and Mocking Framework") in order to enable testing. All cases of input parameters which violate the mathematical logic behind the structures are handled with std::exception and its child types.
+#### Furthermore,  it is an interface library which uses CMake build system to build and integrate the [googletest](https://github.com/google/googletest "Googletest - Google Testing and Mocking Framework") in order to enable testing. All cases of input parameters which violate the mathematical logic behind the structures are handled with std::exception and its child types. Following are the core datatypes of the library.
 
 ## algebra::ElementSequence 
 ##### ElementSequence is the most fundamental structure in the algebra namespace which, represents any one dimensional sequence of real numbers. ElementSequence uses protected initializers in order to prevent users from instantiating this type. Therefore, it rather works as an internal base type which encapsulates the management and interaction with the data structure it uses behind the scene.
@@ -182,10 +182,21 @@ const double computedAreaOfTriangle = algebra::DeterminantUtility_AreaOfTriangle
 ```
 ##### Apart from the aforementioned examples, several other utility methods are provided to wrap and unwrap an algebra::Matrix<T> from and to simpler one-dimensional sequences e.g., flat C++ array and std::vector<T>. Wrapping and unwrapping can be done along rows or along columns using enum types defined in _algebra_ namespace. Several examples of the same are tested and demonstrated in the utility test suite and examples directory.
 
+## Installation
+##### This is the installation steps
 
 
+## Tests
+##### This is how to run the tests
 
+## Dependencies
+##### These are the dependencies
 
+## Author
+##### These are the project authors
+
+## License
+##### MIT Opensource License
 
 
 
