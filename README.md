@@ -229,7 +229,9 @@ $ ctest
 ##### This should execute the complete test suite.
 
 ## Dependencies
-##### These are the dependencies
+* CMake version 3.11
+
+##### The library uses CMake [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html#id1 "CMake - FetchContent Module") module in order to integrate _googletest_ framework at configuration time. FetchContent is introduced with CMake version 3.11.
 
 ## Author
 ##### These are the project authors
