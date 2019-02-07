@@ -183,8 +183,38 @@ const double computedAreaOfTriangle = algebra::DeterminantUtility_AreaOfTriangle
 ##### Apart from the aforementioned examples, several other utility methods are provided to wrap and unwrap an algebra::Matrix<T> from and to simpler one-dimensional sequences e.g., flat C++ array and std::vector<T>. Wrapping and unwrapping can be done along rows or along columns using enum types defined in _algebra_ namespace. Several examples of the same are tested and demonstrated in the utility test suite and examples directory.
 
 ## Installation
-##### This is the installation steps
+##### In this section, the installation of the library is described with the help of git submodule and a simple project with CMake.
 
+```cmake
+//A simple CMake project setup
+src/main.cpp
+build
+CMakeLists.txt
+
+//Creating the root level git repository and adding the Francois as submodule
+$ git init
+$ git submodule add https://github.com/sarkarchandan/Francois.git extern/Francois
+
+//A simple CMake configuration going inside CMakeLists.txt
+cmake_minimum_required(VERSION 3.1...3.13)
+if(${CMAKE_VERSION} VERSION_LESS 3.13)
+  cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+project(Installation VERSION 1.0 DESCRIPTION "Installation of Francois" LANGUAGES CXX)
+
+#Adding extern/Francois as subdirectory
+add_subdirectory(extern/Francois)
+
+set(SOURCES src/main.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE Francois)
+
+//Assuming the out of source build
+$ cd build
+$ cmake -G "Unix Makefiles" ..
+$ make
+
+```
 
 ## Tests
 ##### This is how to run the tests
