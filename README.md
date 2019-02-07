@@ -30,7 +30,7 @@
 ```
 ##### Matrix datatype can be instantiated using the C++ initializer list like this
 
-```c++
+```cpp
  const algebra::Matrix<int> matrix1 = {
   {1,2,4,0},
   {3,3,0,1},
@@ -54,7 +54,7 @@
 ```
 ##### Arithmetic operations between two matrices could be performed like this
 
-```c++
+```cpp
 const algebra::Matrix<int> givenMatrix1 = {
  {1,2,3,4},
  {5,6,7,8},
@@ -110,7 +110,7 @@ const algebra::Matrix<int> productMatrix2 = givenMatrix3 * givenMatrix4;
 ## Utility Methods
 ##### The library offers several utility methods to create and transform matrices. Some of these methods are inspired by other libraries. The utility test suite and examples directory demonstrate the use of these methods vividly. Some of these methods are given below
 
-```c++
+```cpp
 //algebra::Zeros(<size_t>,<size_t>) can be used to create a null matrix of specified order.
 const algebra::Matrix<int> null_matrix = algebra::Zeros(3,4);
 //will result in a null matrix of order(3,4)
