@@ -1,13 +1,16 @@
 # Francois
+
 #### This is a library written in C++, using STL containers and algorithms in order to provide implementations for some of the core structures of the linear algebra,  starting with the Matrix and Determinants. Relevant concepts and structures are being added. This library attempts to draw a coherence between the mathematical properties of these structures and their respective implementations in programming. At the same time, it provides some convenient methods to create, transform, and utilize these structures. It uses the _algebra_ namespace to provide implementations for all of its features. C++ static assertion is implemented in order to restrict its use only for the datatypes representing real numbers for the time being. A separate extension is being defined in order to explore more possibilities of working with custom datatypes, involving numeric computations.
 
-#### Furthermore,  it is an interface library which uses CMake build system to build and integrate the [googletest](https://github.com/google/googletest "Googletest - Google Testing and Mocking Framework") in order to enable testing. All cases of input parameters which violate the mathematical logic behind the structures are handled with std::exception and its child types. Following are the core datatypes of the library.
+#### Furthermore,  it is an interface library which uses CMake build system to build and integrate the [googletest](https://github.com/google/googletest "Googletest - Google Testing and Mocking Framework") in order to enable testing. The testing framework is closely integrated with the library during the CMake configuration time because the associated test suite is used both to validate the library features and at the same time acts as a viable reference of how to use them. All cases of input parameters which violate the mathematical logic behind the structures are handled with std::exception and its child types. Following are the core datatypes of the library.
 
 ## algebra::ElementSequence 
+
 ##### ElementSequence is the most fundamental structure in the algebra namespace which, represents any one dimensional sequence of real numbers. ElementSequence uses protected initializers in order to prevent users from instantiating this type. Therefore, it rather works as an internal base type which encapsulates the management and interaction with the data structure it uses behind the scene.
 
 ## algebra::Row & algebra::Column
-##### Both Row and Column datatypes inherit from the ElementSequence and represent the rows and the columns of a matrix or determinant. Therefore, they independently support several convenient arithmetic operations while at the same time sharing the same data structure behind the scene. Defining these types individually makes it easier to implement several other more complex operations e.g., multiplication two matrices. Both algebra::Row and algebra::Column offer public initializers and some of the arithmetic operations they support are
+
+##### Both Row and Column datatypes inherit from the ElementSequence and represent the rows and the columns of a matrix or determinant. Therefore, they independently support several convenient arithmetic operations while at the same time sharing the same data structure behind the scene. Defining these types individually makes it easier to implement several other more complex operations e.g., multiplication of two matrices. Both algebra::Row and algebra::Column offer public initializers and some of the arithmetic operations they support are
 
 ```
 * Addition and subtraction of two rows or columns of equal lengths from each other.
@@ -20,9 +23,11 @@
 ```
 
 ## algebra::MultiSequence
-##### Similar to the ElementSequence, MultiSequence represents a two dimensional sequence of real numbers, manages the internal data structure. It enforces some constraints and offers some properties on the two-dimensional sequence which qualify itself as the base type of matrix and determinant. It provides access to its internal data structure in terms of collections of algebra::Row and algebra::Column as well as subscripting and defines the equality of two MultiSequence types. These features are used repeatedly further in matrix and determinant. Furthermore, it implements the mathematical concepts of elementary operations on matrices and determinants. These operations are further shared by both the child types.
+
+##### Similar to the ElementSequence, MultiSequence represents a two dimensional sequence of real numbers and manages the internal data structure. It enforces some constraints and offers some properties on the two-dimensional sequence which qualify itself as the base type of matrix and determinant. It provides access to its internal data structure in terms of an std::vector of algebra::Row and an std::vector of algebra::Column. It implements the subscript feature for elements in the two-dimensional sequence by index. It also defines the equality and inequality of two MultiSequence types. These features are used repeatedly further in matrix and determinant. Furthermore, it implements the mathematical concepts of elementary operations on matrices and determinants. These operations are further shared by both of its child types.
 
 ## algebra::Matrix
+
 ##### Inheriting directly from the MultiSequence, matrix datatype encapsulates the classification of matrices as well as implements fundamental operations between two matrices such as 
 
 ```
@@ -286,7 +291,7 @@ const double computedAreaOfTriangle = algebra::DeterminantUtility_AreaOfTriangle
 //Yields the value 30.5
 ```
 
-##### Apart from the aforementioned examples, several other utility methods are provided to wrap and unwrap an algebra::Matrix<T> from and to simpler one-dimensional sequences e.g., flat C++ array and std::vector<T>. Wrapping and unwrapping can be done along rows or along columns using enum types defined in _algebra_ namespace. Several examples of the same are tested and demonstrated in the utility test suite and examples directory.
+##### Apart from the aforementioned examples, several other utility methods are provided to wrap and unwrap an algebra::Matrix<T> from and to simpler one-dimensional sequences e.g., flat C++ array and std::vector<T>. Wrapping and unwrapping can be done along rows or along columns using enum types defined in _algebra_ namespace. Several examples of the same are validated and demonstrated in the utility test suite and examples directory.
 
 ## Installation
 ##### In this section, the installation of the library is described with the help of git submodule and a simple project with CMake.
