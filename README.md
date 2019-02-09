@@ -8,6 +8,7 @@
 
 ## algebra::Row & algebra::Column
 ##### Both Row and Column datatypes inherit from the ElementSequence and represent the rows and the columns of a matrix or determinant. Therefore, they independently support several convenient arithmetic operations while at the same time sharing the same data structure behind the scene. Defining these types individually makes it easier to implement several other more complex operations e.g., multiplication two matrices. Both algebra::Row and algebra::Column offer public initializers and some of the arithmetic operations they support are
+
 ```
 * Addition and subtraction of two rows or columns of equal lengths from each other.
 * Multiplication between a row and a column of equal length. 
@@ -23,6 +24,7 @@
 
 ## algebra::Matrix
 ##### Inheriting directly from the MultiSequence, matrix datatype encapsulates the classification of matrices as well as implements fundamental operations between two matrices such as 
+
 ```
 * Addition and subtraction of two matrices.
 * Multiplication of a matrix by a scalar.
@@ -32,6 +34,7 @@
 * Transpose of a matrix.
 * Elementary Row and Column operations on a matrix.
 ```
+
 ##### Matrix datatype can be instantiated using the C++ construct std::initializer_list like this
 
 ```cpp
@@ -56,6 +59,7 @@
   65.78 43.98
 
 ```
+
 ##### Arithmetic and logical operations between two matrices could be performed like this
 
 ```cpp
@@ -281,6 +285,7 @@ const std::pair<int,int> givenPoint3 = std::make_pair<int,int>(5,1);
 const double computedAreaOfTriangle = algebra::DeterminantUtility_AreaOfTriangle({givenPoint1,givenPoint2,givenPoint3});
 //Yields the value 30.5
 ```
+
 ##### Apart from the aforementioned examples, several other utility methods are provided to wrap and unwrap an algebra::Matrix<T> from and to simpler one-dimensional sequences e.g., flat C++ array and std::vector<T>. Wrapping and unwrapping can be done along rows or along columns using enum types defined in _algebra_ namespace. Several examples of the same are tested and demonstrated in the utility test suite and examples directory.
 
 ## Installation
@@ -333,7 +338,7 @@ $ ctest
 * CMake version 3.11
 * C++14
 
-##### The library uses CMake [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html#id1 "CMake - FetchContent Module") module in order to integrate _googletest_ framework at configuration time. FetchContent is introduced with CMake version 3.11. The library uses features of from C++ standard 14 in several places.
+##### The library uses CMake [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html#id1 "CMake - FetchContent Module") module in order to integrate _googletest_ framework at configuration time. FetchContent is introduced with CMake version 3.11. The library uses features from C++ standard 14 in several places.
 
 ## Authors
 * Chandan Sarkar
