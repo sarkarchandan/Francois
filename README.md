@@ -402,7 +402,9 @@ $ ./Example
 ##### I am a grad student in computer science and learning C++ programming. This library is being created as part of my educational endeavors. I welcome all feedback and suggestions to improve my work.
 
 ## License
-##### MIT Opensource License
+##### This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+
 
 
 
