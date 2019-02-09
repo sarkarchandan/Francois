@@ -294,13 +294,15 @@ const double computedAreaOfTriangle = algebra::DeterminantUtility_AreaOfTriangle
 ##### Apart from the aforementioned examples, several other utility methods are provided to wrap and unwrap an algebra::Matrix<T> from and to simpler one-dimensional sequences e.g., flat C++ array and std::vector<T>. Wrapping and unwrapping can be done along rows or along columns using enum types defined in _algebra_ namespace. Several examples of the same are validated and demonstrated in the utility test suite and examples directory.
 
 ## Installation
-##### In this section, the installation of the library is described with the help of git submodule and a simple project with CMake.
+##### In this section, two ways are described to integrate Francois using CMake. First using the git submodule and the second using CMake FetchContent module.
 
 ```cmake
 //A simple CMake project setup
 src/main.cpp
 build
 CMakeLists.txt
+
+//#1 Integration using git submodule //
 
 //Creating the root level git repository and adding the Francois as submodule
 $ git init
@@ -318,7 +320,34 @@ add_subdirectory(extern/Francois)
 
 set(SOURCES src/main.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE Francois)
+target_link_libraries(${PROJECT_NAME} Francois)
+
+
+//#2 Integration using  CMake FetchContent module //
+
+//A simple CMake configuration going inside CMakeLists.txt
+cmake_minimum_required(VERSION 3.1...3.13)
+if(${CMAKE_VERSION} VERSION_LESS 3.13)
+  cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+project(Installation VERSION 1.0 DESCRIPTION "Installation of Francois" LANGUAGES CXX)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  Francois
+  GIT_REPOSITORY https://github.com/sarkarchandan/Francois.git
+)
+
+FetchContent_GetProperties(Francois)
+if(NOT Francois_POPULATED)
+  FetchContent_Populate(Francois)
+  add_subdirectory(${francois_SOURCE_DIR} ${francois_BINARY_DIR})
+endif()
+
+set(SOURCES src/main.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} Francois)
 
 //Assuming the out of source build
 $ cd build
@@ -328,16 +357,38 @@ $ make
 ```
 
 ## Tests
-##### Francois provides a grouped and illustrative test suite. The test suite, on the other hand, works as secondary documentation of the library features. It uses the _googletest_ framework and CTest driver program to execute the tests. In this section, we describe the execution of the test suite assuming the steps described in the Installation section are performed.
+##### Francois provides a grouped and illustrative test suite. The test suite, on the other hand, works as secondary documentation of the library features. It uses the _googletest_ framework and CTest driver program to execute the tests. In this section, we describe the execution of the test suite assuming the steps described in the Installation section are performed. Based on which CMake integration option is used the location for the build directory of Francois may differ. Samples of both cases are given.
 
 ```bash
+
+//#1 Assuming that git submodule option is taken to link the library //
 $ cd build/extern/Francois/
+$ make
+$ ctest
+
+//#2 Assuming that the CMake FetchContent module is used to link the library //
+
+$ cd build/_deps/francois-build/
 $ make
 $ ctest
 
 ```
 
-##### This should execute the complete test suite.
+## Examples
+##### A humble set of examples is provided in order to demonstrate several features of the library. More are being added. Here are the steps to execute the examples.
+
+```bash
+//#1 Assuming that git submodule option is taken to link the library //
+$ cd build/extern/Francois/
+$ make
+$ ./Example 
+
+//#2 Assuming that the CMake FetchContent module is used to link the library //
+
+$ cd build/_deps/francois-build/
+$ make
+$ ./Example 
+```
 
 ## Dependencies
 * CMake version 3.11
