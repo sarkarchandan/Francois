@@ -52,7 +52,7 @@
   65.78 43.98
 
 ```
-##### Arithmetic operations between two matrices could be performed like this
+##### Arithmetic and logical operations between two matrices could be performed like this
 
 ```cpp
 const algebra::Matrix<int> givenMatrix1 = {
@@ -97,6 +97,20 @@ const algebra::Matrix<int> productMatrix2 = givenMatrix3 * givenMatrix4;
   90 100 110 120
   202 228 254 280
   314 356 398 440
+  
+//If two matrics are provided which are not compatible for multiplication in terms of their respective orders an exception would be thrown with the appropriate reason.
+
+const algebra::Matrix<int> givenMatrix5 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+const algebra::Matrix<int> transposeMatrix5 = givenMatrix5.Transpose();
+//transposeMatrix5  will result in the matrix of order (4,3)
+  1 5 9
+  2 6 10
+  3 7 11
+  4 8 12
 
 ```
 
@@ -106,6 +120,89 @@ const algebra::Matrix<int> productMatrix2 = givenMatrix3 * givenMatrix4;
 ##### Likewise the Matrix, algebra::Determinant datatype also inherits from the MultiSequence base type. Therefore, they share the same internal data structure and some of the properties and operations with the Matrix e.g., subscripts for elements, order and the elementary operations on rows and columns. The main reason to establish algebra::Determinant as a type of its own is to maintain the coherence with the mathematical structures. Furthermore, constructors of determinants enforce further constraints on the two-dimensional sequence compared to matrices. Determinant datatype defines some of its relevant constructs e.g., value, minors, and co-factors. These constructs, in turn, are used to define an invertible matrix and compute the inverse of a matrix. The library incorporates a detailed test suite and an example directory which demonstrate all possible operations with an algebra:: Determinant datatype.
 
 ##### For the time being the initialization of the algebra::Determinant datatype and all other related operations e.g., determining minors, co-factors, adjoint matrices, and inverse matrices are possible up to order 3 and below. Work is in progress to improve and overcome this limitation. This limitation does not apply to other operations with matrices.
+
+##### Both algebra::Matrix and algebra::Determinant datatypes support basic row and column elementary operations like this
+
+```cpp
+//Elementary Row Operations
+
+//#1 Row[i] <-> Row[j]
+algebra::Matrix<int> givenMatrix1 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+givenMatrix1.ElementaryRowOperation_Interchange_ByIndex(0,2);
+//givenMatrix1 is now
+  9 10 11 12
+  5 6 7 8
+  1 2 3 4
+  
+//#2 Row[i] -> k * Row[i]
+algebra::Matrix<int> givenMatrix2 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+givenMatrix2.ElementaryRowOperation_MultiplicationByNonZeroScalar_ByIndex(4,1);
+//givenMatrix2 is now
+  1 2 3 4
+  20 24 28 32
+  9 10 11 12
+
+//#3 Row[i] -> Row[i] + k * Row[j]
+algebra::Matrix<int> givenMatrix3 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+givenMatrix3.ElementaryRowOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(0,4,2);
+//givenMatrix3 is now
+  37 42 47 52
+  5 6 7 8
+  9 10 11 12
+
+//Elementary Column Operations
+
+//#1 Column[i] <-> Column[j]
+algebra::Matrix<int> givenMatrix4 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+givenMatrix4.ElementaryColumnOperation_Interchange_ByIndex(0,3);
+//givenmatrix4 is now
+  4 2 3 1
+  8 6 7 5
+  12 10 11 9
+
+//#2 Column[i] -> k * Column[i]
+algebra::Matrix<int> givenMatrix5 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+givenMatrix5.ElementaryColumnOperation_MultiplicationByNonZeroScalar_ByIndex(4,1);
+//givenMatrix5 is now
+  1 8 3 4
+  5 24 7 8
+  9 40 11 12
+
+//#3 Column[i] -> Column[i] + k * Column[j]
+algebra::Matrix<int> givenMatrix6 = {
+  {1,2,3,4},
+  {5,6,7,8},
+  {9,10,11,12}
+};
+givenMatrix6.ElementaryColumnOperation_AdditionOfAnotherMultipliedByScalar_ByIndex(0,4,2);
+//givenMatrix6 is now
+  13 2 3 4
+  33 6 7 8
+  53 10 11 12
+
+```
+
+##### All possible arithmetic and logical operations with the algebra::Matrix and algebra::Determinant datatypes are validated and documented in the integrated test suite and examples.
 
 ## Utility Methods
 ##### The library offers several utility methods to create and transform matrices. Some of these methods are inspired by other libraries. The utility test suite and examples directory demonstrate the use of these methods vividly. Some of these methods are given below
