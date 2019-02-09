@@ -22,13 +22,17 @@
 ##### Similar to the ElementSequence, MultiSequence represents a two dimensional sequence of real numbers, manages the internal data structure. It enforces some constraints and offers some properties on the two-dimensional sequence which qualify itself as the base type of matrix and determinant. It provides access to its internal data structure in terms of collections of algebra::Row and algebra::Column as well as subscripting and defines the equality of two MultiSequence types. These features are used repeatedly further in matrix and determinant. Furthermore, it implements the mathematical concepts of elementary operations on matrices and determinants. These operations are further shared by both the child types.
 
 ## algebra::Matrix
-##### Inheriting directly from the MultiSequence, matrix datatype encapsulates the classification of matrices, implements fundamental operations between two matrices such as 
+##### Inheriting directly from the MultiSequence, matrix datatype encapsulates the classification of matrices as well as implements fundamental operations between two matrices such as 
 ```
 * Addition and subtraction of two matrices.
 * Multiplication of a matrix by a scalar.
 * Multiplication of two matrices which are compatible for the operation.
+* Adjoint of a matrix (possible upto order 3 for now).
+* Inverse of a matrix (possible upto order 3 for now).
+* Transpose of a matrix.
+* Elementary Row and Column operations on a matrix.
 ```
-##### Matrix datatype can be instantiated using the C++ initializer list like this
+##### Matrix datatype can be instantiated using the C++ construct std::initializer_list like this
 
 ```cpp
  const algebra::Matrix<int> matrix1 = {
@@ -327,8 +331,9 @@ $ ctest
 
 ## Dependencies
 * CMake version 3.11
+* C++14
 
-##### The library uses CMake [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html#id1 "CMake - FetchContent Module") module in order to integrate _googletest_ framework at configuration time. FetchContent is introduced with CMake version 3.11.
+##### The library uses CMake [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html#id1 "CMake - FetchContent Module") module in order to integrate _googletest_ framework at configuration time. FetchContent is introduced with CMake version 3.11. The library uses features of from C++ standard 14 in several places.
 
 ## Authors
 * Chandan Sarkar
