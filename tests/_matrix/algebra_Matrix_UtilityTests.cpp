@@ -47,6 +47,27 @@ TEST(MatrixUtilityTests, canCreateMatrixWithGivenOrderAndAnInteger)
   ASSERT_TRUE(testableMatrix2.Order() == expectedOrder);
 }
 
+TEST(MatrixUtilityTests, canCreateIdentityMatrixWithGivenOrder)
+{
+  const algebra::Matrix<int> testableIdentityMatrix1 = algebra::Identity(3);
+  const algebra::Matrix<int> expectedIdentityMatrix1 = {
+    {1,0,0},
+    {0,1,0},
+    {0,0,1}
+  };
+  ASSERT_TRUE(testableIdentityMatrix1.IsIdentityMatrix());
+  ASSERT_TRUE(testableIdentityMatrix1 == expectedIdentityMatrix1);
+
+  const algebra::Matrix<int> testableIdentityMatrix2 = algebra::Identity(4);
+  const algebra::Matrix<int> expectedIdentityMatrix2 = {
+    {1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}
+  };
+  ASSERT_TRUE(testableIdentityMatrix2.IsIdentityMatrix());
+  ASSERT_TRUE(testableIdentityMatrix2 == expectedIdentityMatrix2);
+}
 
 TEST(MatrixUtilityTests, canProvideAForEachFunctionForMatrixRows)
 {
