@@ -32,6 +32,11 @@ void Matrix_Demo_Utilities()
  std::cout << "A square matrix of order (4) is created with all elements as 5 like this " << int_matrix;
  std::cout << "\n";
 
+ std::cout << "We could also create identity matrices of given order using Matrix<int> Identity(const size_t& _order) utility method" << "\n";
+ const algebra::Matrix<int> identity_matrix = algebra::Identity(4);
+ std::cout << "An identity matrix of order (4,4) is created like this " << identity_matrix;
+ std::cout << "\n";
+
  /*
  * One might want to access each row or column 'independent of the matrix' as a whole and perform some arithmetic operations that manipulate each element of the given rows or columns. In general, some of the common arithmetic operations on individual rows or columns which are possible are
   ** Addition and subtraction of two rows or columns of equal lengths from each other
