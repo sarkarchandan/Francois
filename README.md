@@ -224,17 +224,25 @@ givenMatrix6.ElementaryColumnOperation_AdditionOfAnotherMultipliedByScalar_ByInd
 //algebra::Zeros(<size_t>,<size_t>) can be used to create a null matrix of specified order.
 const algebra::Matrix<int> null_matrix = algebra::Zeros(3,4);
 //will result in a null matrix of order(3,4)
- 0 0 0 0
- 0 0 0 0
- 0 0 0 0
+  0 0 0 0
+  0 0 0 0
+  0 0 0 0
  
 //algebra::Ints(<size_t>,<size_t>,<int>) can be  used to create a matrix of specified order and the given integer  
 const algebra::Matrix<int> custom_matrix = algebra::Ints(4,4,5);
 //will result in 
- 5 5 5 5
- 5 5 5 5
- 5 5 5 5
- 5 5 5 5
+  5 5 5 5
+  5 5 5 5
+  5 5 5 5
+  5 5 5 5
+ 
+//algebra::Identity(<size_t>) can be used to create an integer identity matrix of given order 
+const algebra::Matrix<int> identity = algebra::Identity(4);
+//will result in
+  1 0 0 0
+  0 1 0 0
+  0 0 1 0
+  0 0 0 1
  
 const algebra::Matrix<int> matrix1 = {
  {1,2,3,4},
@@ -277,9 +285,9 @@ const algebra::Matrix<double> sqrt_matrix = matrix2.Map([&](const double& _eleme
    return std::sqrt(_element);
 });
 //Matrix sqrt_matrix would look like
-1.09545 1.84391 2.36643
-2.79285 3.01662 3.33467
-3.62491 3.89358 4.14488
+  1.09545 1.84391 2.36643
+  2.79285 3.01662 3.33467
+  3.62491 3.89358 4.14488
 
 
 //Sample utility method, implemented utilizing algebra::Determinant datatype to compute the area of a triangle represented by the non-collinear 2D coordinate points defined with std::vector<std::pair<int,int>>.
