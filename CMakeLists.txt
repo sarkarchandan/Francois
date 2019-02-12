@@ -5,18 +5,23 @@ if(${CMAKE_VERSION} VERSION_LESS 3.13)
 endif()
 project(Francois VERSION 1.0 DESCRIPTION "This library uses C++ STL features to  demonstrate basic operations of linear algebra" LANGUAGES CXX)
 include(CTest)
-include(FetchContent)
 
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.8.1
-)
+if(NOT TARGET gtest OR NOT TARGET gtest_main OR NOT TARGET gmock OR NOT TARGET gmock_main)
+  
+  include(FetchContent)
 
-FetchContent_GetProperties(googletest)
-if(NOT googletest_POPULATED)
-  FetchContent_Populate(googletest)
-  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+  FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        release-1.8.1
+  )
+  FetchContent_GetProperties(googletest)
+
+  if(NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+  endif()
+
 endif()
 
 add_library(Francois INTERFACE)
